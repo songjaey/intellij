@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>기본 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/default.css}">
+    <script th:src="@{/javascript/default.js}"></script>
+
+    <th:block layout:fragment="css"></th:block>
+    <th:block layout:fragment="script"></th:block>
+
+</head>
+<body>
+
+    <div id="wrap">
+        <th:block th:replace="sub/header :: headerFrag"></th:block>
+        <th:block layout:fragment="content"></th:block>
+        <th:block th:replace="sub/footer :: footFrag"></th:block>
+
+    </div>
+
+</body>
+</html>
