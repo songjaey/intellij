@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/signup.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{javascript/signup.js}"></script>
+</th:block>
+
+<div layout:fragment="content" id="main">
+
+    <div id="title_progress">
+        <h2>회원가입</h2>
+        <ul class="step">
+            <li class="step1">
+                <i class="bi bi-1-circle"></i>
+                약관동의
+                <i class="bi bi-caret-right-fill"></i>
+            </li>
+            <li class="step2">
+                <i class="bi bi-2-circle"></i>
+                정보입력
+            </li>
+        </ul>
+    </div>
+
+    <div id="agree_wrap">
+        <div class="checkbox all-agree">
+            <input type="checkbox" id="allAgree">
+            <label for="allAgree"> 전체 동의합니다.</label>
+        </div>
+        <ul id="aList" class="agree_list">
+            <li>
+                <input type="checkbox" id="agree1" name="accept">
+                <label for="agree1">(필수) 만 14세 이상입니다. </label>
+            </li>
+            <li>
+                <input type="checkbox" id="agree2" name="accept">
+                <label for="agree2">(필수) 이용약관 동의</label>
+            </li>
+            <li>
+                <input type="checkbox" id="agree3" name="accept">
+                <label for="agree3">(필수) 개인정보 수집 및 이용 동의</label>
+            </li>
+            <li>
+                <input type="checkbox" id="agree4" name="accept">
+                <label for="agree4">(선택) 개인정보 수집 및 이용동의(이벤트 안내)</label>
+            </li>
+            <li>
+                <input type="checkbox" id="agree5" name="accept">
+                <label for="agree5">(선택) 개인정보 수집 및 이용동의(마케팅)</label>
+            </li>
+            <a href="javascript:agreeBt();" id="join_btn" class="btn_type">정보입력</a>
+        </ul>
+    </div>
+
+    <div id="signup_wrap">
+        <form id="signFm" th:object="${memberDto}" th:action="@{/signup}" method="post">
+            <ul class="write_list">
+                <li id="emailCont" class="email">
+                    <input type="text" placeholder="이메일" th:field="*{email}">
+                </li>
+                <li>
+                    <input type="passowrd" placeholder="비밀번호" th:field="*{password}">
+                </li>
+                <li>
+                    <input type="password" placeholder="비밀번호 확인" id="pwChk">
+                    <p>* 4-16자 이내 영문(소문자), 숫자를 조합하여 작성해 주세요.</p>
+                </li>
+                <li>
+                    <input type="text" placeholder="이름" th:field="*{name}">
+                </li>
+                <li>
+                    <input type="text" placeholder="연락처( - 없이 입력하세요)" th:field="*{tel}">
+                </li>
+            </ul>
+            <a href="javascript:submit();" id="submit_btn" class="btn_type">등록하기</a>
+
+        </form>
+    </div>
+
+
+</div>
+
+</html>

@@ -1,0 +1,20 @@
+#main{
+    width:100%;
+    position:relative;
+    padding:100px 0;
+}
+#main_list{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:250px;
+    grid-row-gap:30px;
+    place-items:center;
+}
+
+.image_box{
+    width:250px; height:250px;
+}
+
+.image_box img{
+    width:100%;
+}
