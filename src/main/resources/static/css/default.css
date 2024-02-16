@@ -41,7 +41,13 @@ ul{ list-style-type:none; }
     text-align:end;
     font-size:12px;
 }
-.small_menu>span{display:inline-block; padding:8px;}
+.small_menu .befLogin{display:inline-block; padding:8px;}
+.small_menu .loginUser{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    column-gap:10px;
+}
 #footer{
     width:100%;
     padding:50px 100px;

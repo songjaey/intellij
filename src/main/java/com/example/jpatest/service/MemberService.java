@@ -16,4 +16,12 @@ public class MemberService {
         TestMemberEntity testMemberEntity = TestMemberEntity.toEntity(memberDto);
         testMemberRepository.save(testMemberEntity);
     }
+
+    public MemberDto memberLogin(MemberDto memberDto){
+        TestMemberEntity testMemberEntity = testMemberRepository.findByEmailAndPassword(memberDto.getEmail(), memberDto.getPassword());
+        if( testMemberEntity != null) {
+            return MemberDto.toDto(testMemberEntity);
+        }
+        return null;
+    }
 }
