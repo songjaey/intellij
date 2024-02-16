@@ -4,12 +4,52 @@
       layout:decorate="~{default}">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/.css}">
+    <link rel="stylesheet" th:href="@{/css/signin.css}">
 </th:block>
 <th:block layout:fragment="script">
-    <script th:src="@{javascript/.js}"></script>
+    <script th:src="@{javascript/signin.js}"></script>
 </th:block>
 
-<div layout:fragment="content"></div>
+<div layout:fragment="content" id="main">
+
+    <form method="post" id="signFm" th:object="${memberDto}" th:action="@{signin}">
+    <div id="section">
+        <h2 id="tit">로그인</h2>
+        <div class="input-box">
+            <div class="input">
+                <input type="email" placeholder="ex) jpa@naver.com" th:field="*{email}">
+                <div class="errors" th:errors="*{email}">이메일오류</div>
+            </div>
+            <div class="input">
+                <input type="password" placeholder="비밀번호 입력" th:field="*{password}">
+                <div class="errors" th:errors="*{password}">비밀번호오류</div>
+                <div class="errors" th:if="${fail}" th:text="${fail}"></div>
+            </div>
+        </div>
+        <div class="login-sub">
+            <span class="id-save">
+                <input type="checkbox" id="save">
+                <label for="save">아이디 저장</label>
+            </span>
+            <span>
+                <a th:href="@{/signup}">회원가입</a>
+                <a th:href="@{/findpw}">비밀번호 찾기</a>
+            </span>
+        </div>
+
+        <a href="javascript:loginForm();" class="btn_type">로그인</a>
+        <div class="sns-box">
+            <strong>SNS 계정 간편 로그인</strong>
+            <ul class="sns-list">
+                <li><a href="https://www.google.com"><img src="./image/google.png"></a></li>
+                <li><a href="https://www.naver.com"><img src="./image/naver.png"></a></li>
+                <li><a href="https://www.kakaocorp.com"><img src="./image/kakao.png"></a></li>
+            </ul>
+        </div>
+
+    </div>
+    </form>
+
+</div>
 
 </html>
