@@ -1,0 +1,32 @@
+
+#main{
+    width:700px;
+    margin:0 auto;
+}
+
+#info_list{
+    padding:20px 10px;
+    width:100%;
+}
+#info_list li{
+    line-height:40px;
+    font-size:20px;
+}
+#login-history{
+    border-top:20px solid #aaa;
+    width:100%;
+}
+#login-title{
+    display:flex;
+    justify-content:space-between;
+}
+.num{width:20%;}
+.ip{width:40%;}
+.date{width:40%;}
+.login{
+    display:flex;
+    justify-content:space-between;
+    line-height:40px;
+    border-bottom:1px solid #ccc;
+    font-size:17px;
+}

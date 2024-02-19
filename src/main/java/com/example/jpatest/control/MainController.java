@@ -52,9 +52,11 @@ public class MainController {
     public String signin(MemberDto memberDto, HttpServletRequest httpServletRequest, Model model){
 
         //
-        memberDto = memberService.memberLogin(memberDto);
+        memberDto = memberService.memberLogin(memberDto, httpServletRequest.getRemoteAddr());
+
         httpServletRequest.getSession().invalidate();
         if( memberDto != null) {
+
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute("user", memberDto);
             session.setMaxInactiveInterval(3600);
@@ -73,6 +75,8 @@ public class MainController {
     public String myinfo(HttpServletRequest httpServletRequest, Model model){
         MemberDto memberDto = (MemberDto) httpServletRequest.getSession().getAttribute("user");
         // 현재 로그인
+        model.addAttribute("myInfoDto",memberService.myInfo(memberDto));
+
         return "member/info";
     }
 }
