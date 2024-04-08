@@ -13,7 +13,7 @@
 
         <th:block th:if="${session.user == null}">
             <span class="befLogin"><a href="/members/login">로그인</a></span>
-            <span class="befLogin"><a href="/signup">회원가입</a></span>
+            <span class="befLogin"><a href="/members/new">회원가입</a></span>
         </th:block>
         <th:block th:if="${session.user !=null}">
             <span class="loginUser" ><a href="#" th:text="${session.user.name}"></a></span>

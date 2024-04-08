@@ -44,27 +44,23 @@ public class MainController {
         return "member/memberForm";
     }
 
-    @PostMapping("/members/new")
+    @PostMapping("members/new")
     public String newMember(@Valid MemberFormDto memberFormDto,
-                            BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            // 필드 검증 오류가 있는 경우
-            System.out.println("validationError");
-            return "member/memberForm"; // 회원가입 폼을 다시 표시
+                            BindingResult bindingResult, Model model){
+        if( bindingResult.hasErrors()  ){
+            return "member/memberForm";
         }
 
-        try {
-            memberService.saveMember(memberFormDto, passwordEncoder);
-        } catch (IllegalStateException e) {
-            // 회원가입 중 예외 발생 시
-            model.addAttribute("emailError", "이미 사용 중인 이메일입니다.");
-            System.out.println("ExceptionError");
-            return "member/memberForm"; // 회원가입 폼을 다시 표시
+        try{
+            memberService.saveMember(memberFormDto, passwordEncoder );
+        }catch(IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/memberForm";
         }
 
-        return "redirect:/"; // 회원가입 성공 시 메인 페이지로 리다이렉트
+        return "redirect:/";
     }
 
 
 }
-//
+    //
