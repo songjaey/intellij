@@ -32,6 +32,9 @@ public class Member extends BaseEntity{
     private String password;
 
     @Column
+    private String tel;
+
+    @Column
     private String zipCode;
 
     @Column
@@ -45,11 +48,15 @@ public class Member extends BaseEntity{
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
-        //member.setName(memberFormDto.getName());
+        // 이름 필드가 있다면
+        // member.setName(memberFormDto.getName());
+
         member.setEmail(memberFormDto.getEmail());
 
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
+
+        member.setTel(memberFormDto.getTel()); // 회원 가입 폼에서 입력한 전화번호를 설정합니다.
 
         member.setZipCode(memberFormDto.getZipCode());
         member.setAddr1(memberFormDto.getAddr1());
@@ -63,4 +70,3 @@ public class Member extends BaseEntity{
 //        member.setName( memberFormDto.getName());
 //    }
 }
-

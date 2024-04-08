@@ -36,6 +36,17 @@ public class MemberService implements UserDetailsService {
         }
     }
 
+    public String findIdByTel(String tel) {
+        Member member = memberRepository.findByTel(tel);
+
+        if (member != null && member.getEmail() != null) {
+            return member.getEmail(); // 해당 회원의 ID 반환
+        } else {
+            throw new IllegalStateException("해당 전화번호로 가입된 회원이 없습니다.");
+        }
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 

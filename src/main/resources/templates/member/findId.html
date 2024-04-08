@@ -87,6 +87,13 @@
         justify-content: space-between;
 
     }
+    .form-detail input{
+        width:100%;
+        background: rgba(200, 200, 200, 0.8);
+        border-radius: 10px;
+        border: none;
+        padding-left:30px;
+    }
 
     .result-box{
         position: relative;
@@ -99,16 +106,16 @@
     }
 
     .form-detail button {
-        width: 60%;
+        width: 40%;
         height: 50px;
-        padding-left: 30px;
-        background: transparent;
+        margin-left: 15px;
+        background: white;
         border: none;
         font-size: 1em;
         color: #162938;
         font-weight: 600;
         transition: 1s;
-        border-radius: 10px 10px 0 0;
+        border-radius: 10px;
     }
 
     .input-box .icon {
@@ -123,9 +130,12 @@
     .input-box input::placeholder {
         text-align: center; /* 가운데 정렬 */
     }
+
     .input-box input:focus {
         background-color: #fff; /* 포커스가 갔을 때의 배경색 */
+        border: none; /* Remove border when input is focused */
     }
+
 
     .login-sub {
         font-size: 0.9em;
@@ -149,21 +159,18 @@
         text-decoration: underline;
     }
 
-    .login-button,
-    .signup-button {
+    .login-button{
         width: 100%;
         margin-top: 20px;
     }
 
-    .login-button span,
-    .signup-button span {
+    .login-button span {
         display: block;
         width: 100%;
         text-align: center;
     }
 
-    .login-button a,
-    .signup-button a {
+    .login-button a{
         display: block;
         width: 100%;
         padding: 10px 0;
@@ -174,8 +181,7 @@
         transition: background 0.3s ease;
     }
 
-    .login-button a:hover,
-    .signup-button a:hover {
+    .login-button a:hover {
         background: rgba(84, 124, 228, 0.8); /* 호버 시 파란색 */
         color: #fff; /* 글자 색상을 흰색으로 변경 */
     }
@@ -192,12 +198,11 @@
 
 <!-- 폼 요소 -->
 <body>
-<form role="form" method="post" action="/members/login" id="signFm">
+<form th:action="@{/members/findId}" method="post" id="signFm">
     <div class="main-text-box">
         <a class="main-text" href="/" style="font-size:50px; font-style:bold; color:#93EBFF; text-align:center; font-family: 'Bauhaus 93'; display: block; width: 100%;">TravelGenius</a>
     </div>
     <div class="wrapper">
-        <!--        <span class="icon-close"><ion-icon name="close"></ion-icon></span>-->
         <div class="form-box">
             <h2>아이디 찾기</h2>
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
@@ -205,26 +210,22 @@
             <div class="phone-box"> 휴대전화 인증 </div>
 
             <div class="input-box">
-<!--                <label th:for="tel"></label>-->
                 <span class="icon"><ion-icon name="mail"></ion-icon></span>
                 <div class="form-detail">
-                    <input type="text" th:field="*{tel}" id="tel" name="tel" placeholder="핸드폰 번호를 입력하세요">
-                    <button type="button" class="btn btn-secondary" onclick="">인증하기</button>
+                    <input type="text" id="tel" name="tel" th:value="${tel}" placeholder="핸드폰 번호를 입력하세요">
+                    <button type="submit" class="btn btn-secondary">인증하기</button>
                 </div>
             </div>
 
-            <div class="result-box">
-
-
+            <div class="result-box" th:if="${findIdErrorMsg != null or foundId != null}">
+                <p th:text="${findIdErrorMsg != null ? findIdErrorMsg : foundId}" class="error"></p>
             </div>
 
             <div class="login-button">
                 <span>
-                    <a th:href="@{/#}">로그인</a>
+                    <a th:href="@{/members/login}">로그인</a>
                 </span>
             </div>
-
-
 
         </div>
     </div>
