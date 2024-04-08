@@ -1,90 +1,83 @@
 package com.example.jpatest.control;
 
-import com.example.jpatest.dto.MemberFormDto;
-import com.example.jpatest.service.ItemService;
+import com.example.jpatest.dto.MemberDto;
 import com.example.jpatest.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 @Controller
-@RequiredArgsConstructor
 public class MainController {
 
-    private final MemberService memberService;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    MemberService memberService;
+
     @GetMapping("/")
-    public String main(){
-
-        return "default";
+    public String index() {
+        return "main/index";
     }
 
-    @GetMapping("/members/login")
-    public String login(Model model){
-        return "/member/loginForm";
-    }
-    @GetMapping("/members/login/error")
-    public String loginError(Model model){
-        model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");
-        return "member/loginForm";
+    @GetMapping("/signup")
+    public String signupForm(Model model) {
+        model.addAttribute("memberDto", new MemberDto());
+        return "member/signupForm";
     }
 
-    @GetMapping("members/new")
-    public String memberForm(Model model){
-        model.addAttribute("memberFormDto", new MemberFormDto());
-        return "member/memberForm";
+    @GetMapping("/signin")
+    public String signinForm(Model model) {
+        model.addAttribute("memberDto", new MemberDto());
+        return "member/signinForm";
     }
 
-    @PostMapping("/members/new")
-    public String newMember(@Valid MemberFormDto memberFormDto,
-                            BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            // 필드 검증 오류가 있는 경우
-            System.out.println("validationError");
-            return "member/memberForm"; // 회원가입 폼을 다시 표시
+    @PostMapping("/signup")
+    public String signup(@Valid MemberDto memberDto, BindingResult bind, Model model) {
+        if (bind.hasErrors()) {
+            System.out.println("유효하지 않은 값 ");
         }
+        System.out.println("값 ");
 
-        try {
-            memberService.saveMember(memberFormDto, passwordEncoder);
-        } catch (IllegalStateException e) {
-            // 회원가입 중 예외 발생 시
-            model.addAttribute("emailError", "이미 사용 중인 이메일입니다.");
-            System.out.println("ExceptionError");
-            return "member/memberForm"; // 회원가입 폼을 다시 표시
+        memberService.memberInsert(memberDto);
+        return "redirect:/";
+    }
+
+    @PostMapping("/signin")
+    public String signin(MemberDto memberDto, HttpServletRequest httpServletRequest, Model model){
+
+        //
+        memberDto = memberService.memberLogin(memberDto, httpServletRequest.getRemoteAddr());
+
+        httpServletRequest.getSession().invalidate();
+        if( memberDto != null) {
+
+            HttpSession session = httpServletRequest.getSession();
+            session.setAttribute("user", memberDto);
+            session.setMaxInactiveInterval(3600);
+        }else{
+            model.addAttribute("fail","아이디 또는 비밀번호가 일치하지 않습니다");
+            return "member/signinForm";
         }
-
-        return "redirect:/"; // 회원가입 성공 시 메인 페이지로 리다이렉트
+        return "redirect:/";
     }
-
-    @GetMapping("/members/findId")
-    public String findIdGet(Model model){
-        model.addAttribute("tel", ""); // 빈 문자열로 초기화하여 전화번호 필드를 전달
-        return "member/findId";
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest httpServletRequest){
+        httpServletRequest.getSession().invalidate();
+        return "redirect:/";
     }
-    @PostMapping("/members/findId")
-    public String findIdPost(@NotBlank @RequestParam String tel, Model model) {
-        try {
-            String foundId = memberService.findIdByTel(tel);
-            model.addAttribute("foundId", foundId); // 찾은 아이디를 모델에 추가
-            return "member/foundId"; // 찾은 아이디를 보여주는 뷰로 이동
-        } catch (IllegalStateException e) {
-            // 해당 전화번호로 가입된 회원이 없는 경우
-            model.addAttribute("findIdErrorMsg", "입력한 전화번호로 가입된 회원이 없습니다.");
-            model.addAttribute("tel", tel); // 입력한 전화번호를 다시 모델에 추가
-            return "member/findId"; // 아이디 찾기 폼을 다시 표시
-        }
-    }
+    @GetMapping("/myinfo")
+    public String myinfo(HttpServletRequest httpServletRequest, Model model){
+        MemberDto memberDto = (MemberDto) httpServletRequest.getSession().getAttribute("user");
+        // 현재 로그인
+        model.addAttribute("myInfoDto",memberService.myInfo(memberDto));
 
+        return "member/info";
+    }
 }
-//
+    //

@@ -69,4 +69,9 @@ public class Member extends BaseEntity{
 //        Member member = new Member();
 //        member.setName( memberFormDto.getName());
 //    }
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> d00d910 (prac_intelliJ)
