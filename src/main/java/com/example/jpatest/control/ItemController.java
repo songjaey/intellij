@@ -26,7 +26,7 @@ public class ItemController {
 
         Page<Item> list = itemService.allList(pageable);
         model.addAttribute("itemDtoList", list.getContent());
-        model.addAttribute("paging",list.getTotalPages());
+        model.addAttribute("totalPage",list.getTotalPages());
         model.addAttribute("page", list.getNumber());
         return "item/index";
     }
@@ -49,5 +49,27 @@ public class ItemController {
 
         model.addAttribute("item", itemService.detail(id));
         return "item/detail";
+    }
+
+    @GetMapping("/notebook/update/{id}")
+    public String update(@PathVariable Long id, Model model){
+        model.addAttribute("itemDto",itemService.getItemDtl(id));
+        return "item/writeForm";
+    }
+
+    @PostMapping("/notebook/update/{id}")
+    public String update(ItemDto itemDto, Model model){
+
+        itemService.updateItem(itemDto);
+
+        return "redirect:/notebook/detail/"+itemDto.getId();
+    }
+
+    @GetMapping("/notebook/delete/{id}")
+    public String delete(@PathVariable Long id, Model model){
+
+        itemService.deleteItem(id);
+
+        return "redirect:/notebook";
     }
 }

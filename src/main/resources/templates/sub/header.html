@@ -12,7 +12,7 @@
     <div class="small_menu">
 
         <th:block th:if="${session.user == null}">
-            <span class="befLogin"><a href="/signin">로그인</a></span>
+            <span class="befLogin"><a href="/members/login">로그인</a></span>
             <span class="befLogin"><a href="/signup">회원가입</a></span>
         </th:block>
         <th:block th:if="${session.user !=null}">

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}">
+<th:block layout:fragment="script">
+
+</th:block>
+
+<div layout:fragment="content" id="main">
+    <p>
+        상품명 : <b th:text="${item.itemName}"></b>
+    </p>
+    <p>
+        판매가격 : <b th:text="${item.cost}"></b>
+    </p>
+    <p>
+        브랜드 : <b th:text="${item.brand}"></b>
+    </p>
+    <p>
+        cpu : <b th:text="${item.cpu}"></b>
+    </p>
+    <p>
+        ram : <b th:text="${item.ram+'GB'}"></b>
+    </p>
+    <p>
+        화면크기 : <b th:text="${item.inch+'인치'}"></b>
+    </p>
+    <p>
+        운영체제 : <b th:text="${item.os}"></b>
+    </p>
+    <p>
+        등록일 : <b th:text="${item.regDate}"></b>
+    </p>
+    <p >
+        <img th:src="@{ '/images/'+${item.itemImg.imgPath}+'/' +${item.itemImg.imgName} }">
+    </p>
+
+    <p>
+        <a th:href="@{/notebook}">목록</a>
+        <th:block th:if="${ session.user !=null }">
+            <a th:href="${ #strings.equals(item.seller, session.user.name) }" th:href="@{|/notebook/update/${item.id} |}">수정</a>
+            <a th:href="${ #strings.equals(item.seller, session.user.name) }" th:href="@{|/notebook/delete/${item.id} |}">삭제</a>
+        </th:block>
+    </p>
+
+</div>
+</html>

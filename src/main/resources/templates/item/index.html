@@ -21,6 +21,7 @@
                     <tr>
                         <td th:text="${item.id}"></td>
                         <td>
+<!--                            <a th:href="@{/notebook/detail/{itemId}(itemId=${item.id})}" th:text="${item.itemName}"></a>-->
                             <a th:href="@{ |/notebook/detail/${item.id}| " th:text="${item.itemName}"></a>
                         </td>
                         <td th:text="${#numbers.formatInteger(item.cost,3,'COMMA')+'원'}"></td>
@@ -41,6 +42,7 @@
                                     </th:block>
                                 </li>
                             </ul>
+
                         </td>
                     </tr>
                 </tfoot>

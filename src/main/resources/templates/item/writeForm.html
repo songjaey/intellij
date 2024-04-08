@@ -10,53 +10,59 @@
 
 </th:block>
 <div layout:fragment="content" id="main">
-    <form method="post" id="signFm" th:action="@{/notebook/write}" th:object="${itemDto}" enctype="multipart/form-data">
+    <form method="Post" id="signFm"  th:object="${itemDto}" enctype="multipart/form-data">
     <input type="hidden" th:value="${session.user.name}" name="seller" >
-        <ul id="info_list">
-        <li>
-            <span>아이템네임</span>
-            <input type="text" th:field="*{itemName}">
-        </li>
-        <li>
-            <span>브랜드</span>
-            <input type="text" th:field="*{brand}">
-        </li>
-        <li>
-            <span>cpu</span>
-            <input type="text" th:field="*{cpu}">
-        </li>
-        <li>
-            <span>inch</span>
-            <label>
-                <input type="text" th:field="*{inch}">
-            </label>
-        </li>
-        <li>
-            <span>ram</span>
-            <label>
-                <input type="number" th:field="*{ram}">
-            </label>
-        </li>
-        <li>
-            <span>os</span>
-            <input type="text" th:field="*{os}">
-        </li>
-        <li>
-            <span>inch</span>
-            <input type="number" th:field="*{cost}">
-        </li>
+        <input type="hidden" th:field="*{id}">
+        <div id="writeForm">
+            <ul id="info_list">
+            <li>
+                <span>아이템네임</span>
+                <input type="text" th:field="*{itemName}">
+            </li>
+            <li>
+                <span>브랜드</span>
+                <input type="text" th:field="*{brand}">
+            </li>
+            <li>
+                <span>cpu</span>
+                <input type="text" th:field="*{cpu}">
+            </li>
+            <li>
+                <span>inch</span>
+                <label>
+                    <input type="text" th:field="*{inch}">
+                </label>
+            </li>
+            <li>
+                <span>ram</span>
+                <label>
+                    <input type="text" th:field="*{ram}">
+                </label>
+            </li>
+            <li>
+                <span>os</span>
+                <input type="text" th:field="*{os}">
+            </li>
+            <li>
+                <span>가격</span>
+                <input type="text" th:field="*{cost}">
+            </li>
 
-        <li>
-            <span>상품이미지</span>
-            <input type="file" name="img" id="img">
-            <div id="preview" style="width:300px;height:200px;overflow:hidden;"></div>
-        </li>
+            <li>
+                <span>상품이미지</span>
+                <input type="file" name="img" id="img">
+                <div id="preview" style="width:300px;height:200px;overflow:hidden;"></div>
+            </li>
 
-        <li>
-            <button>등록</button>
-        </li>
+            <li th:if="${ #strings.isEmpty(itemDto.id) }">
+                <button th:formaction="@{/notebook/write}">등록</button>
+            </li>
+            <li th:unless="${ #strings.isEmpty(itemDto.id) }">
+                <button th:formaction="@{ '/notebook/update/' + ${itemDto.id} }">수정</button>
+            </li>
 
-    </ul>
+            </ul>
+        </div>
     </form>
 </div>
 

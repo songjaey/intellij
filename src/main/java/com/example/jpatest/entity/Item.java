@@ -41,7 +41,15 @@ public class Item {
     @OneToOne(mappedBy = "item")
     private ItemImg itemImg;
 
-
+    public void updateItem(ItemDto itemDto){
+        this.cost = itemDto.getCost();
+        this.itemName = itemDto.getItemName();
+        this.brand = itemDto.getBrand();
+        this.cpu = itemDto.getCpu();
+        this.inch = itemDto.getInch();
+        this.ram = itemDto.getRam();
+        this.os = itemDto.getOs();
+    }
 
     private static ModelMapper modelMapper = new ModelMapper();
 

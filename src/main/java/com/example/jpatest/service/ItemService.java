@@ -11,20 +11,37 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
+@Transactional
 @Service
 public class ItemService {
 
     @Autowired
     private ItemRepo itemRepo;
+
     @Autowired
     private ItemImgRepo itemImgRepo;
+
+    public void deleteItem(Long id){
+        itemImgRepo.deleteByItemId(id);
+        itemRepo.deleteById(id);
+    }
+
+    public void updateItem(ItemDto itemDto){
+        Item item = itemRepo.findById(itemDto.getId()).get();
+       // Item.updateItem(itemDto);
+    }
+    public ItemDto getItemDtl(Long id){
+        Item item = itemRepo.findById(id).get();
+        ItemDto itemDto = ItemDto.of(item);
+        return itemDto;
+    }
 
     public Item detail(Long id){
         return itemRepo.findById(id).get();
@@ -48,7 +65,7 @@ public class ItemService {
 
         String absPath = new File("/User/dw-021/Desktop").getAbsolutePath()+"/";
         String newName = "img"+hour+min+sec;
-        String ext ="."+image.getOriginalFilename().replaceAll("^.*\\(.*)$" , "$1");
+        String ext ="."+image.getOriginalFilename().replaceAll("^.*\\.(.*)$", "$1");
         String path = "img/"+year+"/"+month+"/"+day;
         try{
             File file = new File(absPath+path);
