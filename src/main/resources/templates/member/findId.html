@@ -24,7 +24,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: 400px;
-        height: 440px;
+        height: 480px;
         background: rgba(200, 200, 200, 0.5); /* 회색 느낌과 적절한 투명도 */
 <!--        border: 2px solid #162938;-->
         border:none;
@@ -42,9 +42,6 @@
         padding: 40px;
     }
 
-    .form-box.login {
-        display: block;
-    }
 
     .icon-close {
         position: absolute;
@@ -73,34 +70,52 @@
     .input-box {
         position: relative;
         margin-bottom: 30px;
+        border-radius: 10px;
+    }
+
+    .phone-box {
+        position: relative;
+        height:54px;
+        margin-bottom: 30px;
         background: rgba(200, 200, 200, 0.8);
-        border-radius: 10px 10px 0 0;
+        border-radius: 10px;
+        text-align : center;
+        line-height:54px;
     }
+    .form-detail {
+        display: flex;
+        justify-content: space-between;
 
-    .input-box label {
-        position: absolute;
-        top: 50%;
-        left: 5px;
-        transform: translateY(-50%);
-        font-size: 1em;
-        color: #162938;
-        font-weight: 500;
-        transition: 0.5s;
     }
-
-    .input-box input {
-        width: calc(100% - 30px);
-        height: 50px;
-        padding-left: 30px;
-        background: transparent;
+    .form-detail input{
+        width:100%;
+        background: rgba(200, 200, 200, 0.8);
+        border-radius: 10px;
         border: none;
-        border-bottom: 2px solid #162938;
-        outline: none;
+        padding-left:30px;
+    }
+
+    .result-box{
+        position: relative;
+        height:70px;
+        margin-bottom: 30px;
+        background: rgba(200, 200, 200, 0.8);
+        border-radius: 10px;
+        text-align : center;
+        line-height:54px;
+    }
+
+    .form-detail button {
+        width: 40%;
+        height: 50px;
+        margin-left: 15px;
+        background: white;
+        border: none;
         font-size: 1em;
         color: #162938;
         font-weight: 600;
         transition: 1s;
-        border-radius: 10px 10px 0 0;
+        border-radius: 10px;
     }
 
     .input-box .icon {
@@ -115,9 +130,12 @@
     .input-box input::placeholder {
         text-align: center; /* 가운데 정렬 */
     }
+
     .input-box input:focus {
         background-color: #fff; /* 포커스가 갔을 때의 배경색 */
+        border: none; /* Remove border when input is focused */
     }
+
 
     .login-sub {
         font-size: 0.9em;
@@ -141,21 +159,18 @@
         text-decoration: underline;
     }
 
-    .login-button,
-    .signup-button {
+    .login-button{
         width: 100%;
         margin-top: 20px;
     }
 
-    .login-button span,
-    .signup-button span {
+    .login-button span {
         display: block;
         width: 100%;
         text-align: center;
     }
 
-    .login-button a,
-    .signup-button a {
+    .login-button a{
         display: block;
         width: 100%;
         padding: 10px 0;
@@ -166,8 +181,7 @@
         transition: background 0.3s ease;
     }
 
-    .login-button a:hover,
-    .signup-button a:hover {
+    .login-button a:hover {
         background: rgba(84, 124, 228, 0.8); /* 호버 시 파란색 */
         color: #fff; /* 글자 색상을 흰색으로 변경 */
     }
@@ -178,108 +192,38 @@
 <!-- JavaScript 코드 -->
 <th:block layout:fragment="script">
     <script>
-        $(function(){
-            chkSaveId(); // 아이디 저장 여부 확인 함수 호출
-        });
 
-        // 아이디 저장 체크 함수
-        function saveId(){
-            var exdate = new Date();
-            var isChk = $("#save").is(":checked");
-            if(isChk){
-                exdate.setTime(exdate.getTime() + 1000 *3600*24*30 );
-            }else{
-                exdate.setTime(exdate.getTime() - 1000 *3600*24*30 );
-            }
-            var id = $("#email").val();
-            document.cookie = "saveid="+escape(id)+"; path=/; expires="+exdate+";";
-        }
-
-        // 아이디 저장 여부 확인 함수
-        function chkSaveId(){
-            var cookid = getCookie("saveid");
-            if(cookid !=""){
-                $("#email").val(cookid);
-                $("#save").prop("checked",true);
-            }
-        }
-
-        // Thymeleaf CSRF 토큰 변수 설정
-        function setCsrfToken() {
-            var csrfParameterName = /*[[${_csrf.parameterName}]]*/ 'csrfParameterName';
-            var csrfToken = /*[[${_csrf.token}]]*/ 'csrfToken';
-            $("input[name='" + csrfParameterName + "']").val(csrfToken);
-        }
-
-        // 로그인 폼 제출 함수
-        function loginForm(){
-            saveId(); // 아이디 저장 함수 호출
-            setCsrfToken(); // CSRF 토큰 변수 설정
-            $("#signFm").submit(); // 폼 제출
-        }
-
-        // Cookie에서 아이디 가져오는 함수
-        function getCookie(Name){
-            var search = Name+"=";
-
-            if(document.cookie.length >0 ){
-                offset=document.cookie.indexOf(search);
-                if(offset != -1){
-                    offset += search.length;
-                    endIndex = document.cookie.indexOf(";",offset);
-                    if(endIndex == -1){
-                        endIndex = document.cookie.length;
-                    }
-                    return unescape(document.cookie.substring(offset, endIndex));
-                }
-            }
-            return "";
-        }
     </script>
 </th:block>
 
 <!-- 폼 요소 -->
 <body>
-<form role="form" method="post" action="/members/login" id="signFm">
+<form th:action="@{/members/findId}" method="post" id="signFm">
     <div class="main-text-box">
         <a class="main-text" href="/" style="font-size:50px; font-style:bold; color:#93EBFF; text-align:center; font-family: 'Bauhaus 93'; display: block; width: 100%;">TravelGenius</a>
     </div>
     <div class="wrapper">
-        <!--        <span class="icon-close"><ion-icon name="close"></ion-icon></span>-->
-
-        <div class="form-box login">
-            <h2>Login</h2>
+        <div class="form-box">
+            <h2>아이디 찾기</h2>
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+            <div class="phone-box"> 휴대전화 인증 </div>
+
             <div class="input-box">
                 <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                <input type="email" id="email" name="email" placeholder="ex) jpa@naver.com">
-                <!--                <label>Email</label>-->
-            </div>
-            <div class="input-box">
-                <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                <input type="password" id="password" name="password" placeholder="비밀번호 입력">
-                <!--                <label>Password</label>-->
+                <div class="form-detail">
+                    <input type="text" id="tel" name="tel" th:value="${tel}" placeholder="핸드폰 번호를 입력하세요">
+                    <button type="submit" class="btn btn-secondary">인증하기</button>
+                </div>
             </div>
 
-            <div class="login-sub">
-                <span class="id-save">
-                    <label for="save"><input type="checkbox" id="save">아이디 저장</label>
-                </span>
-                <span>
-                    <a th:href="@{/members/findId}">아이디찾기|</a>
-                    <a th:href="@{/findpw}">비밀번호 찾기</a>
-                </span>
+            <div class="result-box" th:if="${findIdErrorMsg != null or foundId != null}">
+                <p th:text="${findIdErrorMsg != null ? findIdErrorMsg : foundId}" class="error"></p>
             </div>
 
-            <p th:if="${loginErrorMsg}" class="error mb-3" th:text="${loginErrorMsg}"></p>
             <div class="login-button">
                 <span>
-                    <a th:href="@{/#}">로그인</a>
-                </span>
-            </div>
-            <div class="signup-button">
-                <span>
-                    <a th:href="@{/members/new}">회원가입</a>
+                    <a th:href="@{/members/login}">로그인</a>
                 </span>
             </div>
 
