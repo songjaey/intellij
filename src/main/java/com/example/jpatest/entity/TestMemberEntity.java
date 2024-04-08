@@ -1,8 +1,7 @@
 package com.example.jpatest.entity;
 
-import com.example.jpatest.dto.MemberDto;
+import com.example.jpatest.dto.MemberFormDto;
 import lombok.*;
-import org.aspectj.weaver.ast.Test;
 
 
 import javax.persistence.*;
@@ -33,12 +32,12 @@ public class TestMemberEntity {
     @Column
     private String tel;
 
-    @OneToMany(mappedBy = "testMemberEntity")
-    List<LoginHistoryEntity> loginHistoryEntityList = new ArrayList<>();
+//    @OneToMany(mappedBy = "testMemberEntity")
+//    List<LoginHistoryEntity> loginHistoryEntityList = new ArrayList<>();
 
-    public static TestMemberEntity toEntity(MemberDto memberDto){
-        return TestMemberEntity.builder().email(memberDto.getEmail())
-                .name(memberDto.getName()).tel(memberDto.getTel())
-                .password(memberDto.getPassword()).id(memberDto.getId()).build();
-    }
+//    public static TestMemberEntity toEntity(MemberFormDto memberDto){
+//        return TestMemberEntity.builder().email(memberDto.getEmail())
+//                .name(memberDto.getName()).tel(memberDto.getTel())
+//                .password(memberDto.getPassword()).id(memberDto.getId()).build();
+//    }
 }
