@@ -49,15 +49,16 @@ public class MainController {
                             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             // 필드 검증 오류가 있는 경우
+            System.out.println("validationError");
             return "member/memberForm"; // 회원가입 폼을 다시 표시
         }
-
 
         try {
             memberService.saveMember(memberFormDto, passwordEncoder);
         } catch (IllegalStateException e) {
             // 회원가입 중 예외 발생 시
-            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("emailError", "이미 사용 중인 이메일입니다.");
+            System.out.println("ExceptionError");
             return "member/memberForm"; // 회원가입 폼을 다시 표시
         }
 
