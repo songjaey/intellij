@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<meta charset="UTF-8">
+<title>TravelGenius</title>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</th:block>
+
+<div th:fragment="header" id="header" style="height:150px;display:flex;align-items:center;">
+    <nav id="header_nav">
+        <div id="header_box">
+            <a class="navbar-brand" href="/" style="height:75px; font-size:50px; font-style:bold; color:#93EBFF;width:500px;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
+            <div style="display:flex;align-items:center;">
+                <ul class="header_ul" style="padding:0;margin:0;height:75px;">
+                    <li style="width:150px;">
+                        <div style="width:150px; height:75px;display:flex;align-items:center;justify-content:center;"><a href="#">Notice</a></div>
+                        <ul class="submenu">
+                            <li><a href="#">Event</a></li>
+                            <li><a href="#">Guide</a></li>
+                            <li><a href="/board/help">Help</a></li>
+                            <li><a href="#">Board</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div sec:authorize="isAnonymous()" style="width:1000px;display:flex;justify-content:end;">
+                    <a href="/members/login" style="font-size:30px; text-decoration:none; font-family: Brawler, serif;font-weight:700; ;background:none;border:none;padding:0;margin:0;color:white">Login</a>
+                </div>
+
+                <div style="width:1000px;display:flex;justify-content:end;">
+                    <div sec:authorize="isAuthenticated()" style="margin-right:50px;">
+                        <a href="/members/mymenu" style="font-size:30px; text-decoration:none; font-family: Brawler, serif;font-weight:700; ;background:none;border:none;padding:0;margin:0;color:white">mymenu</a>
+                    </div>
+                    <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="margin-right:50px;">
+                        <a href="/members/manage" style="font-size:30px; text-decoration:none; font-family: Brawler, serif;font-weight:700; ;background:none;border:none;padding:0;margin:0;color:white">Manage</a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
+                        <a href="/members/logout" style="font-size:30px; text-decoration:none; font-family: Brawler, serif;font-weight:700; ;background:none;border:none;padding:0;margin:0;color:white">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+</html>

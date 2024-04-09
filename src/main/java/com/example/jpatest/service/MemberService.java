@@ -1,52 +1,63 @@
 package com.example.jpatest.service;
 
-import com.example.jpatest.dto.MemberDto;
-import com.example.jpatest.entity.LoginHistoryEntity;
-import com.example.jpatest.entity.TestMemberEntity;
-import com.example.jpatest.repository.LoginHistoryRepository;
-import com.example.jpatest.repository.TestMemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.jpatest.dto.MemberFormDto;
+import com.example.jpatest.entity.Member;
+import com.example.jpatest.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-public class MemberService {
-    @Autowired
-    TestMemberRepository testMemberRepository;
-    @Autowired
-    LoginHistoryRepository loginHistoryRepository;
-    public void memberInsert(MemberDto memberDto){
-
-        TestMemberEntity testMemberEntity = TestMemberEntity.toEntity(memberDto);
-        testMemberRepository.save(testMemberEntity);
+@Transactional
+@RequiredArgsConstructor
+public class MemberService implements UserDetailsService {
+    private final MemberRepository memberRepository;
+    //회원가입폼의 내용을 데이터베이스에 저장(회원가입)
+    public void saveMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
+        Member member = Member.createMember(memberFormDto, passwordEncoder);
+        //이메일 중복 여부
+        validEmail(member);
+        memberRepository.save(member);
     }
 
-    public MemberDto memberLogin(MemberDto memberDto, String ip) {
-        TestMemberEntity testMemberEntity = testMemberRepository.findByEmailAndPassword(memberDto.getEmail(), memberDto.getPassword());
-        if (testMemberEntity != null) {
-            //로그인 성공시 로그인 기록 저장
-            LoginHistoryEntity loginHistoryEntity = new LoginHistoryEntity();
-            loginHistoryEntity.setIpAddr(ip);
-            loginHistoryEntity.setLoginDate(LocalDateTime.now());
-            loginHistoryEntity.setTestMemberEntity( testMemberEntity );
-            loginHistoryRepository.save(loginHistoryEntity);
-            return MemberDto.toDto(testMemberEntity);
+    private void validEmail(Member member){
+        Member find = memberRepository.findByEmail(member.getEmail());
+        if(find != null){
+            throw new IllegalStateException("이미 가입된 회원입니다.");
         }
-        return null;
     }
 
-    public TestMemberEntity myInfo(MemberDto memberDto){
-//        TestMemberEntity testMemberEntity = TestMemberEntity.toEntity(memberDto);
-//        testMemberEntity.setLoginHistoryEntityList(
-//                loginHistoryRepository.findByTestMemberEntityId(testMemberEntity.getId()) );
+    public String findIdByTel(String tel) {
+        Member member = memberRepository.findByTel(tel);
 
-        Optional<TestMemberEntity> optional = testMemberRepository.findById(memberDto.getId());
-        TestMemberEntity testMemberEntity = optional.get();
-        // optional.isEmpty();
-
-        return testMemberEntity;
+        if (member != null && member.getEmail() != null) {
+            return member.getEmail(); // 해당 회원의 ID 반환
+        } else {
+            throw new IllegalStateException("해당 전화번호로 가입된 회원이 없습니다.");
+        }
     }
 
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+
+        Member member = memberRepository.findByEmail(username);
+        if( member == null){
+            throw new UsernameNotFoundException(username);
+        }
+        return User.builder()
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .roles(member.getRole().toString())
+                .build();
+    }
 }

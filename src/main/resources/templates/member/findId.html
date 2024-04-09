@@ -1,10 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- jQuery 스크립트 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<th:block layout:fragment="css">
+    <style>
+        /* CSS 스타일 */
+    body {
+         background-image: url('/image/image1.jpg'); /* 배경 이미지의 경로를 지정합니다. */
+         background-size: cover; /* 배경 이미지를 화면에 꽉 채우도록 설정합니다. */
+         background-position: center; /* 배경 이미지를 가운데 정렬합니다. */
+    }
+    .main-text-box{
+        position:absolute;
+        width:400px;
+        left:50%;
+        top:150px;
+        transform: translate(-50%, 0);
+    }
+    .wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        height: 480px;
+        background: rgba(200, 200, 200, 0.5); /* 회색 느낌과 적절한 투명도 */
+<!--        border: 2px solid #162938;-->
+        border:none;
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        transition: transform 0.5s ease, height 0.2s ease;
+    }
 
+    .form-box {
+        width: 100%;
+        padding: 40px;
+    }
+
+
+    .icon-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        background: #162938;
+        font-size: 1.5em;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .form-box h2 {
+        font-size: 2em;
+        color: #162938;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .input-box {
+        position: relative;
+        margin-bottom: 30px;
+        border-radius: 10px;
+    }
+
+    .phone-box {
+        position: relative;
+        height:54px;
+        margin-bottom: 30px;
+        background: rgba(200, 200, 200, 0.8);
+        border-radius: 10px;
+        text-align : center;
+        line-height:54px;
+    }
+    .form-detail {
+        display: flex;
+        justify-content: space-between;
+
+    }
+    .form-detail input{
+        width:100%;
+        background: rgba(200, 200, 200, 0.8);
+        border-radius: 10px;
+        border: none;
+        padding-left:30px;
+    }
+
+    .result-box{
+        position: relative;
+        height:70px;
+        margin-bottom: 30px;
+        background: rgba(200, 200, 200, 0.8);
+        border-radius: 10px;
+        text-align : center;
+        line-height:54px;
+    }
+
+    .form-detail button {
+        width: 40%;
+        height: 50px;
+        margin-left: 15px;
+        background: white;
+        border: none;
+        font-size: 1em;
+        color: #162938;
+        font-weight: 600;
+        transition: 1s;
+        border-radius: 10px;
+    }
+
+    .input-box .icon {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 1.2em;
+        color: #162938;
+    }
+
+    .input-box input::placeholder {
+        text-align: center; /* 가운데 정렬 */
+    }
+
+    .input-box input:focus {
+        background-color: #fff; /* 포커스가 갔을 때의 배경색 */
+        border: none; /* Remove border when input is focused */
+    }
+
+
+    .login-sub {
+        font-size: 0.9em;
+        color: #162938;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .login-sub label input {
+        margin-right: 3px;
+    }
+
+    .login-sub a {
+        color: #162938;
+        text-decoration: none;
+    }
+
+    .login-sub a:hover {
+        text-decoration: underline;
+    }
+
+    .login-button{
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .login-button span {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .login-button a{
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        background: rgba(200, 200, 200, 0.8); /* 회색 느낌과 적절한 투명도 */
+        border-radius: 10px;
+        text-decoration: none;
+        color: #162938;
+        transition: background 0.3s ease;
+    }
+
+    .login-button a:hover {
+        background: rgba(84, 124, 228, 0.8); /* 호버 시 파란색 */
+        color: #fff; /* 글자 색상을 흰색으로 변경 */
+    }
+    .error{ color:black; }
+    </style>
+</th:block>
+
+<!-- JavaScript 코드 -->
+<th:block layout:fragment="script">
+    <script>
+
+    </script>
+</th:block>
+
+<!-- 폼 요소 -->
+<body>
+<form th:action="@{/members/findId}" method="post" id="signFm">
+    <div class="main-text-box">
+        <a class="main-text" href="/" style="font-size:50px; font-style:bold; color:#93EBFF; text-align:center; font-family: 'Bauhaus 93'; display: block; width: 100%;">TravelGenius</a>
+    </div>
+    <div class="wrapper">
+        <div class="form-box">
+            <h2>아이디 찾기</h2>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+            <div class="phone-box"> 휴대전화 인증 </div>
+
+            <div class="input-box">
+                <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                <div class="form-detail">
+                    <input type="text" id="tel" name="tel" th:value="${tel}" placeholder="핸드폰 번호를 입력하세요">
+                    <button type="submit" class="btn btn-secondary">인증하기</button>
+                </div>
+            </div>
+
+            <div class="result-box" th:if="${findIdErrorMsg != null or foundId != null}">
+                <p th:text="${findIdErrorMsg != null ? findIdErrorMsg : foundId}" class="error"></p>
+            </div>
+
+            <div class="login-button">
+                <span>
+                    <a th:href="@{/members/login}">로그인</a>
+                </span>
+            </div>
+
+        </div>
+    </div>
+</form>
 </body>
+
+<!-- Ionicons 스크립트 -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </html>

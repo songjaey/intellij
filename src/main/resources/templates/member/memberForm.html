@@ -304,70 +304,24 @@
 
     <script>
         $(function(){
-            function updateAllAgreeCheckbox() {
-                var allCheckboxes = $("input[name=accept]");
-                $("#allAgree").prop("checked", allCheckboxes.length === allCheckboxes.filter(":checked").length);
-            }
 
-             // Event listener for individual checkboxes
-             $("input[name=accept]").on("change", function () {
-                 updateAllAgreeCheckbox();
-                 updateSubmitButtonState(); // Call function to update submit button state
-             });
+            $("#allAgree").on("change", function() {
+                var isChecked = $(this).prop("checked");
 
-             // Event listener for "전체 동의합니다." checkbox
-             $("#allAgree").on("change", function () {
-                 var isChk = $(this).is(":checked");
-                 $("input[name=accept]").prop("checked", isChk);
-                 $("#join_btn").toggleClass("on", isChk);
-                 updateSubmitButtonState(); // Call function to update submit button state
-             });
+                $("input[name=accept]").prop("checked", isChecked);
+                $("input[name=accept1]").prop("checked", isChecked);
+                $("input[name=accept2]").prop("checked", isChecked);
+                $("input[name=accept3]").prop("checked", isChecked);
+            });
 
-
-             // Event listener for submit button click
-            $("#submit_btn").on("click", function () {
-            // Check if agree1, agree2, agree3 are checked
-            var isAgree1Checked = $("#agree1").is(":checked");
-            var isAgree2Checked = $("#agree2").is(":checked");
-            var isAgree3Checked = $("#agree3").is(":checked");
-
-            // If any of the required agreements are not checked, display an error message
-            if (!isAgree1Checked || !isAgree2Checked || !isAgree3Checked) {
-                $("#error_message").html("모든 필수 동의사항에 동의해주세요.");
-                return false; // Stop further execution
-            }
-
-            // If all required agreements are checked, proceed with form submission
-            // Your submission logic goes here...
-        });
-
-     // 가입 양식
-         $(".write_list input").on("keyup",function(){
-            var isValue=true;
-            $(".write_list input").each(function(i,v){
-                if( $(v).val()=='' ){
-                    isValue=false;
-                    return;
+            // 개별 동의 체크박스 중 하나라도 선택 해제되면 전체 동의 체크박스도 해제
+            $("input[name^='accept']").on("change", function() {
+                if (!$(this).prop("checked")) {
+                    $("#allAgree").prop("checked", false);
                 }
             });
 
-            if(isValue){
-                $("#submit_btn").addClass("on");
-            }else{
-                $("#submit_btn").removeClass("on");
-            }
-         });
-         var errorMessage = /*[[${errorMessage}]]*/ null;
-            if(errorMessage != null){
-                alert(errorMessage);
-         }
-
-         function updateAllAgreeCheckbox() {
-            var allCheckboxes = $("input[name=accept]");
-            $("#allAgree").prop("checked", allCheckboxes.length === allCheckboxes.filter(":checked").length);
-         }
-
-         $("#confirmPassword").on("keyup", function(){
+            $("#confirmPassword").on("keyup", function(){
                 var pw = $("#password").val();
                 var confirm = $(this).val();
                 if( pw == confirm ) {
@@ -401,6 +355,10 @@
                     <input type="email" th:field="*{email}" id="email" name="email" placeholder="이메일 입력하세요">
                 </div>
                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></p>
+                <p th:if="${emailError}" class="fieldError" th:text="${emailError}" style="color:red; font-size:12px"></p>
+
+
+<!--                <p th:if="${#fields.hasErrors('email')}" class="fieldError">이미 사용 중인 이메일입니다.</p>-->
             </div>
             <div class="outer-box">
                 <div class="input-box">
@@ -423,7 +381,7 @@
             <div class="outer-box">
                 <div class="input-box">
                     <label th:for="tel"></label>
-                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                    <span class="icon"><ion-icon name="tel"></ion-icon></span>
                     <input type="text" th:field="*{tel}" id="tel" name="tel" placeholder="핸드폰 번호를 입력하세요">
                 </div>
                 <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError"></p>
@@ -452,8 +410,6 @@
 
             </div>
 
-
-
             <div id="agree_wrap">
                 <div class="checkbox all-agree">
                     <input type="checkbox" id="allAgree">
@@ -461,16 +417,19 @@
                 </div>
                 <ul id="aList" class="agree_list">
                     <li>
-                        <input type="checkbox" id="agree1" name="accept">
-                        <label for="agree1">(필수) 만 14세 이상입니다. </label>
+                        <input type="checkbox" th:field="*{accept1}" id="accept1" name="accept">
+                        <label for="accept1">(필수) 만 14세 이상입니다. </label>
+                        <p th:if="${#fields.hasErrors('accept1')}" th:errors="*{accept1}" class="fieldError"></p>
                     </li>
                     <li>
-                        <input type="checkbox" id="agree2" name="accept">
-                        <label for="agree2">(필수) 이용약관 동의</label>
+                        <input type="checkbox" th:field="*{accept2}" id="accept2" name="accept">
+                        <label for="accept2">(필수) 이용약관 동의</label>
+                        <p th:if="${#fields.hasErrors('accept2')}" th:errors="*{accept2}" class="fieldError"></p>
                     </li>
                     <li>
-                        <input type="checkbox" id="agree3" name="accept">
-                        <label for="agree3">(필수) 개인정보 수집 및 이용 동의</label>
+                        <input type="checkbox" th:field="*{accept3}" id="accept3" name="accept">
+                        <label for="accept3">(필수) 개인정보 수집 및 이용 동의</label>
+                        <p th:if="${#fields.hasErrors('accept3')}" th:errors="*{accept3}" class="fieldError"></p>
                     </li>
                     <li>
                         <input type="checkbox" id="agree4" name="accept">
@@ -484,13 +443,8 @@
 <!--                    <a href="javascript:agreeBt();" id="join_btn" class="btn_type">정보입력</a>-->
                 </ul>
             </div>
-            <p id="error_message" style="height:10px; font-size:8px;"></p>
 
-
-
-            <button class="login-button" id="submit_btn">
-                회원가입<!--                    <a th:href="@{/#}">회원가입</a>-->
-            </button>
+            <button class="login-button" id="submit_btn">회원가입</button>
 
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 

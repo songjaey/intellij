@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class LoginHistoryDto {
 
-
         private long id;
 
         private long testMemberEntityId;

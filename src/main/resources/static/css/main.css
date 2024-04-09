@@ -1,0 +1,16 @@
+/*메인------------------------------------------------------------------*/
+#content{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+}
+.main_text{
+    color:white;
+    display:flex;
+    align-items:center;
+    width:100%;
+    justify-content:center;
+}
+.start:hover{
+    background-color: #29FFCC !important;
+}
