@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/basic}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</th:block>
+<th:block layout:fragment="script">
+
+</th:block>
+
+<div layout:fragment="content" id="box" style="width:100%; display:flex;justify-content:center;">
+    <div style="height:769px;">
+        <div style="height:193px"></div>
+        <div style="height:350px;width:710px; display:flex;justify-content:center;flex-wrap:wrap;">
+            <div class="main_text" style="height:100px;font-family:Tw Cen MT;text-align:center;font-size:50px;font-weight:bold">TravelGenius</div>
+            <div class="main_text" style="text-align:center;height:150px;font-family:Times New Roman; font-size:20px;margin:0 15%;">Our services help you design your travel plans more easily. Click the button to use the Travel Genius service.</div>
+            <div class="main_text start" style="height:43px; background-color: rgba(169, 169, 169, 0.3); border: 3px solid #29FFCC; border-radius: 10px; width: 144px; font-family: 'LINE Seed Sans KR';">
+                <a class="main_text start" href="/schedulers/first" style="font-weight: bold; color: white;text-decoration:none;">시작하기</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

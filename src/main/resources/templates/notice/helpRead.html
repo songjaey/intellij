@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/basic}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/.css}">
+
+</th:block>
+
+<th:block layout:fragment="script">
+
+</th:block>
+
+<div layout:fragment="content" id="box">
+    <div class="container">
+
+        <div class="py-5 text-center">
+            <h2 th:text="#{page.board}">글 상세</h2>
+        </div>
+
+
+        <!-- 추가 -->
+        <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+        <div>
+            <label for="boardId" th:text="#{label.board.id}">ID</label>
+            <input type="text" id="boardId" name="boardId" class="form-control" th:vlaue="${board.id}" readonly
+        </div>
+        <div>
+            <label for="boardSubject" th:text="#{label.board.subject}">제목</label>
+            <input type="text" id="boardSubject" name="boardSubject" class="form-control" value="상품A" th:value="${board.subject}" readonly>
+        </div>
+        <div>
+            <label for="name" th:text="#{label.board.name}">작성자</label>
+            <input type="text" id="name" name="name" class="form-control" value="작성자" th:value="${board.name}" readonly>
+        </div>
+        <div>
+            <label for="viewcnt" th:text="#{label.board.viewcnt}">조회수</label>
+            <input type="text" id="viewcnt" name="viewcnt" class="form-control" value="10" th:value="${board.viewcnt}" readonly>
+        </div>
+
+        <div>
+            <label for="regdate" th:text="#{label.board.regdate}">등록일</label>
+            <input type="text" id="regdate" name="regdate" class="form-control" value="10" th:value="${board.regdate}" readonly>
+        </div>
+
+        <div>
+            <label for="contents" th:text="#{label.board.contents}">글 내용</label>
+            <input type="text" id="contents" name="contents" class="form-control" value="10" th:value="${board.contents}" readonly>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg"
+                        onclick="location.href='editForm.html'"
+                        th:onclick="|location.href='@{/board/${board.id}}'|"
+                        type="button" th:text="#{page.updateBoard}">상품 수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='items.html'"
+                        th:onclick="|location.href='@{/board/help}'|"
+                        type="button" th:text="#{button.list}">목록으로</button>
+            </div>
+
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='items.html'"
+                        th:onclick="|location.href='@{/board/{id}/delete(id=${board.id})}'|"
+                        type="button" th:text="#{button.delete}">삭제</button>
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+</div>
+
+</html>

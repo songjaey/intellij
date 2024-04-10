@@ -1,0 +1,67 @@
+
+html{
+    position:relative;
+    min-height:100%;
+    margin:0;
+    padding:0;
+}
+body {
+    min-height: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/image/home.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+/*헤더-----------------------------------------------------------------*/
+#header{
+    width:100%;
+    height:150px;
+}
+#header_box{
+    position:relative;
+    display:flex;
+}
+#header_box div{
+display:flex;
+align-items:center;
+}
+.header_ul li{
+    list-style:none;
+}
+.header_ul li a {
+    text-decoration: none;
+    font-family: Brawler, serif;
+    font-weight:700;
+    color: white;
+    text-align: right;
+    width: 150px;
+    font-size: 30px;
+}
+.submenu {
+    display: none;
+    position: absolute;
+    list-style: none;
+    height:240px;
+    width:150px;
+    margin:0px;
+    padding:0px;
+}
+.submenu li {
+    text-align:right;
+    font-weight:bold;
+    height:60px;
+    padding:10px 0;
+}
+.submenu li a{
+    font-size:20px;
+    text-decoration:none;
+    underline:none;
+    color:white;
+    font-family: Brawler;
+}
+.header_ul:hover .submenu{
+    display: block;
+}
+.header_ul:hover{
+    height:313px;
+}
