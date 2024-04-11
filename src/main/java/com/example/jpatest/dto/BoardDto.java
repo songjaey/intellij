@@ -13,7 +13,6 @@ public class BoardDto {
     private String contents;
     private String name;
     private String viewcnt;
-    private String regate;
 
     public BoardDto(MemberFormDto memberFormDto) {
         this.email = memberFormDto.getEmail();

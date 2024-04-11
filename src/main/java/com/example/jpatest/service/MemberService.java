@@ -5,6 +5,7 @@ import com.example.jpatest.dto.MemberFormDto;
 import com.example.jpatest.entity.Member;
 import com.example.jpatest.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder; // PasswordEncoder 주입
     //회원가입폼의 내용을 데이터베이스에 저장(회원가입)
     public void saveMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = Member.createMember(memberFormDto, passwordEncoder);
@@ -44,6 +46,18 @@ public class MemberService implements UserDetailsService {
         } else {
             throw new IllegalStateException("해당 전화번호로 가입된 회원이 없습니다.");
         }
+    }
+
+    public boolean emailExists(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
+    public boolean authenticate(String email, String password) {
+        Member member = memberRepository.findByEmail(email);
+        if (member == null) {
+            return false;
+        }
+        return passwordEncoder.matches(password, member.getPassword());
     }
 
 

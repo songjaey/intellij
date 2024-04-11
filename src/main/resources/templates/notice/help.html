@@ -84,7 +84,7 @@
         </div>
 
 
-<!--        테이블 만들기-->
+        <!--        테이블 만들기-->
         <!-- 게시판 테이블 -->
         <table>
             <thead>
@@ -92,16 +92,18 @@
                 <th>번호</th>
                 <th>제목</th>
                 <th>등록자명</th>
+                <th>조회수</th>
                 <th>등록일</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="board : ${boards}">
-                <td><a href="@{/board/add/{id}(id=${board.id})}" th:href="@{/board/add/{id}(id=${board.id})}" th:text="${board.id}">글 ID</a></td>
-                <td><a href="@{/board/add/{id}(id=${board.id})}" th:href="@{/board/add/{id}(id=${board.id})}" th:text="${board.subject}">제목</a></td>
+                <td th:text="${board.id}">글 ID</a></td>
+                <td><a th:href="@{/board/help/read/{id}(id=${board.id})}" th:text="${board.subject}">제목</a></td>
                 <td th:text="${board.name}">작성자</td>
                 <td th:text="${board.viewcnt}">조회수</td>
-                <td th:text="${board.regdate}">등록일</td>
+                <td th:if="${board.regdate != null}" th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}">등록일</td>
+
             </tr>
             </tbody>
         </table>
@@ -135,7 +137,7 @@
                 <div class="col">
                     <button class="btn btn-primary float-end"
                             th:onclick="|location.href='@{/board/add}'|"
-                            type="button" th:text="#{page.addBoard}">글 등록</button>
+                            type="button" >글 등록</button>
                 </div>
             </div>
         </div>

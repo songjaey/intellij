@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,12 +28,14 @@ public class Board {
     private String contents;
     private String name;
     private String viewcnt;
-    private String regdate;
+    private LocalDateTime regdate;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>(); // Board와 Comment 사이의 OneToMany 관계
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member; // Board와 Member 사이의 관계
-
+    private Member member;
 
     public static Board createBoard(BoardDto boardDto){
         Board board = new Board();
@@ -40,7 +45,9 @@ public class Board {
         board.setContents(boardDto.getContents());
         board.setName(boardDto.getName());
         board.setViewcnt(boardDto.getViewcnt());
-        board.setRegdate(boardDto.getRegate());
+        board.setRegdate(LocalDateTime.now());
+
+        System.out.println("Created Board: " + board.toString());
 
         return board;
     }

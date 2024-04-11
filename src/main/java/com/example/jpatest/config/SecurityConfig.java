@@ -1,6 +1,6 @@
 package com.example.jpatest.config;
-import com.example.jpatest.service.MemberService;
 
+import com.example.jpatest.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    MemberService memberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -29,11 +27,11 @@ public class SecurityConfig {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-                .logoutSuccessUrl("/") ;
+                .logoutSuccessUrl("/");
 
         http.authorizeRequests()
-                .mvcMatchers("/css/**", "/javascript/**", "/image/**").permitAll()
-                .mvcMatchers("/" , "/members/**","/board/**","/item/**", "/images/**").permitAll()
+                .mvcMatchers("/css/**","/javascript/**", "/image/**").permitAll()
+                .mvcMatchers("/","/members/**","/item/**","/images/**","/schedulers/**","/board/help/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
@@ -42,6 +40,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

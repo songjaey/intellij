@@ -17,10 +17,12 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     public List<Board> findAll();
 
 
-    Optional<Board> findById(String id);
+    Optional<Board> findById(Long id);
+
+
     @Modifying
     @Query("UPDATE Board b SET b.viewcnt = b.viewcnt + 1 WHERE b.id = :id")
-    void updateViewCnt(@Param("id") String id);
+    void updateViewCnt(@Param("id") Long id);
 }
 //public Optional<Board> selectOne(String id){
 //    List<Board> result = jdbcTemplate.query("select * from test_board where wr_id=?");
