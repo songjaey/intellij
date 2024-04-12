@@ -37,7 +37,7 @@ public class Board {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public static Board createBoard(BoardDto boardDto){
+    public static Board createBoard(BoardDto boardDto, Long memberId){
         Board board = new Board();
 
         board.setEmail(boardDto.getEmail());
@@ -46,6 +46,11 @@ public class Board {
         board.setName(boardDto.getName());
         board.setViewcnt(boardDto.getViewcnt());
         board.setRegdate(LocalDateTime.now());
+
+        // 멤버 로드 및 설정
+        Member member = new Member();
+        member.setId(memberId);
+        board.setMember(member);
 
         System.out.println("Created Board: " + board.toString());
 

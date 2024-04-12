@@ -20,12 +20,17 @@ public class Comment {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member; // Comment와 Member 사이의 ManyToOne 관계
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board; // Comment와 Board 사이의 ManyToOne 관계
 
-    public Comment(String author, String content, Board board) {
+    public Comment(String author, String content, Member member, Board board) {
         this.author = author;
         this.content = content;
+        this.member = member;
         this.board = board;
     }
 

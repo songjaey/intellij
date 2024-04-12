@@ -1,14 +1,14 @@
-package com.example.jpatest.repository;
-
-import com.example.jpatest.entity.TestMemberEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface TestMemberRepository extends JpaRepository<TestMemberEntity, Long>{
-
-    public TestMemberEntity findByEmailAndPassword(String email, String password);
-}
+//package com.example.jpatest.repository;
+//
+//
+//import org.springframework.data.jpa.repository.JpaRepository;
+//import org.springframework.stereotype.Repository;
+//
+//@Repository
+//public interface TestMemberRepository extends JpaRepository<TestMemberEntity, Long>{
+//
+//    public TestMemberEntity findByEmailAndPassword(String email, String password);
+//}
 /*
     save() -> insert, update 새로운 데이터를 테이블에 저장, 또는 특정 데이터 변경
     findOne() -> 하나의 데이터를 찾기, primarykey로 지정된 칼럼값을 찾기

@@ -86,28 +86,31 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        function deleteComment(commentId) {
-            if (confirm("정말로 삭제하시겠습니까?")) {
-                fetch('/board/help/comment/' + commentId, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        // 서버로부터 성공적인 응답을 받은 경우
-                        window.location.reload(); // 페이지 새로고침
-                    } else {
-                        // 서버로부터 오류 응답을 받은 경우
-                        alert('댓글 삭제에 실패하였습니다.');
-                    }
-                }).catch(error => {
-                    // 네트워크 오류 등으로 요청을 보낼 수 없는 경우
-                    console.error('댓글 삭제 중 오류 발생:', error);
-                });
-            }
-        }
+<!--        <script th:inline="javascript">-->
+<!--            function deleteComment(commentId) {-->
+<!--                if (confirm("정말로 삭제하시겠습니까?")) {-->
+<!--                    fetch('/board/help/comment/' + commentId, {-->
+<!--                        method: 'DELETE',-->
+<!--                        headers: {-->
+<!--                            'Content-Type': 'application/json',-->
+<!--                            'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/-->
+<!--                        }-->
+<!--                    }).then(response => {-->
+<!--                        if (response.ok) {-->
+<!--                            // 성공적으로 삭제되었을 때의 처리-->
+<!--                            var commentElement = document.getElementById('comment-' + commentId);-->
+<!--                            commentElement.remove(); // 해당 댓글 요소를 DOM에서 삭제-->
+<!--                        } else {-->
+<!--                            // 삭제 실패 시의 처리-->
+<!--                            alert('댓글 삭제에 실패하였습니다.');-->
+<!--                        }-->
+<!--                    }).catch(error => {-->
+<!--                        // 요청 실패 시의 처리-->
+<!--                        console.error('댓글 삭제 중 오류 발생:', error);-->
+<!--                    });-->
+<!--                }-->
+<!--            }-->
+    </script>
     </script>
 </th:block>
 
@@ -153,7 +156,7 @@
 
         <div class="row">
             <div class="col">
-                <button class="w-100 btn btn-primary btn-lg"
+                <button class="w-100 btn btn-primary btn-lg" th:if="${currentUserId == board.member.id}"
                         th:onclick="|location.href='@{'/board/help/modif/' + ${board.id}}'|"
                         type="button" >수정</button>
 
@@ -167,7 +170,7 @@
             <form th:action="@{'/board/help/delete/' + ${board.id}}" method="POST">
                 <input type="hidden" id="id" name="id" th:value="${board.id}">
                 <div class="col">
-                    <button class="w-100 btn btn-secondary btn-lg" type="submit">삭제</button>
+                    <button class="w-100 btn btn-secondary btn-lg" th:if="${currentUserId == board.member.id}" type="submit">삭제</button>
                 </div>
             </form>
         </div>
@@ -178,8 +181,12 @@
             <ul>
                 <li th:each="comment : ${comments}">
                     <span th:text="${comment.author}"></span>: <span th:text="${comment.content}"></span>
-                    <!-- 로그인한 사용자의 이메일과 댓글 작성자의 이메일을 비교하여 삭제 버튼을 표시 -->
-                    <button th:if="${#authentication.principal.email == comment.board.email}" th:onclick="'deleteComment(' + ${comment.id} + ')'" onclick="deleteComment(${comment.id})">삭제</button>
+                    <!-- 삭제 버튼을 form으로 감싸서 DELETE 메서드를 보내도록 수정 -->
+                    <form th:action="@{'/board/help/comment/' + ${comment.id}}" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="boardId" th:value="${board.id}">
+                        <button th:if="${currentUserId == comment.member.id}" type="submit">삭제</button>
+                    </form>
                 </li>
             </ul>
         </div>

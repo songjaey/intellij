@@ -97,49 +97,42 @@
             </tr>
             </thead>
             <tbody>
+            <!-- 각 게시물을 반복하여 표시 -->
             <tr th:each="board : ${boards}">
-                <td th:text="${board.id}">글 ID</a></td>
+                <td th:text="${board.id}">글 ID</td>
                 <td><a th:href="@{/board/help/read/{id}(id=${board.id})}" th:text="${board.subject}">제목</a></td>
                 <td th:text="${board.name}">작성자</td>
                 <td th:text="${board.viewcnt}">조회수</td>
                 <td th:if="${board.regdate != null}" th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}">등록일</td>
-
             </tr>
             </tbody>
         </table>
-
+        <div id="pagination">
+            <ul class="pagination justify-content-center">
+                <!-- 이전 페이지로 이동하는 버튼 -->
+                <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/board/help(page=${currentPage - 1})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- 페이지 번호 -->
+                <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}" class="page-item" th:class="${pageNum == currentPage} ? 'active' : ''">
+                    <a class="page-link" th:href="@{/board/help(page=${pageNum})}" th:text="${pageNum}">1</a>
+                </li>
+                <!-- 다음 페이지로 이동하는 버튼 -->
+                <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/board/help(page=${currentPage + 1})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div id="bottom-menu">
             <!-- 이전 페이지로 이동하는 버튼 -->
-            <span class="page-numbers">
-                <a href="#">이전</a>
-            </span>
-            <!-- 페이지 번호 -->
-            <span class="page-numbers">
-                <a href="#">1</a>
-            </span>
-            <span class="page-numbers">
-                <a href="#">2</a>
-            </span>
-            <span class="page-numbers">
-                <a href="#">3</a>
-            </span>
-            <span class="page-numbers">
-                <a href="#">4</a>
-            </span>
-            <span class="page-numbers">
-                <a href="#">5</a>
-            </span>
-            <!-- 다음 페이지로 이동하는 버튼 -->
-            <span class="page-numbers">
-                <a href="#">다음</a>
-            </span>
-            <div class="row">
-                <div class="col">
+
                     <button class="btn btn-primary float-end"
                             th:onclick="|location.href='@{/board/add}'|"
                             type="button" >글 등록</button>
-                </div>
-            </div>
         </div>
 
     </div>

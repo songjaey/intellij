@@ -37,6 +37,9 @@ public class MemberService implements UserDetailsService {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
     }
+    public Member findByEmail(String email){
+        return memberRepository.findByEmail(email);
+    }
 
     public String findIdByTel(String tel) {
         Member member = memberRepository.findByTel(tel);

@@ -1,6 +1,5 @@
 package com.example.jpatest.dto;
 
-import com.example.jpatest.entity.TestMemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,10 +28,10 @@ public class MemberDto {
     @NotEmpty(message = "연락처를 입력하세요")
     private String tel;
 
-    public static MemberDto toDto(TestMemberEntity testMemberEntity){
-        return MemberDto.builder().id(testMemberEntity.getId()).email(testMemberEntity.getEmail())
-                .name(testMemberEntity.getName()).password(testMemberEntity.getPassword()).tel(testMemberEntity.getTel()).build();
-
-    }
+//    public static MemberDto toDto(TestMemberEntity testMemberEntity){
+//        return MemberDto.builder().id(testMemberEntity.getId()).email(testMemberEntity.getEmail())
+//                .name(testMemberEntity.getName()).password(testMemberEntity.getPassword()).tel(testMemberEntity.getTel()).build();
+//
+//    }
 
 }

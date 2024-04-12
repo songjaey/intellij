@@ -18,9 +18,9 @@ public class LoginHistoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name="test_member_entity_id")
-    private TestMemberEntity testMemberEntity;
+//    @ManyToOne
+//    @JoinColumn(name="test_member_entity_id")
+//    private TestMemberEntity testMemberEntity;
 
     @Column
     private String ipAddr;

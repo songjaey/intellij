@@ -9,6 +9,9 @@ import com.example.jpatest.repository.BoardRepository;
 import com.example.jpatest.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +34,10 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
-    public void saveBoard(BoardDto boardDto){
+
+    public void saveBoard(BoardDto boardDto, Long memeberId){
 //        System.out.println("Saving boardDto: " + boardDto); // 데이터 확인
-        Board board = Board.createBoard(boardDto);
+        Board board = Board.createBoard(boardDto, memeberId);
         boardRepository.save(board);
     }
     public void updateBoard(Long id, Board updatedBoard) {
@@ -71,17 +75,32 @@ public class BoardService {
         }
     }
 
-    @Transactional
-    public void deleteComment(Long id) {
+    public boolean deleteComment(Long id) {
         Optional<Comment> commentOptional = commentRepository.findById(id);
-        commentOptional.ifPresent(commentRepository::delete);
+        if (commentOptional.isPresent()) {
+            commentRepository.delete(commentOptional.get());
+            return true; // 댓글 삭제 성공
+        } else {
+            return false; // 댓글이 존재하지 않아 삭제 실패
+        }
     }
 
+    public Page<Board> getBoardsPage(int page, int pageSize) {
+        // 페이지 번호는 0부터 시작하므로 -1 처리
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        return boardRepository.findAll(pageable);
+    }
 
     public Optional<Board> findBoardById(Long id) {
         return boardRepository.findById(id);
     }
-    public void viewCntUpdate(Long id){
-        boardRepository.updateViewCnt(id);
-    }
+
+//    public void viewCntUpdate(Long id) {
+//        Optional<Board> boardOptional = boardRepository.findById(id);
+//        if (boardOptional.isPresent()) {
+//            Board board = boardOptional.get();
+//            board.setViewcnt(board.getViewcnt() + 1);
+//            boardRepository.save(board);
+//        }
+//     }
 }

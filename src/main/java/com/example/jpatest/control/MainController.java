@@ -9,7 +9,11 @@ import com.example.jpatest.entity.Member;
 import com.example.jpatest.service.BoardService;
 import com.example.jpatest.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +32,7 @@ public class MainController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final BoardService boardService;
+    private static final int PAGE_SIZE = 10;
 
     @GetMapping("/")
     public String main() {
@@ -124,9 +129,19 @@ public class MainController {
 
 
     @GetMapping("/board/help")
-    public String board(Model model) {
-        List<Board> boards = boardService.BoardList();
-        model.addAttribute("boards", boards);
+    public String board(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+        // 페이지 번호와 페이지당 게시물 수를 기반으로 게시물 페이지를 가져옴
+        Page<Board> boardPage = boardService.getBoardsPage(page, PAGE_SIZE);
+
+        // 현재 페이지의 게시물 목록을 모델에 추가
+        model.addAttribute("boards", boardPage.getContent());
+
+        // 현재 페이지 번호를 모델에 추가
+        model.addAttribute("currentPage", page);
+
+        // 총 페이지 수를 모델에 추가
+        model.addAttribute("totalPages", boardPage.getTotalPages());
+
         return "notice/help";
     }
 
@@ -138,7 +153,7 @@ public class MainController {
 
     @PostMapping("/board/helpAdd")
     public String AddBoard(BoardDto boardDto,Model model){
-        boardService.saveBoard(boardDto);
+        boardService.saveBoard(boardDto, getCurrentUserId());
         List<Board> boards = boardService.BoardList();
         model.addAttribute("boards", boards);
         return "redirect:/board/help";
@@ -149,14 +164,33 @@ public class MainController {
 
     @GetMapping("/board/help/read/{id}")
     public String getAddBoardById(@PathVariable("id") Long id, Model model){
-        boardService.viewCntUpdate(id);
+
+        //boardService.viewCntUpdate(id);
         Optional<Board> result = boardService.findBoardById(id);
         Board board = result.get();
+        System.out.println(board.getViewcnt());
         List<Comment> comments = board.getComments(); // 댓글 목록 가져오기
-        model.addAttribute("commentDto", new CommentDto()); // commentDto 추가
+        model.addAttribute("commentDto", new CommentDto()); // commentDto 추가(필수)
         model.addAttribute("board", board);
         model.addAttribute("comments", comments); // 댓글 목록 추가
+        // 현재 로그인한 사용자의 아이디를 모델에 추가
+        model.addAttribute("currentUserId", getCurrentUserId());
+
         return "notice/helpRead";
+    }
+
+
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            Member member = memberService.findByEmail(email);
+            if (member != null) {
+                return member.getId();
+            }
+        }
+
+        return null;
     }
 
     @GetMapping("/board/help/modif/{id}")
@@ -170,8 +204,7 @@ public class MainController {
     @PostMapping("/board/help")
     public String modifyBoard(@ModelAttribute("board") Board board, @RequestParam("id") Long id) {
 
-        System.out.println(id);
-        boardService.updateBoard(id, board); // 수정된 board 엔티티를 저장
+         boardService.updateBoard(id, board); // 수정된 board 엔티티를 저장
         return "redirect:/board/help"; // 수정 후 목록 페이지로 리다이렉트
     }
 
@@ -185,16 +218,30 @@ public class MainController {
     public String addCommentAndShowBoard(@ModelAttribute("commentDto") CommentDto commentDto) {
         Optional<Board> result = boardService.findBoardById(commentDto.getBoardId());
         Board board = result.get();
-        Comment comment = new Comment(commentDto.getAuthor(), commentDto.getContent(), board);
+
+        // 현재 로그인한 회원 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Member member = memberService.findByEmail(email);
+
+        Comment comment = new Comment(commentDto.getAuthor(), commentDto.getContent(), member, board);
         boardService.addComment(commentDto.getBoardId(), comment);
         return "redirect:/board/help/read/" + commentDto.getBoardId();
     }
 
-    @DeleteMapping("/board/help/comment/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id) {
-        boardService.deleteComment(id);
-        return ResponseEntity.noContent().build();
-        //return "redirect:/"; // 적절한 리다이렉트 경로로 수정해야 합니다.
+
+
+    @PostMapping("/board/help/comment/{id}")
+    public String deleteComment(@PathVariable Long id, @RequestParam("boardId") Long boardId) {
+        // 여기서 댓글 삭제 로직을 작성합니다. 성공하면 HttpStatus.OK를 반환합니다.
+        // 댓글 삭제에 실패하면 HttpStatus.INTERNAL_SERVER_ERROR를 반환합니다.
+        boolean deleted = boardService.deleteComment(id);
+
+        if (deleted) {
+            return "redirect:/board/help/read/" + boardId;
+        } else {
+            return "redirect:/board/help/read/" + boardId;
+        }
     }
 
 
