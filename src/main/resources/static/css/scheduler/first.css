@@ -1,0 +1,92 @@
+.left_box_block {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.left_box_block p {
+    margin: 0;
+}
+
+.left_box_block div {
+    border-radius: 10px;
+    background-color: white;
+    height: 78px;
+    width: 244px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-family: 'LINE Seed Sans KR';
+    font-size: 50px;
+    font-weight: bold;
+    position: relative;
+}
+
+.left_box_block input {
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    border: none;
+    text-align: center;
+    padding: auto;
+}
+/*---------------------------------------달력달력*/
+/* 캘린더 컨테이너 스타일 */
+.calendarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    /*background-color: #0041A4;*/
+    color: white;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendarContainer table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #ccc; /* 테이블 전체에 바깥쪽 테두리 두껍게 설정 */
+}
+
+.calendarContainer th,
+.calendarContainer td {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ccc; /* 내부 셀 테두리 설정 */
+}
+
+.monthDisplay {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.selected {
+    background-color: white;
+    color: #0075FF;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.highlight {
+    background-color: #0075FF;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}

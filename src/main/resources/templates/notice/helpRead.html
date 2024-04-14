@@ -5,18 +5,120 @@
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/.css}">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+            background-color: #f6f6f6;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .py-5 {
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        hr {
+            border-top: 1px solid #ddd;
+            margin: 40px 0;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .col {
+            flex-basis: 30%;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+        }
+
+        .btn-secondary {
+            background-color: #808080;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            opacity: 0.8;
+        }
+    </style>
 
 </th:block>
 
 <th:block layout:fragment="script">
-
+    <script th:inline="javascript">
+        <!--        <script th:inline="javascript">-->
+        <!--            function deleteComment(commentId) {-->
+        <!--                if (confirm("정말로 삭제하시겠습니까?")) {-->
+        <!--                    fetch('/board/help/comment/' + commentId, {-->
+        <!--                        method: 'DELETE',-->
+        <!--                        headers: {-->
+        <!--                            'Content-Type': 'application/json',-->
+        <!--                            'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/-->
+        <!--                        }-->
+        <!--                    }).then(response => {-->
+        <!--                        if (response.ok) {-->
+        <!--                            // 성공적으로 삭제되었을 때의 처리-->
+        <!--                            var commentElement = document.getElementById('comment-' + commentId);-->
+        <!--                            commentElement.remove(); // 해당 댓글 요소를 DOM에서 삭제-->
+        <!--                        } else {-->
+        <!--                            // 삭제 실패 시의 처리-->
+        <!--                            alert('댓글 삭제에 실패하였습니다.');-->
+        <!--                        }-->
+        <!--                    }).catch(error => {-->
+        <!--                        // 요청 실패 시의 처리-->
+        <!--                        console.error('댓글 삭제 중 오류 발생:', error);-->
+        <!--                    });-->
+        <!--                }-->
+        <!--            }-->
+    </script>
+    </script>
 </th:block>
 
 <div layout:fragment="content" id="box">
     <div class="container">
 
         <div class="py-5 text-center">
-            <h2 th:text="#{page.board}">글 상세</h2>
+            <h2>글 상세</h2>
         </div>
 
 
@@ -24,29 +126,29 @@
         <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
 
         <div>
-            <label for="boardId" th:text="#{label.board.id}">ID</label>
-            <input type="text" id="boardId" name="boardId" class="form-control" th:vlaue="${board.id}" readonly
+            <label>ID</label>
+            <input type="text" id="boardId" name="boardId" class="form-control" th:value="${board.id}" readonly>
         </div>
         <div>
-            <label for="boardSubject" th:text="#{label.board.subject}">제목</label>
+            <label>제목</label>
             <input type="text" id="boardSubject" name="boardSubject" class="form-control" value="상품A" th:value="${board.subject}" readonly>
         </div>
         <div>
-            <label for="name" th:text="#{label.board.name}">작성자</label>
+            <label>작성자</label>
             <input type="text" id="name" name="name" class="form-control" value="작성자" th:value="${board.name}" readonly>
         </div>
         <div>
-            <label for="viewcnt" th:text="#{label.board.viewcnt}">조회수</label>
+            <label>조회수</label>
             <input type="text" id="viewcnt" name="viewcnt" class="form-control" value="10" th:value="${board.viewcnt}" readonly>
         </div>
 
         <div>
-            <label for="regdate" th:text="#{label.board.regdate}">등록일</label>
-            <input type="text" id="regdate" name="regdate" class="form-control" value="10" th:value="${board.regdate}" readonly>
+            <label>등록일</label>
+            <input type="text" id="regdate" name="regdate" class="form-control" value="10" th:value="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
         </div>
 
         <div>
-            <label for="contents" th:text="#{label.board.contents}">글 내용</label>
+            <label>글 내용</label>
             <input type="text" id="contents" name="contents" class="form-control" value="10" th:value="${board.contents}" readonly>
         </div>
 
@@ -54,25 +156,55 @@
 
         <div class="row">
             <div class="col">
-                <button class="w-100 btn btn-primary btn-lg"
-                        onclick="location.href='editForm.html'"
-                        th:onclick="|location.href='@{/board/${board.id}}'|"
-                        type="button" th:text="#{page.updateBoard}">상품 수정</button>
+                <button class="w-100 btn btn-primary btn-lg" th:if="${currentUserId == board.member.id}"
+                        th:onclick="|location.href='@{'/board/help/modif/' + ${board.id}}'|"
+                        type="button" >수정</button>
+
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='items.html'"
                         th:onclick="|location.href='@{/board/help}'|"
-                        type="button" th:text="#{button.list}">목록으로</button>
+                        type="button" >목록으로</button>
             </div>
-
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/board/{id}/delete(id=${board.id})}'|"
-                        type="button" th:text="#{button.delete}">삭제</button>
-            </div>
+            <form th:action="@{'/board/help/delete/' + ${board.id}}" method="POST">
+                <input type="hidden" id="id" name="id" th:value="${board.id}">
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg" th:if="${currentUserId == board.member.id}" type="submit">삭제</button>
+                </div>
+            </form>
         </div>
+
+        <!-- 댓글 목록 -->
+        <div>
+            <h2>댓글 목록</h2>
+            <ul>
+                <li th:each="comment : ${comments}">
+                    <span th:text="${comment.author}"></span>: <span th:text="${comment.content}"></span>
+                    <!-- 삭제 버튼을 form으로 감싸서 DELETE 메서드를 보내도록 수정 -->
+                    <form th:action="@{'/board/help/comment/' + ${comment.id}}" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="boardId" th:value="${board.id}">
+                        <button th:if="${currentUserId == comment.member.id}" type="submit">삭제</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 댓글 입력 폼 -->
+        <form th:object="${commentDto}" th:action="@{/board/help/comment}" method="POST">
+            <input type="hidden" name="boardId" th:value="${board.id}">
+            <div>
+                <label for="commentAuthor">작성자</label>
+                <input type="text" id="commentAuthor" th:field="*{author}" class="form-control">
+            </div>
+            <div>
+                <label for="commentContent">내용</label>
+                <input type="text" id="commentContent" th:field="*{content}" class="form-control">
+            </div>
+            <button class="btn btn-primary" type="submit">댓글 등록</button>
+        </form>
+
 
     </div> <!-- /container -->
 </div>

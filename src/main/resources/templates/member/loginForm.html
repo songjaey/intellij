@@ -267,14 +267,14 @@
                 </span>
                 <span>
                     <a th:href="@{/members/findId}">아이디찾기|</a>
-                    <a th:href="@{/findpw}">비밀번호 찾기</a>
+                    <a th:href="@{/members/findPw}">비밀번호 변경</a>
                 </span>
             </div>
 
-            <p th:if="${loginErrorMsg}" class="error mb-3" th:text="${loginErrorMsg}"></p>
+            <p th:if="${loginErrorMsg}" class="error mb-3" th:text="${loginErrorMsg}"></p> <!-- 여기에 오류 메시지를 표시합니다. -->
             <div class="login-button">
                 <span>
-                    <a th:href="@{/#}">로그인</a>
+                    <button type="submit">로그인</button> <!-- 로그인 버튼을 submit 버튼으로 변경합니다. -->
                 </span>
             </div>
             <div class="signup-button">

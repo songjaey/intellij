@@ -1,6 +1,5 @@
 package com.example.jpatest.dto;
 
-import com.example.jpatest.entity.LoginHistoryEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

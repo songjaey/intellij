@@ -15,31 +15,29 @@
 <div layout:fragment="content" id="box">
     <div class="container">
         <div class="py-5 text-center">
-            <h2>글쓰기</h2>
+            <h2>글수정</h2>
         </div>
 
-        <!-- 추가 -->
-        <h2>글쓰기</h2>
-
-        <form th:object="${boardDto}" th:action="@{/board/helpAdd}" method="POST">
+        <form th:object="${board}" th:action="@{/board/help}" method="POST">
+            <input type="hidden" id="id" name="id" th:value="${board.id}">
             <div>
                 <label for="boardSubject">제목</label>
-                <input type="text" id="boardSubject" name="subject" class="form-control" th:field="*{subject}">
+                <input type="text" id="boardSubject" name="subject" class="form-control" th:value="${board.subject}">
             </div>
             <div>
                 <label for="name">작성자</label>
-                <input type="text" id="name" name="name" class="form-control" th:field="*{name}">
+                <input type="text" id="name" name="name" class="form-control" th:value="${board.name}">
             </div>
             <div>
                 <label for="contents">글 내용</label>
-                <input type="text" id="contents" name="contents" class="form-control" th:field="*{contents}">
+                <input type="text" id="contents" name="contents" class="form-control" th:value="${board.contents}">
             </div>
 
             <hr class="my-4">
 
             <div class="row">
                 <div class="col">
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">글쓰기</button>
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">글수정</button>
                 </div>
                 <div class="col">
                     <button class="w-100 btn btn-secondary btn-lg" th:onclick="|location.href='@{/board/help}'|" type="button">목록</button>

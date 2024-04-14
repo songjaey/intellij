@@ -1,0 +1,66 @@
+
+html{
+    position:relative;
+    min-height:100%;
+    margin:0;
+    padding:0;
+}
+body {
+    min-height: 100%;
+    width:100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/image/home.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+/*---------------------------------------------*/
+form.box {
+    width: 80%; /* 화면 가로축의 80%를 차지 */
+    margin: 0 auto; /* 수평 가운데 정렬 */
+}
+.header{
+    height:100px;
+    margin-top:50px;
+    display:flex;
+}
+.header div {
+    margin-top: 50px;
+    height: 50px;
+    width: 150px;
+    border: 1px solid white;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.3s, background-color 0.3s; /* 호버 효과에 트랜지션 효과 적용 */
+    cursor:pointer;
+    margin-right:50px;
+}
+
+.header div a {
+    font-size: 20px;
+    font-family: 'LINE Seed Sans KR';
+    text-decoration: none;
+}
+
+.header div:hover {
+    color: black; /* 호버 시 글자색을 검정색으로 변경 */
+    background-color: white; /* 호버 시 배경색을 흰색으로 변경 */
+}
+.content{
+    margin-top:50px;
+    height:700px;
+    width:100%;
+    background-color: rgba(255, 255, 255, 0.5); /* 흰색 (RGB: 255, 255, 255)에 50% 투명도 (알파: 0.5) */
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.content_box{
+    border-top: 5px solid #267DFF;
+    width:90%; height: 90%; padding-top:50px;
+    display:flex;
+    flex-wrap:wrap;
+}

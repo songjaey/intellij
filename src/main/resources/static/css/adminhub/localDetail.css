@@ -1,0 +1,96 @@
+.select_content{
+    position:absolute;
+    width:150px;
+    height:600px;
+    left:20px;
+    top:300px;
+}
+.content_block{
+    background:white;
+    color:black;
+    border-radius:10px;
+    width:150px;
+    height:50px;
+    margin-bottom:20px;
+    font-family:'LINE Seed Sans KR';
+    font-weight:bold;
+    font-size:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.content_block a{
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 기본 색상 상속 */
+}
+.local_block{
+    width:210px;
+    height:200px;
+    background: rgba(0, 117, 255, 0.5);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    margin:20px;
+    border-radius:20px;
+    flex-wrap:wrap;
+    cursor:pointer;
+}
+/*모달창 디자인------------------------------------------------------*/
+.modal-dialog{
+    position:absolute;
+    top:10%;
+    left:20%;
+    width:1200px;
+    height:700px;
+}
+.modal-content {
+    width: 1200px;
+    height: 700px; /* 내용의 높이에 따라 자동으로 조절 */
+    max-height: 700px; /* 최대 높이 지정 */
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    overflow: hidden; /* 내용이 모달을 벗어나지 않도록 숨김 */
+}
+.modal-body{
+    width:1000px;
+    height:570px;
+    background-color: rgba(153, 153, 153, 0.9);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    border-radius:10px;
+    margin:20px 0;
+    border-radius:10px;
+    overflow:hidden;
+}
+.modal_input{
+    width:50%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background-color: rgba(153, 153, 153, 0.9);
+}
+.close-btn{
+    font-size:20px;
+    color:white;
+    background:none;
+    border:none;
+}
+.day-of-the-week{
+    font-size:15px;
+    font-family:'LINE Seed Sans KR';
+    background:none;
+    margin:5px 0;
+    padding:0;
+    width:50px;
+    height:20px;
+    text-align:center;
+}

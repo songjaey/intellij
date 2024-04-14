@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/basic}">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+<th:block layout:fragment="css">
+  <link rel="stylesheet" th:href="@{/css/scheduler/scheduler.css}">
+  <link rel="stylesheet" th:href="@{/css/scheduler/second.css}">
+</th:block>
+
+<th:block layout:fragment="script">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script type="module"  src="/javascript/map.js"></script>
+</th:block>
+
+<div layout:fragment="content">
+  <form th:action="@{/schedulers/third}" th:object="${ScLocationDto}" method="post" class="box">
+    <input type="hidden" id="national">
+    <input type="hidden" id="city">
+    <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
+      <input type="text" id="input1_header" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
+      <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>
+      <input type="text" id="input2_header" readonly th:value="${schedulerDto.trip_duration_end}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;">
+      <p id="weekday_display" style="font-family:LINE Seed Sans KR; font-weight:bold;width:auto;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></p>
+    </div>
+
+    <div style="width:89%;display:flex;justify-content:space-around;align-items:center;">
+
+      <div id="map" style="width:650px;height:650px;margin:100px;"></div>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs&callback=initMap&v=weekly" defer></script>
+
+      <div style="width:800px;height:100%;display:flex;justify-content:center;flex-wrap:wrap;">
+        <p style="height:80px;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">선택한 관광지</p>
+
+        <div id="selectItem" style="width:600px; height:150px;display:flex;justify-content:center;align-items:center;"></div>
+
+        <div style="height:100px;width:600px;display:flex;justify-content:center;align-items:center;">
+          <div style="width:500px;height:50px;display:flex;align-items:center;background-color:#004392;border:3px solid white;border-radius:10px;">
+            <input style="width:100%;height:100%;border:none;" type="text" id="locationInput" placeholder="지역명을 입력하세요">
+            <button style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" onclick="searchLocation()"><i class="bi bi-search"></i></button>
+          </div>
+        </div>
+
+        <div id="lcBox">
+          <div id="locationList">
+            <ul>
+              <li>
+                <p class="C" data-id="korea">한국</p>
+                <p class="B" data-location="서울">서울</p>
+              </li>
+              <li>
+                <p class="C" data-id="korea">한국</p>
+                <p class="B" data-location="대전">대전</p>
+              </li>
+              <li>
+                <p class="C" data-id="korea">한국</p>
+                <p class="B" data-location="부산">부산</p>
+              </li>
+              <li>
+                <p class="C" data-id="korea">한국</p>
+                <p class="B" data-location="제주도">제주도</p>
+              </li>
+              <li>
+                <p class="C">일본</p>
+                <p class="B">도쿄</p>
+              </li>
+              <li>
+                <p class="C">일본</p>
+                <p class="B">오사카</p>
+              </li>
+              <li>
+                <p class="C">일본</p>
+                <p class="B">교토</p>
+              </li>
+              <li>
+                <p class="C">일본</p>
+                <p class="B">후쿠오카</p>
+              </li>
+              <li>
+                <p class="C">대만</p>
+                <p class="B">타이페이</p>
+              </li>
+              <li>
+                <p class="C">대만</p>
+                <p class="B">신바오</p>
+              </li>
+              <li>
+                <p class="C">대만</p>
+                <p class="B">캉쑤</p>
+              </li>
+              <li>
+                <p class="C">대만</p>
+                <p class="B">코타오</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">서울</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">대전</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">부산</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">제주도</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">서울</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">대전</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">부산</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">제주도</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">서울</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">대전</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">부산</p>
+              </li>
+              <li>
+                <p class="C">한국</p>
+                <p class="B">제주도</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!--<div id="SelectLocationBox" style="display:none;position:absolute;"> &lt;!&ndash; 숨겨진 영역 &ndash;&gt;
+            <input type="hidden" id="selectedLocations" name="selectedLocations" th:value="${schedulerDto.selectedLocations}">
+        </div>-->
+      </div>
+    </div>
+
+    <div style="width:11%;height:100%;background:#000A67;display:flex;justify-content:center;align-items:end;">
+      <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold; display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
+        <button type="button" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer;">Next</button>
+      </div>
+    </div>
+  </form>
+  <script>
+    function saveSelectedLocations() {
+        // 선택된 지역들을 가져와서 hidden input에 저장
+        const selectedItems = document.querySelectorAll('#selectItem > ul > li');
+        const selectedLocations = Array.from(selectedItems).map(item => {
+            const country = item.querySelector('.C').textContent.trim();
+            const city = item.querySelector('.B').textContent.trim();
+            return `${country} ${city}`;
+        });
+
+        const selectedLocationsInput = document.getElementById('selectedLocations');
+        selectedLocationsInput.value = selectedLocations.join(', ');
+
+        // 컨트롤러로 폼 제출
+        document.querySelector('form').submit();
+    }
+
+    const locationInput = document.getElementById("locationInput");
+
+    // 엔터 키 입력 감지
+    locationInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            // 엔터 키를 눌렀을 때 searchLocation() 함수 호출
+            searchLocation();
+        }
+    });
+
+    function searchLocation() {
+        const location = locationInput.value.trim();
+
+        if (location === "") {
+            alert("지역명을 입력하세요.");
+            return;
+        }
+
+        // 여기에 지도 검색 및 핀 추가 로직을 넣으세요
+        console.log("검색: " + location);
+    }
+  </script>
+</div>
+</html>

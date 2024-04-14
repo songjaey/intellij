@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/basic}">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/scheduler/scheduler.css}">
+</th:block>
+
+<th:block layout:fragment="script">
+
+</th:block>
+
+<div layout:fragment="content">
+    <form th:action="@{/schedulers/four}" th:object="${schedulerDto}" method="post" class="box">
+        <div>
+
+        </div>
+
+        <div style="width:11%;height:100%;background:#000A67;display:flex;justify-content:center;align-items:end;">
+            <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold; display:flex;justify-content:center;align-items:center;margin-bottom:30px;"><a href="/schedulers/five" style="text-decoration:none;color:black;">Next</a></div>
+        </div>
+
+    </form>
+
+
+
+
+
+
+
+</div>
+</html>
