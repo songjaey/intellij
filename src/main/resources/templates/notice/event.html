@@ -5,59 +5,10 @@
       layout:decorate="~{fragment/basic}">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/.css}">
-    <style>
-        .wrapper {
-            position:relative;
-            max-width:1427.766px;
-            min-width:600px;
-            margin-left:222.234px;
-            margin-top: 50px;
-        }
-        .notice-menu{
-            display:flex;
-            flex-direction:row;
-            column-gap:30px;
-        }
-        .notice-menu a {
-            text-decoration: none; /* 밑줄 제거 */
-            background-color: #777; /* 회색 배경 */
-            color: #fff; /* 흰색 글자색 */
-            padding: 8px 16px; /* 내부 여백 조절 */
-            border-radius: 4px; /* 모서리 둥글게 */
-            transition: background-color 0.3s, color 0.3s; /* 배경 및 글자색 변화에 대한 전환 효과 */
-        }
-
-        .notice-menu a:hover {
-            background-color: #555; /* 마우스 호버시 약간 더 어둡게 */
-        }
-        .img-menu {
-            display: flex;
-            flex-wrap: wrap; /* 요소들을 여러 줄에 걸쳐 표시 */
-            justify-content: center; /* 수평 가운데 정렬 */
-            column-gap: 30px; /* 각 열 사이의 간격 설정 */
-        }
-        .img-menu .bi{
-            margin-top: 260px;
-            width:30px;
-            height:30px;
-        }
-
-        .img-box {
-            color: white; text-align:center; font-size:14px;
-            padding-top:30px;
-            margin-top: 60px; /* 이미지 박스를 아래로 이동시킵니다. */
-            width: 200px;
-            height: 400px;
-            background-size: cover; /* 배경 이미지를 화면에 꽉 채우도록 설정합니다. */
-            background-position: center; /* 배경 이미지를 가운데 정렬합니다. */
-            border-radius : 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/adminhub/event.css">
 
 </th:block>
-<body>
+
 <th:block layout:fragment="script">
     <script>
         $(document).ready(function() {
@@ -95,8 +46,17 @@
         });
     </script>
 </th:block>
+<body>
+<form action="/admin/item" method="post" class="box" id="parentForm" object="${adminItemDto}">
+    <!-- 부모 Form -->
+    <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
 
-<div layout:fragment="content" id="box">
+    <div class="header">
+        <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
+        <div style="color: black; background-color: white;"><a href="/admin/first">상품관리목록</a></div>
+        <div><a href="/admin/eventCustom">이벤트관리</a></div>
+    </div>
+
     <div class="wrapper">
         <div class="notice-menu">
             <span>
@@ -134,60 +94,42 @@
 
         <button id="addButton" >추가</button>
         <button id="editButton">수정</button>
-<!--        <button id="addButton" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">추가</button>-->
-<!--        <button id="editButton" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">수정</button>-->
+        <!--        <button id="addButton" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">추가</button>-->
+        <!--        <button id="editButton" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">수정</button>-->
 
     </div>
 
+    <!-- 모달 -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form role="form" method="post" enctype="multipart/form-data" id="modalForm">
+                    <!-- 모달 내에도 CSRF 토큰 포함 -->
+                    <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
+                    <div class="modal-header">
+                        <!-- 닫기 버튼을 오른쪽에 배치 -->
+                        <button type="button" class="close-btn btn-secondary" data-bs-dismiss="modal"
+                                aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal_input">
+                            <div style="height: 400px;display:flex;justify-content:center;align-items:center;">
+                                <input type="file" id="imageInput" name="imageFile" accept="image/*" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1; width:100%; border-top:1px solid black; display: flex; justify-content: center; align-items: center;">
+                                <input id="InputFeatures" style="width: 100%;height:100%; border: 0; padding: 10px; box-sizing: border-box; text-align:center;background:white;" type="text" name="features" placeholder="특징을 입력하세요">
+                            </div>
+                        </div>
 
-</div>
-<!-- 모달 -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <!-- 모달 내용은 여기에 -->
-        <span class="close">&times;</span>
-        <form>
-            <input type="text" id="imageUrl" placeholder="이미지 경로"><br>
-            <input type="text" id="imageText" placeholder="이미지 설명"><br>
-            <button type="submit" id="saveButton">저장</button>
-        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="saveModalBtn">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
-
-<script>
-    $(document).ready(function() {
-        // 추가 버튼 클릭 시 모달 표시
-        $('#addButton').click(function() {
-            $('#myModal').css('display', 'block');
-        });
-
-        // 수정 버튼 클릭 시 모달 표시
-        $('#editButton').click(function() {
-            $('#myModal').css('display', 'block');
-        });
-
-        // 모달 닫기 버튼 클릭 시 모달 숨기기
-        $('.close').click(function() {
-            $('#myModal').css('display', 'none');
-        });
-
-        // 모달 외부 영역 클릭 시 모달 숨기기
-        $(window).click(function(event) {
-            if (event.target == $('#myModal')[0]) {
-                $('#myModal').css('display', 'none');
-            }
-        });
-
-        // 저장 버튼 클릭 시 처리
-        $('#saveButton').click(function() {
-            var imageUrl = $('#imageUrl').val();
-            var imageText = $('#imageText').val();
-            // 여기에 이미지 박스 추가 또는 수정하는 코드 작성
-            // 추가 또는 수정 후 모달 닫기
-            $('#myModal').css('display', 'none');
-        });
-    });
-</script>
+</form>
 
 
 </body>

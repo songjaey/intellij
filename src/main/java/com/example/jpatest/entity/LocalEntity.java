@@ -3,10 +3,7 @@ package com.example.jpatest.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -28,7 +25,6 @@ public class LocalEntity {
         this.country = country;
         this.local = local;
     }
-
     @Override
     public String toString() {
         return "LocalEntity{" +

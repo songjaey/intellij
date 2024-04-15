@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -10,31 +10,186 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/adminhub/adminhub.css">
+    <link rel="stylesheet" href="/css/adminhub/eventCustom.css">
+
 
     <!-- jQuery and Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+
+            // CSRF 토큰 가져오기
+            function getCsrfToken() {
+                const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+                const csrfCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
+
+                if (csrfCookie) {
+                    return csrfCookie.split('=')[1];
+                } else {
+                    return null; // CSRF 토큰을 찾지 못한 경우
+                }
+            }
+
+            var currentIndex = 0;
+            var imgBoxes = $('.img-box');
+            var totalBoxes = imgBoxes.length;
+            var visibleBoxCount = 5; // 한 번에 보이는 이미지 박스의 수
+
+            $('#slide-right').click(function() {
+                if (currentIndex + visibleBoxCount < totalBoxes) {
+                    currentIndex++;
+                    updateVisibleBoxes();
+                }
+            });
+
+            $('#slide-left').click(function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateVisibleBoxes();
+                }
+            });
+
+            function updateVisibleBoxes() {
+                imgBoxes.each(function(index) {
+                    if (index >= currentIndex && index < currentIndex + visibleBoxCount) {
+                        $(this).css('display', 'block');
+                    } else {
+                        $(this).css('display', 'none');
+                    }
+                });
+            }
+
+            // 초기에 보여지는 이미지 박스 설정
+            updateVisibleBoxes();
+
+            // 모달 창을 띄우기 위한 JavaScript 코드
+            $('#addButton').click(function() {
+                $('#myModal').modal('show');
+            });
+
+            // 저장 버튼을 클릭했을 때 처리할 JavaScript 코드
+            $('#saveButton').click(function() {
+                // 이미지 파일과 내용을 가져와서 처리하는 로직을 추가
+                var selectedImage = $('#imageInput')[0].files[0];
+                var content = $('#contentInput').val();
+
+                // 예시: 이미지 파일을 FormData로 감싸서 서버로 전송
+                var formData = new FormData();
+                formData.append('image', selectedImage);
+                formData.append('content', content);
+
+                // Ajax 요청 등을 사용하여 서버로 데이터 전송
+                $.ajax({
+                    url: '/admin/saveEvent',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-XSRF-TOKEN': getCsrfToken()
+                    },
+                    success: function(response) {
+                         $('#myModal').modal('hide'); // 모달 창 닫기
+                         location.reload(); // 화면 새로고침
+                    },
+                    error: function(xhr, status, error) {
+                        // 오류가 발생한 경우의 동작
+                        // 예: 오류 메시지 표시 등
+                        alert("오류가 발생했습니다: " + error); // 오류 메시지 표시
+                    }
+                });
+            });
+
+            $('.delete-icon').click(function() {
+            // 클릭된 삭제 아이콘 요소를 가져옴
+            var $deleteIcon = $(this);
+
+            // 해당 이미지 박스의 이벤트 ID를 가져옴
+            var eventId = $deleteIcon.attr('data-event-id');
+            alert(eventId);
+            // 서버로 DELETE 요청 보내기
+            $.ajax({
+                url: '/admin/deleteEvent/' + eventId,
+                type: 'DELETE',
+                headers: {
+                    'X-XSRF-TOKEN': getCsrfToken()
+                },
+                success: function(response) {
+                    // 성공적으로 삭제되면 해당 이미지 박스 제거
+                    $deleteIcon.closest('.img-box').remove();
+                },
+                error: function(xhr, status, error) {
+                    // 오류가 발생한 경우에 대한 처리
+                    console.error("오류가 발생했습니다:", error);
+                }
+            });
+        });
+
+        });
+    </script>
 </head>
 
 <body>
-<form action="/admin/second" method="post" class="box" object="${adminLocalDto}">
+<!--<form action="/admin/saveEvent" method="post" class="box" >-->
     <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
 
     <div class="header">
         <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
-        <div ><a href="/admin/first">상품관리목록</a></div>
+        <div><a href="/admin/first">상품관리목록</a></div>
         <div style="color: black; background-color: white;"><a href="/admin/eventCustom">이벤트관리</a></div>
     </div>
 
     <div class="content">
         <div class="content_box">
-            <p>이벤트페이이지지지</p>
+
+            <i class="bi bi-arrow-left-square" id="slide-left"></i>
+
+            <div class="img-box" style="background-image: url('/image/image1.jpg');">SNS 이벤트<i class="bi bi-x"></i></div>
+            <div class="img-box" style="background-image: url('/image/image1.jpg');">호텔 쿠폰<i class="bi bi-x"></i></div>
+            <div class="img-box" style="background-image: url('/image/image1.jpg');">항공권 할인<i class="bi bi-x"></i></div>
+            <div class="img-box" style="background-image: url('/image/home.jpg');">공유 이벤트<i class="bi bi-x"></i></div>
+            <div class="img-box" style="background-image: url('/image/image1.jpg');">치킨 쿠폰 이벤트<i class="bi bi-x"></i></div>
+            <div class="img-box" style="background-image: url('/image/image1.jpg');"></div>
+            <div class="img-box" style="background-image: url('/image/home.jpg');"></div>
+
+            <!-- 이벤트 이미지 박스 -->
+
+            <div th:if="${events != null}" th:each="event : ${events}" class="img-box" th:style="'background-image: url(' + ${event.imgUrl} + ');'">
+                <span th:text="${event.content}">이벤트</span>
+                <i class="bi bi-x delete-icon" th:attr="data-event-id=${event.id}"></i>
+            </div>
+
+
+            <i class="bi bi-arrow-right-square" id="slide-right"></i>
+
+        </div>
+
+    </div>
+    <button id="addButton">등록</button>
+    <!-- 모달 창 -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">이벤트 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 이미지 업로드 폼과 내용 입력 폼 -->
+                    <input type="file" id="imageInput" accept="image/*">
+                    <textarea id="contentInput" rows="4" cols="50"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="saveButton">저장</button>
+                </div>
+            </div>
         </div>
     </div>
-
-</form>
-
+<!--</form>-->
 </body>
+
 
 </html>

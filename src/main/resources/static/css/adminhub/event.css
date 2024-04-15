@@ -1,0 +1,162 @@
+
+html{
+    position:relative;
+    min-height:100%;
+    margin:0;
+    padding:0;
+}
+body {
+    min-height: 100%;
+    width:100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/image/home.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.wrapper {
+            position:relative;
+            max-width:1427.766px;
+            min-width:600px;
+            margin-left:222.234px;
+            margin-top: 50px;
+        }
+        .notice-menu{
+            display:flex;
+            flex-direction:row;
+            column-gap:30px;
+        }
+        .notice-menu a {
+            text-decoration: none; /* 밑줄 제거 */
+            background-color: #777; /* 회색 배경 */
+            color: #fff; /* 흰색 글자색 */
+            padding: 8px 16px; /* 내부 여백 조절 */
+            border-radius: 4px; /* 모서리 둥글게 */
+            transition: background-color 0.3s, color 0.3s; /* 배경 및 글자색 변화에 대한 전환 효과 */
+        }
+
+        .notice-menu a:hover {
+            background-color: #555; /* 마우스 호버시 약간 더 어둡게 */
+        }
+        .img-menu {
+            display: flex;
+            flex-wrap: wrap; /* 요소들을 여러 줄에 걸쳐 표시 */
+            justify-content: center; /* 수평 가운데 정렬 */
+            column-gap: 30px; /* 각 열 사이의 간격 설정 */
+        }
+        .img-menu .bi{
+            margin-top: 260px;
+            width:30px;
+            height:30px;
+        }
+
+        .img-box {
+            color: white; text-align:center; font-size:14px;
+            padding-top:30px;
+            margin-top: 60px; /* 이미지 박스를 아래로 이동시킵니다. */
+            width: 200px;
+            height: 400px;
+            background-size: cover; /* 배경 이미지를 화면에 꽉 채우도록 설정합니다. */
+            background-position: center; /* 배경 이미지를 가운데 정렬합니다. */
+            border-radius : 10px;
+        }
+
+
+
+/*---------------------------------------------*/
+form.box {
+    width: 80%; /* 화면 가로축의 80%를 차지 */
+    margin: 0 auto; /* 수평 가운데 정렬 */
+}
+.header{
+    height:100px;
+    margin-top:50px;
+    display:flex;
+}
+.header div {
+    margin-top: 50px;
+    height: 50px;
+    width: 150px;
+    border: 1px solid white;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.3s, background-color 0.3s; /* 호버 효과에 트랜지션 효과 적용 */
+    cursor:pointer;
+    margin-right:50px;
+}
+
+.header div a {
+    font-size: 20px;
+    font-family: 'LINE Seed Sans KR';
+    text-decoration: none;
+}
+
+.header div:hover {
+    color: black; /* 호버 시 글자색을 검정색으로 변경 */
+    background-color: white; /* 호버 시 배경색을 흰색으로 변경 */
+}
+
+/*모달창 디자인------------------------------------------------------*/
+.modal-dialog{
+    position:absolute;
+    top:10%;
+    left:20%;
+    width:1200px;
+    height:700px;
+}
+.modal-content {
+    width: 1200px;
+    height: 700px; /* 내용의 높이에 따라 자동으로 조절 */
+    max-height: 700px; /* 최대 높이 지정 */
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    overflow: hidden; /* 내용이 모달을 벗어나지 않도록 숨김 */
+}
+.modal-header{
+    width:100%;
+    display:flex;
+    justify-content:end;
+    border:none;
+}
+.modal-body{
+    width:1000px;
+    height:570px;
+    padding:0;
+    background-color: rgba(153, 153, 153, 0.9);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    border-radius:10px;
+    margin:20px 0;
+    border-radius:10px;
+    overflow:hidden;
+}
+.modal-footer{
+    border:none;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding:5px 0;
+}
+.modal_input{
+    width:50%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background-color: rgba(153, 153, 153, 0.9);
+}
+.close-btn{
+    font-size:20px;
+    color:white;
+    background:none;
+    border:none;
+}

@@ -56,9 +56,16 @@
     border-radius: 20px;
     overflow: hidden; /* 내용이 모달을 벗어나지 않도록 숨김 */
 }
+.modal-header{
+    width:100%;
+    display:flex;
+    justify-content:end;
+    border:none;
+}
 .modal-body{
     width:1000px;
     height:570px;
+    padding:0;
     background-color: rgba(153, 153, 153, 0.9);
     display:flex;
     justify-content:center;
@@ -68,6 +75,13 @@
     margin:20px 0;
     border-radius:10px;
     overflow:hidden;
+}
+.modal-footer{
+    border:none;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding:5px 0;
 }
 .modal_input{
     width:50%;

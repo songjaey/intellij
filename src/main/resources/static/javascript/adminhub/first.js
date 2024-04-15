@@ -1,4 +1,17 @@
 $(document).ready(function() {
+
+     // CSRF 토큰 가져오기
+        function getCsrfToken() {
+            const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+            const csrfCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
+
+            if (csrfCookie) {
+                return csrfCookie.split('=')[1];
+            } else {
+                return null; // CSRF 토큰을 찾지 못한 경우
+            }
+        }
+
     // 페이지 로드 시 서버로부터 모든 국가와 지역 정보를 요청하여 블록 생성
     $.ajax({
         type: "GET",
@@ -10,17 +23,13 @@ $(document).ready(function() {
                     '<p class="local">(' + local.local + ')</p>' +
                     '</div>';
 
-                // Append new local block to content box
                 var $newLocalElement = $(newLocalBlock);
                 $('.content_box').append($newLocalElement);
 
-                // Handle click event for the newly added local block
                 $newLocalElement.on('click', function() {
-                    // Get country and local information from clicked block
                     var country = $(this).find('.country').text().trim();
-                    var local = $(this).find('.local').text().trim().slice(1, -1); // Remove parentheses
+                    var local = $(this).find('.local').text().trim().slice(1, -1);
 
-                    // Redirect to localDetail page with parameters
                     window.location.href = '/admin/localDetail?country=' + encodeURIComponent(country) + '&local=' + encodeURIComponent(local);
                 });
             });
@@ -31,9 +40,12 @@ $(document).ready(function() {
     });
 
     // 모달 폼에서 데이터를 추가하고 저장할 경우
-    $(document).on('click', '#myModal .btn-secondary', function() {
+    $('#localForm').submit(function (event) {
+        event.preventDefault(); // 기본 동작 방지
+
         var country = $('#countryInput').val();
         var local = $('#localInput').val();
+        var csrfToken = getCsrfToken(); // CSRF 토큰 가져오기
 
         // 서버에 데이터를 전송하여 저장
         $.ajax({
@@ -43,11 +55,10 @@ $(document).ready(function() {
                 country: country,
                 local: local
             },
-            beforeSend: function(xhr) {
-                // CSRF 토큰을 요청 헤더에 포함
-                xhr.setRequestHeader('X-XSRF-TOKEN', getCsrfToken());
+            headers: {
+                'X-XSRF-TOKEN': csrfToken // 헤더에 CSRF 토큰 추가
             },
-            success: function(response) {
+            success: function (response) {
                 if (response === "alreadyExists") {
                     alert('이미 존재하는 지역입니다.');
                 } else {
@@ -63,21 +74,17 @@ $(document).ready(function() {
                     var $newLocalElement = $(newLocalBlock);
                     $('.content_box').append($newLocalElement);
 
-                    // Handle click event for the newly added local block
-                    $newLocalElement.on('click', function() {
-                        // Redirect to localDetail page with parameters
-                        window.location.href = '/admin/localDetail?country=' + encodeURIComponent(country) + '&local=' + encodeURIComponent(local);
-                    });
-
                     // 입력 필드 초기화
                     $('#countryInput').val('');
                     $('#localInput').val('');
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
+                // 오류 발생 시 처리
+                console.error('오류 발생:', error);
                 alert('오류가 발생했습니다: ' + error);
-                console.error(xhr);
             }
         });
     });
+
 });
