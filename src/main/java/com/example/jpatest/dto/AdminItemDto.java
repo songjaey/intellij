@@ -15,12 +15,11 @@ public class AdminItemDto {
     private String address;
     private String contact;
     private String features;
-    private String businessHours; // 영업시간
-    private String imgUrl;
+    private String imgUrl; // 이미지 URL을 저장할 필드
+    private Map<String, String> businessHours; // 영업시간을 저장할 필드
 
-    private static ModelMapper mapper = new ModelMapper();
-    public static AdminItemDto of(AdminItemEntity adminItemEntity) {
-        ModelMapper mapper = new ModelMapper(); // ModelMapper 인스턴스 생성
-        return mapper.map(adminItemEntity, AdminItemDto.class);
+    // 이미지 URL을 설정하는 setter 메서드
+    public void setImageUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

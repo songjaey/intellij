@@ -10,22 +10,32 @@ import javax.transaction.Transactional;
 
 @Service
 public class AdminItemService {
+    private final AdminItemRepository adminItemRepository;
 
     @Autowired
-    private AdminItemRepository adminItemRepository;
+    public AdminItemService(AdminItemRepository adminItemRepository) {
+        this.adminItemRepository = adminItemRepository;
+    }
 
     @Transactional
-    public AdminItemEntity createAdminItem(AdminItemDto adminItemDto) {
+    public void saveAdminItem(AdminItemDto adminItemDto) {
+        // AdminItemDto를 AdminItemEntity로 변환
+        AdminItemEntity adminItemEntity = convertToEntity(adminItemDto);
+
+        // AdminItemEntity를 저장
+        adminItemRepository.save(adminItemEntity);
+    }
+
+    private AdminItemEntity convertToEntity(AdminItemDto adminItemDto) {
         AdminItemEntity adminItemEntity = new AdminItemEntity();
+        adminItemEntity.setImgUrl(adminItemDto.getImgUrl()); // 이미지 URL 설정
         adminItemEntity.setTouristSpotName(adminItemDto.getTouristSpotName());
         adminItemEntity.setAddress(adminItemDto.getAddress());
         adminItemEntity.setContact(adminItemDto.getContact());
         adminItemEntity.setFeatures(adminItemDto.getFeatures());
         adminItemEntity.setBusinessHours(adminItemDto.getBusinessHours());
+        // 필요한 다른 필드들도 설정
 
-        // 이미지 경로 설정
-        adminItemEntity.setImgUrl(adminItemDto.getImgUrl());
-
-        return adminItemRepository.save(adminItemEntity);
+        return adminItemEntity;
     }
 }

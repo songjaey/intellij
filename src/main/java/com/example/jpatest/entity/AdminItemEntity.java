@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -26,8 +27,9 @@ public class AdminItemEntity {
     @Column(name = "features")
     private String features;
 
-    @Column(name = "business_hours")
-    private String businessHours;
+    @Column(name = "business_hours", columnDefinition = "jsonb")
+    @Convert(converter = com.example.jpatest.Converter.MapToJsonConverter.class)
+    private Map<String, String> businessHours;
 
     @Column(name = "img_url")
     private String imgUrl; // 이미지 경로

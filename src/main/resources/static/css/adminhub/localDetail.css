@@ -37,6 +37,12 @@
     flex-wrap:wrap;
     cursor:pointer;
 }
+.content_box{
+    height:100%;
+    width:100%;
+    display:flex;
+    flex-wrap:wrap;
+}
 /*모달창 디자인------------------------------------------------------*/
 .modal-dialog{
     position:absolute;
@@ -98,13 +104,17 @@
     background:none;
     border:none;
 }
-.day-of-the-week{
-    font-size:15px;
-    font-family:'LINE Seed Sans KR';
-    background:none;
-    margin:5px 0;
+.day-time-entry{
+    height:30px;
     padding:0;
-    width:50px;
-    height:20px;
-    text-align:center;
+    margin:0;
 }
+/*
+ input[type="text"], input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }*/

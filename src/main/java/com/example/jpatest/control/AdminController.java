@@ -2,30 +2,36 @@ package com.example.jpatest.control;
 
 import com.example.jpatest.dto.AdminItemDto;
 import com.example.jpatest.entity.AdminEventEntity;
-import com.example.jpatest.entity.AdminItemEntity;
 import com.example.jpatest.entity.LocalEntity;
 import com.example.jpatest.repository.LocalRepository;
 import com.example.jpatest.service.AdminEventService;
 import com.example.jpatest.service.AdminItemService;
+import com.example.jpatest.service.FileUploadService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
+
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -34,20 +40,24 @@ public class AdminController {
 
     private final AdminEventService adminEventService;
     private final AdminItemService adminItemService;
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private final FileUploadService fileUploadService;
+    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
+    private final LocalRepository localRepository;
 
     @Autowired
-    public AdminController(AdminEventService adminEventService, AdminItemService adminItemService) {
+    public AdminController(AdminEventService adminEventService, AdminItemService adminItemService, LocalRepository localRepository, FileUploadService fileUploadService) {
         this.adminEventService = adminEventService;
+        this.localRepository = localRepository;
         this.adminItemService = adminItemService;
+        this.fileUploadService = fileUploadService;
     }
 
-    private LocalRepository localRepository;
+
 
     @GetMapping("/first")
-    public String itemForm(Model model) {  //상품 작성 페이지 제공
-        return "adminhub/first";
+    public String itemForm(Model model) {
+        return "adminhub/first"; // 상품 작성 페이지 제공
     }
 
     @GetMapping("/getAllLocals")
@@ -67,7 +77,6 @@ public class AdminController {
     public ResponseEntity<String> saveLocal(@RequestParam("country") String country,
                                             @RequestParam("local") String local) {
         try {
-            // DB에 국가와 지역 정보 저장
             LocalEntity newLocal = new LocalEntity(country, local);
             localRepository.save(newLocal);
             return ResponseEntity.ok("저장되었습니다!");
@@ -124,27 +133,39 @@ public class AdminController {
 
     // 이미지를 저장하는 메서드
 
-    @PostMapping(value = "/item", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createAdminItem(@ModelAttribute @Valid AdminItemDto adminItemDto,
-                                             @RequestParam("imageFile") MultipartFile imageFile,
-                                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            // 유효성 검사 오류가 있는 경우
-            return ResponseEntity.badRequest().body("입력 데이터가 유효하지 않습니다.");
+    @PostMapping("/item")
+    @ResponseBody
+    public String createAdminItem(@RequestParam("imageFile") MultipartFile imageFile,
+                                  @RequestParam("touristSpotName") String touristSpotName,
+                                  @RequestParam("address") String address,
+                                  @RequestParam("contact") String contact,
+                                  @RequestParam("features") String features,
+                                  @RequestParam("businessHours") String businessHoursJson) {
+
+        if (imageFile.isEmpty() || touristSpotName.isEmpty() || address.isEmpty() || contact.isEmpty() || features.isEmpty() || businessHoursJson.isEmpty()) {
+            return "모든 필수 항목을 입력해주세요.";
         }
 
         try {
-            // 이미지를 저장하고 저장된 경로를 DTO에 설정
-            String imageUrl = saveImage(imageFile);
-            adminItemDto.setImgUrl(imageUrl);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> businessHours = objectMapper.readValue(businessHoursJson, new TypeReference<Map<String, String>>() {});
 
-            // 관리 항목 생성 및 저장
-            AdminItemEntity adminItemEntity = adminItemService.createAdminItem(adminItemDto);
+            String imageUrl = fileUploadService.saveImage(imageFile);
 
-            return new ResponseEntity<>(adminItemEntity, HttpStatus.CREATED);
+            AdminItemDto adminItemDto = new AdminItemDto();
+            adminItemDto.setImageUrl(imageUrl);
+            adminItemDto.setTouristSpotName(touristSpotName);
+            adminItemDto.setAddress(address);
+            adminItemDto.setContact(contact);
+            adminItemDto.setFeatures(features);
+            adminItemDto.setBusinessHours(businessHours);
+
+            adminItemService.saveAdminItem(adminItemDto);
+
+            return "저장되었습니다!";
         } catch (Exception e) {
-            logger.error("Failed to create admin item: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관광지 생성에 실패했습니다.");
+            logger.error("상품 저장 중 오류 발생: {}", e.getMessage());
+            return "저장에 실패했습니다.";
         }
     }
 
@@ -165,6 +186,26 @@ public class AdminController {
             throw new RuntimeException("파일 업로드 중 오류 발생: " + e.getMessage(), e);
         }
     }
+
+    @GetMapping("/images/{imageName}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveImage(@PathVariable String imageName) {
+        Path imagePath = Paths.get("C:/TravelGenius/item/", imageName); // 이미지가 저장된 경로
+        Resource resource;
+        try {
+            resource = new UrlResource(imagePath.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_JPEG_VALUE)
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (MalformedURLException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     private String saveEventImage(MultipartFile imageFile) {
         String uploadDirectory = "C:/TravelGenius/event/";

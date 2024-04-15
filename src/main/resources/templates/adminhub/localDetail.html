@@ -27,8 +27,7 @@
     <div class="content">
         <div class="content_box">
             <div class="local_block">
-                <button style="border:0;width:100%;height:100%;background:none;font-size:50px;display:flex;justify-content:center;align-items:center;" type="button"
-                        class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
+                <button style="border:0;width:100%;height:100%;background:none;font-size:50px;display:flex;justify-content:center;align-items:center;" type="button" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
             </div>
         </div>
     </div>
@@ -47,36 +46,33 @@
                     <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
                     <div class="modal-header">
                         <!-- 닫기 버튼을 오른쪽에 배치 -->
-                        <button type="button" class="close-btn btn-secondary" data-bs-dismiss="modal"
-                                aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                        <button type="button" class="close-btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
                     </div>
                     <div class="modal-body">
                         <div class="modal_input">
-                            <div style="height: 400px;display:flex;justify-content:center;align-items:center;">
+                            <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
                                 <input type="file" id="imageInput" name="imageFile" accept="image/*" style="width: 100%;">
                             </div>
-                            <div style="flex: 1; width:100%; border-top:1px solid black; display: flex; justify-content: center; align-items: center;">
-                                <input id="InputFeatures" style="width: 100%;height:100%; border: 0; padding: 10px; box-sizing: border-box; text-align:center;background:white;" type="text" name="features" placeholder="특징을 입력하세요">
+                            <div style="flex: 1; width: 100%; border-top: 1px solid black; display: flex; justify-content: center; align-items: center;">
+                                <input id="InputFeatures" style="width: 100%; height: 100%; border: 0; padding: 10px; box-sizing: border-box; text-align: center; background: white;" type="text" name="features" placeholder="특징을 입력하세요">
                             </div>
                         </div>
                         <div class="modal_input">
-                            <div style="margin:20px 0;"><input type="text" id="touristSpotName" name="touristSpotName" placeholder="관광지명 입력"></div>
-                            <div style="height:70px;width:100%;font-family:'LINE Seed Sans KR';display:flex;justify-content:center;flex-wrap:wrap;margin:10px;">
-                                <p style="font-size:30px;margin:0;">주소 입력</p>
-                                <input type="text" name="address" style="width:100%;font-size:15px;">
+                            <div style="margin: 20px 0;"><input type="text" id="touristSpotName" name="touristSpotName" placeholder="관광지명 입력"></div>
+                            <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
+                                <p style="font-size: 30px; margin: 0;">주소 입력</p>
+                                <input type="text" id="modalAddress" name="address" style="width: 100%; font-size: 15px;">
                             </div>
-                            <div
-                                    style="height:70px;width:100%;font-family:'LINE Seed Sans KR';display:flex;justify-content:center;flex-wrap:wrap;margin:10px;">
-                                <p style="font-size:30px;margin:0;">연락처</p>
-                                <input type="text" name="contact" style="width:100%;font-size:15px;">
+                            <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
+                                <p style="font-size: 30px; margin: 0;">연락처</p>
+                                <input type="text" name="contact" style="width: 100%; font-size: 15px;">
                             </div>
-                            <div
-                                    style="height: 270px; width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-                                <div style="width:100%;height:40px;margin:10px 0;;display:flex;justify-content:center;">
-                                    <p style="font-size:30px;text-align:center;">영업시간 입력</p>
+                            <div style="height: 270px; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <div style="width: 100%; height: 40px; margin: 10px 0; display: flex; justify-content: center;">
+                                    <p style="font-size: 30px; text-align: center;">영업시간 입력</p>
                                 </div>
-                                <div style="width:100%;height:230px;padding:20px auto;">
-                                    <div style="display:flex;justify-content:center;align-items:center;flex-wrap:wrap;">
+                                <div style="width: 100%; height: 230px; padding: 20px auto;">
+                                    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
                                         <div class="day-time-entry">
                                             <label>월요일</label>
                                             <input type="text" name="월요일_am" placeholder="오전">
@@ -89,28 +85,28 @@
                                         </div>
                                         <div class="day-time-entry">
                                             <label>수요일</label>
-                                            <input type="text" name="화요일_am" placeholder="오전">
-                                            <input type="text" name="화요일_pm" placeholder="오후">
+                                            <input type="text" name="수요일_am" placeholder="오전">
+                                            <input type="text" name="수요일_pm" placeholder="오후">
                                         </div>
                                         <div class="day-time-entry">
                                             <label>목요일</label>
-                                            <input type="text" name="화요일_am" placeholder="오전">
-                                            <input type="text" name="화요일_pm" placeholder="오후">
+                                            <input type="text" name="목요일_am" placeholder="오전">
+                                            <input type="text" name="목요일_pm" placeholder="오후">
                                         </div>
                                         <div class="day-time-entry">
                                             <label>금요일</label>
-                                            <input type="text" name="화요일_am" placeholder="오전">
-                                            <input type="text" name="화요일_pm" placeholder="오후">
+                                            <input type="text" name="금요일_am" placeholder="오전">
+                                            <input type="text" name="금요일_pm" placeholder="오후">
                                         </div>
                                         <div class="day-time-entry">
                                             <label>토요일</label>
-                                            <input type="text" name="화요일_am" placeholder="오전">
-                                            <input type="text" name="화요일_pm" placeholder="오후">
+                                            <input type="text" name="토요일_am" placeholder="오전">
+                                            <input type="text" name="토요일_pm" placeholder="오후">
                                         </div>
                                         <div class="day-time-entry">
                                             <label>일요일</label>
-                                            <input type="text" name="화요일_am" placeholder="오전">
-                                            <input type="text" name="화요일_pm" placeholder="오후">
+                                            <input type="text" name="일요일_am" placeholder="오전">
+                                            <input type="text" name="일요일_pm" placeholder="오후">
                                         </div>
                                     </div>
                                 </div>
@@ -124,6 +120,7 @@
             </div>
         </div>
     </div>
+
 </form>
 
 <!-- JavaScript -->

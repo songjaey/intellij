@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    // CSRF 토큰 가져오기
+
     function getCsrfToken() {
         const cookies = document.cookie.split(';').map(cookie => cookie.trim());
         const csrfCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
@@ -11,51 +11,50 @@ $(document).ready(function () {
         }
     }
 
+    function saveLocalBlocks() {
+        var localBlocks = [];
+        $('.local_block').each(function() {
+            var blockData = {};
+            blockData.imageUrl = $(this).find('img').attr('src');
+            blockData.touristSpotName = $(this).find('p').text();
+            localBlocks.push(blockData);
+        });
+        localStorage.setItem('localBlocks', JSON.stringify(localBlocks));
+    }
+
     $('#saveModalBtn').click(function () {
         var touristSpotName = $('#touristSpotName').val();
-        var address = $('input[name="address"]').val(); // 수정: 주소 필드에 대한 선택자 수정
-        var contact = $('input[name="contact"]').val(); // 수정: 연락처 필드에 대한 선택자 수정
-        var businessHours = '';
-
-        // 영업시간 수집
-        $('.day-of-the-week').each(function() {
-            var dayElement = $(this);
-            var dayText = dayElement.text().trim(); // 요일의 텍스트 가져오기
-
-            // 해당 요일의 AM, PM 입력 필드 찾기
-            var amElement = dayElement.next().find('input.am-input');
-            var pmElement = dayElement.next().find('input.pm-input');
-
-            if (dayText) {
-                if (amElement.length > 0 && pmElement.length > 0) {
-                    var am = amElement.val() ? amElement.val().trim() : '';
-                    var pm = pmElement.val() ? pmElement.val().trim() : '';
-
-                    businessHours += `${dayText} AM: ${am}, PM: ${pm}\n`;
-                } else {
-                    console.error('AM 또는 PM 요소를 찾을 수 없습니다.');
-                }
-            } else {
-                console.error('요일 요소의 텍스트가 비어 있습니다.');
-            }
-        });
-
-        if (!touristSpotName) {
-            alert('관광지명을 입력해주세요.');
+        var address = $('input[name="address"]').val();
+        var contact = $('input[name="contact"]').val();
+        var features = $('#InputFeatures').val();
+        alert("입력좀해라");
+        if (!touristSpotName || !address || !contact || !features) {
+            alert('모든 필수 항목을 입력해주세요.');
             return;
         }
 
+        var businessHours = {};
+        $('.day-time-entry').each(function () {
+            var day = $(this).find('label').text(); // 요일 가져오기
+            var amTime = $(this).find('input[name$="_am"]').val(); // 오전 시간 가져오기
+            var pmTime = $(this).find('input[name$="_pm"]').val(); // 오후 시간 가져오기
+            businessHours[day] = amTime + ' - ' + pmTime; // 요일과 시간을 JSON 객체에 추가
+        });
+
         var formData = new FormData();
+        var imageFile = $('#imageInput')[0].files[0];
+
+        if (!imageFile) {
+            alert('이미지 파일을 선택해주세요.');
+            return;
+        }
+
+        formData.append('imageFile', imageFile);
         formData.append('touristSpotName', touristSpotName);
         formData.append('address', address);
         formData.append('contact', contact);
-        formData.append('features', $('#InputFeatures').val());
-        formData.append('businessHours', businessHours.trim());
-
-        var imageFile = $('#imageInput')[0].files[0];
-        if (imageFile) {
-            formData.append('imageFile', imageFile);
-        }
+        formData.append('features', features);
+        formData.append('businessHours', JSON.stringify(businessHours)); // JSON 객체를 문자열로 변환하여 추가
 
         $.ajax({
             type: 'POST',
@@ -69,12 +68,74 @@ $(document).ready(function () {
             success: function (response) {
                 console.log('Form submitted successfully!');
                 alert('저장되었습니다!');
-                window.location.reload();
+
+                var savedTouristSpotName = $('#touristSpotName').val();
+                var imageUrl = URL.createObjectURL(imageFile); // 이미지 URL 생성
+
+                var newBlock = $('<div style="position:relative;" class="local_block"></div>');
+                newBlock.append('<img style="height:150px;width:100%;object-fit:cover;" src="' + file:///C:/TravelGenius/item/blockData.imgUrl + '" alt="Tourist Spot Image">');
+                newBlock.append('<p style="height:20px;background:black;color:white;font-size:20px;padding:0;margin:0;font-weight:bold;">' + savedTouristSpotName + '</p>');
+                newBlock.append('<button style="position:absolute;left:0;top:0;" class="delete-btn">삭제</button>');
+                $('.content_box').append(newBlock);
+
+                saveLocalBlocks(); // 로컬 스토리지 업데이트
+                $('#myModal').modal('hide'); // 모달 닫기
             },
             error: function (xhr, status, error) {
                 console.error('Form submission failed:', error);
-                alert('저장에 실패했습니다.');
+                alert('저장에 실패했습니다. 다시 시도해주세요.');
             }
         });
     });
+
+    // 모달 열기 전에 데이터 채우기
+    $('.content_box').on('click', '.local_block', function() {
+        var imageUrl = $(this).find('img').attr('src');
+        var touristSpotName = $(this).find('p').text();
+
+        $('#modalImage').attr('src', imageUrl);
+        $('#touristSpotName').val(touristSpotName);
+
+        $('#myModal').modal('show');
+    });
+
+    // 동적으로 생성된 삭제 버튼에 이벤트 핸들러 추가
+    $('.content_box').on('click', '.delete-btn', function() {
+        $(this).closest('.local_block').remove();
+        saveLocalBlocks(); // 삭제 후 로컬 스토리지 업데이트
+    });
+
+    function loadLocalBlocks() {
+        var localBlocks = JSON.parse(localStorage.getItem('localBlocks')) || [];
+        localBlocks.forEach(function(blockData) {
+            // 이미지 URL이 undefined가 아닌 경우에만 블록 생성
+            if (blockData.imageUrl !== undefined) {
+                var newBlock = $('<div style="position:relative;" class="local_block"></div>');
+                newBlock.append('<img style="height:150px;width:100%;object-fit:cover;" src="' + blockData.imageUrl + '" alt="Tourist Spot Image">');
+                newBlock.append('<p style="height:20px;background:black;color:white;font-size:20px;padding:0;margin:0;font-weight:bold;">' + blockData.touristSpotName + '</p>');
+                newBlock.append('<button style="position:absolute;left:0;top:0;" class="delete-btn">삭제</button>');
+                $('.content_box').append(newBlock);
+            }
+        });
+    }
+
+    loadLocalBlocks(); // 페이지 로드 시 로컬 블록 로드
+
+    function bindImg() {
+        $("#imageInput").on("change", function () {
+            var filename = $(this).val().split("\\").pop(); // Extract file name
+            var fileExt = filename.split('.').pop().toLowerCase(); // Extract file extension
+
+            var validExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+            if (!validExtensions.includes(fileExt)) {
+                alert("Only JPG, JPEG, PNG, GIF, BMP files are allowed.");
+                $(this).val(''); // Clear file input
+                return;
+            }
+
+            $(this).prev(".input-group-text").html(filename);
+        });
+    }
+
+    bindImg(); // Call the function to bind image input
 });
