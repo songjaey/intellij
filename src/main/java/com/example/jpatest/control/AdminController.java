@@ -2,6 +2,7 @@ package com.example.jpatest.control;
 
 import com.example.jpatest.dto.AdminItemDto;
 import com.example.jpatest.entity.AdminEventEntity;
+import com.example.jpatest.entity.AdminItemEntity;
 import com.example.jpatest.entity.LocalEntity;
 import com.example.jpatest.repository.LocalRepository;
 import com.example.jpatest.service.AdminEventService;
@@ -135,22 +136,22 @@ public class AdminController {
 
     @PostMapping("/item")
     @ResponseBody
-    public String createAdminItem(@RequestParam("imageFile") MultipartFile imageFile,
-                                  @RequestParam("touristSpotName") String touristSpotName,
-                                  @RequestParam("address") String address,
-                                  @RequestParam("contact") String contact,
-                                  @RequestParam("features") String features,
-                                  @RequestParam("businessHours") String businessHoursJson) {
+    public ResponseEntity<String> createAdminItem(@RequestParam("imageFile") MultipartFile imageFile,
+                                                  @RequestParam("touristSpotName") String touristSpotName,
+                                                  @RequestParam("address") String address,
+                                                  @RequestParam("contact") String contact,
+                                                  @RequestParam("features") String features,
+                                                  @RequestParam("businessHours") String businessHoursJson) {
 
         if (imageFile.isEmpty() || touristSpotName.isEmpty() || address.isEmpty() || contact.isEmpty() || features.isEmpty() || businessHoursJson.isEmpty()) {
-            return "모든 필수 항목을 입력해주세요.";
+            return ResponseEntity.badRequest().body("모든 필수 항목을 입력해주세요.");
         }
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> businessHours = objectMapper.readValue(businessHoursJson, new TypeReference<Map<String, String>>() {});
 
-            String imageUrl = fileUploadService.saveImage(imageFile);
+            String imageUrl = fileUploadService.saveImage(imageFile); // 이미지 저장 및 URL 반환
 
             AdminItemDto adminItemDto = new AdminItemDto();
             adminItemDto.setImageUrl(imageUrl);
@@ -162,12 +163,13 @@ public class AdminController {
 
             adminItemService.saveAdminItem(adminItemDto);
 
-            return "저장되었습니다!";
+            return ResponseEntity.ok().body(imageUrl); // 이미지 URL 반환
         } catch (Exception e) {
             logger.error("상품 저장 중 오류 발생: {}", e.getMessage());
-            return "저장에 실패했습니다.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장에 실패했습니다.");
         }
     }
+
 
 
     private String saveImage(MultipartFile imageFile) {
@@ -205,6 +207,7 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
     private String saveEventImage(MultipartFile imageFile) {

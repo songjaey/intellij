@@ -1,33 +1,16 @@
 $(document).ready(function () {
+    // 리다이렉트된 후에 실행될 코드
 
-    function getCsrfToken() {
-        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-        const csrfCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
+            // 페이지가 리다이렉트된 후에 loadLocalBlocks() 함수 호출
+            loadLocalBlocks();
 
-        if (csrfCookie) {
-            return csrfCookie.split('=')[1];
-        } else {
-            return null; // CSRF 토큰을 찾지 못한 경우
-        }
-    }
-
-    function saveLocalBlocks() {
-        var localBlocks = [];
-        $('.local_block').each(function() {
-            var blockData = {};
-            blockData.imageUrl = $(this).find('img').attr('src');
-            blockData.touristSpotName = $(this).find('p').text();
-            localBlocks.push(blockData);
-        });
-        localStorage.setItem('localBlocks', JSON.stringify(localBlocks));
-    }
 
     $('#saveModalBtn').click(function () {
         var touristSpotName = $('#touristSpotName').val();
         var address = $('input[name="address"]').val();
         var contact = $('input[name="contact"]').val();
         var features = $('#InputFeatures').val();
-        alert("입력좀해라");
+
         if (!touristSpotName || !address || !contact || !features) {
             alert('모든 필수 항목을 입력해주세요.');
             return;
@@ -70,10 +53,11 @@ $(document).ready(function () {
                 alert('저장되었습니다!');
 
                 var savedTouristSpotName = $('#touristSpotName').val();
-                var imageUrl = URL.createObjectURL(imageFile); // 이미지 URL 생성
+                var imageUrl = response; // 서버에서 반환된 이미지 URL
+                var absoluteUrl = imageUrl; // 웹 애플리케이션의 절대 URL 경로
 
-                var newBlock = $('<div style="position:relative;" class="local_block"></div>');
-                newBlock.append('<img style="height:150px;width:100%;object-fit:cover;" src="' + file:///C:/TravelGenius/item/blockData.imgUrl + '" alt="Tourist Spot Image">');
+                var newBlock = $('<div style="position:relative;" class="local_detail"></div>');
+                newBlock.append('<img style="height:150px;width:100%;object-fit:cover;" src="' + absoluteUrl + '" alt="Tourist Spot Image">');
                 newBlock.append('<p style="height:20px;background:black;color:white;font-size:20px;padding:0;margin:0;font-weight:bold;">' + savedTouristSpotName + '</p>');
                 newBlock.append('<button style="position:absolute;left:0;top:0;" class="delete-btn">삭제</button>');
                 $('.content_box').append(newBlock);
@@ -86,7 +70,30 @@ $(document).ready(function () {
                 alert('저장에 실패했습니다. 다시 시도해주세요.');
             }
         });
+
     });
+
+    function getCsrfToken() {
+            const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+            const csrfCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
+
+            if (csrfCookie) {
+                return csrfCookie.split('=')[1];
+            } else {
+                return null; // CSRF 토큰을 찾지 못한 경우
+            }
+        }
+
+        function saveLocalBlocks() {
+            var localBlocks = [];
+            $('.local_block').each(function() {
+                var blockData = {};
+                blockData.imageUrl = $(this).find('img').attr('src');
+                blockData.touristSpotName = $(this).find('p').text();
+                localBlocks.push(blockData);
+            });
+            localStorage.setItem('localBlocks', JSON.stringify(localBlocks));
+        }
 
     // 모달 열기 전에 데이터 채우기
     $('.content_box').on('click', '.local_block', function() {
@@ -118,8 +125,6 @@ $(document).ready(function () {
             }
         });
     }
-
-    loadLocalBlocks(); // 페이지 로드 시 로컬 블록 로드
 
     function bindImg() {
         $("#imageInput").on("change", function () {
