@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -11,23 +11,25 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/adminhub/adminhub.css">
     <link rel="stylesheet" href="/css/adminhub/first.css">
+
 </head>
 
 <body>
+
 <div class="header">
     <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
     <div style="color: black; background-color: white;"><a href="/admin/first">상품관리목록</a></div>
     <div><a href="/admin/eventCustom">이벤트관리</a></div>
 </div>
-
-<div class="content">
-    <div class="content_box">
-        <div class="local_block">
-            <button  type="button" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
+<form action="/admin/saveLocal" method="post">
+    <div class="content">
+        <div class="content_box">
+            <div class="local_put">
+                <button  type="button" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
+            </div>
         </div>
     </div>
-</div>
-
+</form>
 <!-- 모달 -->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -53,6 +55,7 @@
     </div>
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -62,6 +65,7 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script src="/javascript/adminhub/first.js"></script>
+
 </body>
 
 </html>

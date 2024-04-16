@@ -11,6 +11,11 @@ import java.util.Map;
 @Entity
 @Table(name = "admin_item")
 public class AdminItemEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_id", nullable = false) // 외래 키 설정
+    private LocalEntity local;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +32,7 @@ public class AdminItemEntity {
     @Column(name = "features")
     private String features;
 
-    @Column(name = "business_hours", columnDefinition = "jsonb")
+    @Column(name = "business_hours", columnDefinition = "TEXT")
     @Convert(converter = com.example.jpatest.Converter.MapToJsonConverter.class)
     private Map<String, String> businessHours;
 
@@ -36,4 +41,16 @@ public class AdminItemEntity {
 
     // 이미지 URL을 가져오는 메서드
 
+    @Override
+    public String toString() {
+        return "AdminItemEntity{" +
+                "id=" + id +
+                ", touristSpotName='" + touristSpotName + '\'' +
+                ", address='" + address + '\'' +
+                ", contact='" + contact + '\'' +
+                ", features='" + features + '\'' +
+                ", businessHours=" + businessHours +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
 }

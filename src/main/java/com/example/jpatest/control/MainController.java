@@ -144,11 +144,11 @@ public class MainController {
         }
     }
 
-//    @GetMapping("/members/modifPw")
-//    public String findIdGet(Model model){
-//        model.addAttribute("tel", ""); // 빈 문자열로 초기화하여 전화번호 필드를 전달
-//        return "member/modifPw";
-//    }
+    @GetMapping("/members/modifPw")
+    public String modifPwGet(Model model){
+
+        return "member/modifPw";
+    }
 
 
     // 회원정보 수정 mymenu
@@ -198,8 +198,6 @@ public class MainController {
             return "redirect:/members/mymenu"; // 비밀번호가 일치하지 않으므로 회원 정보 수정 폼을 다시 표시
         }
     }
-
-
 
     @GetMapping("/board/help")
     public String board(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {

@@ -1,73 +1,20 @@
 $(document).ready(function () {
+    /* businessHours 맵 데이터를 폼에 전달하기 위해 input 필드 생성 */
+        var businessHours = /*[[${adminItemDto.businessHours}]]*/{};
 
+        // 각 요일에 대해 am/pm 값을 적절한 input 필드에 설정
+        for (var day in businessHours) {
+            if (businessHours.hasOwnProperty(day)) {
+                var am = businessHours[day].split(' - ')[0]; // 오전 시간
+                var pm = businessHours[day].split(' - ')[1]; // 오후 시간
 
-    $('#saveModalBtn').click(function () {
-        var touristSpotName = $('#touristSpotName').val();
-        var address = $('input[name="address"]').val();
-        var contact = $('input[name="contact"]').val();
-        var features = $('#InputFeatures').val();
-
-        if (!touristSpotName || !address || !contact || !features) {
-            alert('모든 필수 항목을 입력해주세요.');
-            return;
-        }
-
-        var businessHours = {};
-        $('.day-time-entry').each(function () {
-            var day = $(this).find('label').text(); // 요일 가져오기
-            var amTime = $(this).find('input[name$="_am"]').val(); // 오전 시간 가져오기
-            var pmTime = $(this).find('input[name$="_pm"]').val(); // 오후 시간 가져오기
-            businessHours[day] = amTime + ' - ' + pmTime; // 요일과 시간을 JSON 객체에 추가
-        });
-
-        var formData = new FormData();
-        var imageFile = $('#imageInput')[0].files[0];
-
-        if (!imageFile) {
-            alert('이미지 파일을 선택해주세요.');
-            return;
-        }
-
-        formData.append('imageFile', imageFile);
-        formData.append('touristSpotName', touristSpotName);
-        formData.append('address', address);
-        formData.append('contact', contact);
-        formData.append('features', features);
-        formData.append('businessHours', JSON.stringify(businessHours)); // JSON 객체를 문자열로 변환하여 추가
-
-        /*$.ajax({
-            type: 'POST',
-            url: '/admin/item',
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-XSRF-TOKEN': getCsrfToken()
-            },
-            success: function (response) {
-                console.log('Form submitted successfully!');
-                alert('저장되었습니다!');
-
-                var savedTouristSpotName = $('#touristSpotName').val();
-                var imageUrl = response; // 서버에서 반환된 이미지 URL
-                var absoluteUrl = imageUrl; // 웹 애플리케이션의 절대 URL 경로
-
-                var newBlock = $('<div style="position:relative;" class="local_detail"></div>');
-                newBlock.append('<img style="height:150px;width:100%;object-fit:cover;" src="' + absoluteUrl + '" alt="Tourist Spot Image">');
-                newBlock.append('<p style="height:20px;background:black;color:white;font-size:20px;padding:0;margin:0;font-weight:bold;">' + savedTouristSpotName + '</p>');
-                newBlock.append('<button style="position:absolute;left:0;top:0;" class="delete-btn">삭제</button>');
-                $('.content_box').append(newBlock);
-
-                saveLocalBlocks(); // 로컬 스토리지 업데이트
-                $('#myModal').modal('hide'); // 모달 닫기
-            },
-            error: function (xhr, status, error) {
-                console.error('Form submission failed:', error);
-                alert('저장에 실패했습니다. 다시 시도해주세요.');
+                // 해당 요일의 오전/오후 input 필드에 값을 설정
+                $('input[name="' + day + '_am"]').val(am);
+                $('input[name="' + day + '_pm"]').val(pm);
             }
-        });*/
+        }
 
-    });
+
 
     function getCsrfToken() {
             const cookies = document.cookie.split(';').map(cookie => cookie.trim());

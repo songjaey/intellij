@@ -15,7 +15,7 @@
 </head>
 
 <body>
-<form action="/admin/item" method="post" class="box" id="parentForm" object="${adminItemDto}">
+<form th:action="@{/admin/item}" method="POST" class="box" id="parentForm" enctype="multipart/form-data" th:object="${adminItemDto}">
 
     <div class="header">
         <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
@@ -54,22 +54,23 @@
                     </div>
                     <div class="modal-body">
                         <div class="modal_input">
+                            <input type="hidden" th:if="${localEntity != null}"name="localEntityId" th:value="${localEntity.id}">
                             <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <input type="file" id="imageInput" name="imageFile" accept="image/*" style="width: 100%;">
+                                <input type="file" name="imageFile" id="imageInput" accept="image/*" style="width: 100%;">
                             </div>
                             <div style="flex: 1; width: 100%; border-top: 1px solid black; display: flex; justify-content: center; align-items: center;">
-                                <input id="InputFeatures" style="width: 100%; height: 100%; border: 0; padding: 10px; box-sizing: border-box; text-align: center; background: white;" type="text" name="features" placeholder="특징을 입력하세요">
+                                <input id="InputFeatures" style="width: 100%; height: 100%; border: 0; padding: 10px; box-sizing: border-box; text-align: center; background: white;" type="text" name="features" th:field="*{features}"placeholder="특징을 입력하세요">
                             </div>
                         </div>
                         <div class="modal_input">
-                            <div style="margin: 20px 0;"><input type="text" id="touristSpotName" name="touristSpotName" placeholder="관광지명 입력"></div>
+                            <div style="margin: 20px 0;"><input type="text" id="touristSpotName" name="touristSpotName" th:field="*{touristSpotName}"placeholder="관광지명 입력"></div>
                             <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
                                 <p style="font-size: 30px; margin: 0;">주소 입력</p>
-                                <input type="text" id="modalAddress" name="address" style="width: 100%; font-size: 15px;">
+                                <input type="text" id="modalAddress" name="address" th:field="*{address}" style="width: 100%; font-size: 15px;">
                             </div>
                             <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
                                 <p style="font-size: 30px; margin: 0;">연락처</p>
-                                <input type="text" name="contact" style="width: 100%; font-size: 15px;">
+                                <input type="text" name="contact" th:field="*{contact}" style="width: 100%; font-size: 15px;">
                             </div>
                             <div style="height: 270px; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                                 <div style="width: 100%; height: 40px; margin: 10px 0; display: flex; justify-content: center;">
@@ -118,7 +119,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="saveModalBtn">저장</button>
+                        <button type="submit" class="btn btn-primary" id="saveModalBtn">저장</button>
                     </div>
                 </form>
             </div>
@@ -126,7 +127,6 @@
     </div>
 
 </form>
-
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -137,6 +137,34 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script src="/javascript/adminhub/localDetail.js"></script>
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $('#saveModalBtn').on('click', function() {-->
+<!--            var formData = new FormData();-->
+<!--            var file = $('#imageInput')[0].files[0]; // 파일 입력 요소에서 파일 가져오기-->
+<!--            formData.append('imageFile', file); // FormData에 파일 추가-->
+
+<!--            // 기타 필요한 데이터도 FormData에 추가 가능-->
+
+<!--            // AJAX 요청 보내기-->
+<!--            $.ajax({-->
+<!--                url: '/admin/item',-->
+<!--                method: 'POST',-->
+<!--                processData: false,-->
+<!--                contentType: false,-->
+<!--                data: formData,-->
+<!--                success: function(response) {-->
+<!--                    // 성공 시 처리-->
+<!--                    console.log(response);-->
+<!--                },-->
+<!--                error: function(xhr, status, error) {-->
+<!--                    // 실패 시 처리-->
+<!--                    console.error(xhr.responseText);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+</script>
 
 </body>
 
