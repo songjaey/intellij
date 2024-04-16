@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
 
 <head>
     <meta charset="UTF-8">
@@ -16,8 +16,6 @@
 
 <body>
 <form action="/admin/item" method="post" class="box" id="parentForm" object="${adminItemDto}">
-    <!-- 부모 Form -->
-    <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
 
     <div class="header">
         <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
@@ -29,6 +27,11 @@
         <div class="content_box">
             <div class="local_block">
                 <button style="border:0;width:100%;height:100%;background:none;font-size:50px;display:flex;justify-content:center;align-items:center;" type="button" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
+            </div>
+        </div>
+        <div class="content_box" th:each="item:${adminItemEntity}" th:if="${adminItemEntity != null}">
+            <div class="local_block" th:style="'background-image: url(' + ${item.imgUrl} + ');'">
+                <p th:text="${item.imgUrl}"></p>
             </div>
         </div>
     </div>

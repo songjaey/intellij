@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragment/basic}">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="/css/adminhub/event.css">
+    <link rel="stylesheet" href="/css/notice/event.css">
 
 </th:block>
 
@@ -46,16 +45,7 @@
         });
     </script>
 </th:block>
-<body>
-<form action="/admin/item" method="post" class="box" id="parentForm" object="${adminItemDto}">
-    <!-- 부모 Form -->
-    <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
-
-    <div class="header">
-        <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
-        <div style="color: black; background-color: white;"><a href="/admin/first">상품관리목록</a></div>
-        <div><a href="/admin/eventCustom">이벤트관리</a></div>
-    </div>
+<div layout:fragment="content" id="box">
 
     <div class="wrapper">
         <div class="notice-menu">
@@ -88,50 +78,16 @@
             <div class="img-box" style="background-image: url('/image/image1.jpg');"></div>
             <div class="img-box" style="background-image: url('/image/home.jpg');"></div>
 
+            <!-- 이벤트 이미지 박스 -->
+
+            <div th:if="${events != null}" th:each="event : ${events}" class="img-box" th:style="'background-image: url(' + ${event.imgUrl} + ');'">
+                <span th:text="${event.content}">이벤트</span>
+            </div>
             <i class="bi bi-arrow-right-square" id="slide-right"></i>
 
         </div>
 
-        <button id="addButton" >추가</button>
-        <button id="editButton">수정</button>
-        <!--        <button id="addButton" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">추가</button>-->
-        <!--        <button id="editButton" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">수정</button>-->
-
     </div>
 
-    <!-- 모달 -->
-    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form role="form" method="post" enctype="multipart/form-data" id="modalForm">
-                    <!-- 모달 내에도 CSRF 토큰 포함 -->
-                    <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
-                    <div class="modal-header">
-                        <!-- 닫기 버튼을 오른쪽에 배치 -->
-                        <button type="button" class="close-btn btn-secondary" data-bs-dismiss="modal"
-                                aria-label="Close"><i class="bi bi-x-lg"></i></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal_input">
-                            <div style="height: 400px;display:flex;justify-content:center;align-items:center;">
-                                <input type="file" id="imageInput" name="imageFile" accept="image/*" style="width: 100%;">
-                            </div>
-                            <div style="flex: 1; width:100%; border-top:1px solid black; display: flex; justify-content: center; align-items: center;">
-                                <input id="InputFeatures" style="width: 100%;height:100%; border: 0; padding: 10px; box-sizing: border-box; text-align:center;background:white;" type="text" name="features" placeholder="특징을 입력하세요">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="saveModalBtn">저장</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</form>
-
-
-</body>
-
+</div>
 </html>

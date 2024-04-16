@@ -1,18 +1,4 @@
 
-html{
-    position:relative;
-    min-height:100%;
-    margin:0;
-    padding:0;
-}
-body {
-    min-height: 100%;
-    width:100%;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/image/home.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
 
 .wrapper {
             position:relative;
@@ -39,21 +25,32 @@ body {
             background-color: #555; /* 마우스 호버시 약간 더 어둡게 */
         }
         .img-menu {
+            background-color: rgba(128, 128, 128, 0.5);
+            margin-top:60px;
             display: flex;
             flex-wrap: wrap; /* 요소들을 여러 줄에 걸쳐 표시 */
-            justify-content: center; /* 수평 가운데 정렬 */
+            justify-content: space-between;
+            align-items: center;
             column-gap: 30px; /* 각 열 사이의 간격 설정 */
+            border-radius: 20px;
+            padding-top:50px;
+            padding-bottom:50px;
         }
         .img-menu .bi{
-            margin-top: 260px;
+
             width:30px;
             height:30px;
+            font-size: 2em; /* 아이콘의 크기를 현재 크기의 4배로 설정합니다. */
+            color: white; /* 아이콘의 색상을 하얀색으로 설정합니다. */
+        }
+        .bi.arrow-left-square,
+        .bi.arrow-right-square {
+
         }
 
         .img-box {
             color: white; text-align:center; font-size:14px;
             padding-top:30px;
-            margin-top: 60px; /* 이미지 박스를 아래로 이동시킵니다. */
             width: 200px;
             height: 400px;
             background-size: cover; /* 배경 이미지를 화면에 꽉 채우도록 설정합니다. */
@@ -99,64 +96,3 @@ form.box {
     background-color: white; /* 호버 시 배경색을 흰색으로 변경 */
 }
 
-/*모달창 디자인------------------------------------------------------*/
-.modal-dialog{
-    position:absolute;
-    top:10%;
-    left:20%;
-    width:1200px;
-    height:700px;
-}
-.modal-content {
-    width: 1200px;
-    height: 700px; /* 내용의 높이에 따라 자동으로 조절 */
-    max-height: 700px; /* 최대 높이 지정 */
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    overflow: hidden; /* 내용이 모달을 벗어나지 않도록 숨김 */
-}
-.modal-header{
-    width:100%;
-    display:flex;
-    justify-content:end;
-    border:none;
-}
-.modal-body{
-    width:1000px;
-    height:570px;
-    padding:0;
-    background-color: rgba(153, 153, 153, 0.9);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-wrap:wrap;
-    border-radius:10px;
-    margin:20px 0;
-    border-radius:10px;
-    overflow:hidden;
-}
-.modal-footer{
-    border:none;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    padding:5px 0;
-}
-.modal_input{
-    width:50%;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background-color: rgba(153, 153, 153, 0.9);
-}
-.close-btn{
-    font-size:20px;
-    color:white;
-    background:none;
-    border:none;
-}

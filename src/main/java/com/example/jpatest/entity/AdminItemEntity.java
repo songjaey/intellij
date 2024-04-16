@@ -1,5 +1,5 @@
-package com.example.jpatest.entity;
 
+package com.example.jpatest.entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,8 +35,5 @@ public class AdminItemEntity {
     private String imgUrl; // 이미지 경로
 
     // 이미지 URL을 가져오는 메서드
-    public String getImgUrl() {
-        // 이미지 경로를 가공하여 완전한 URL을 반환 (예: "/images/12345.jpg")
-        return "/images/" + id + ".jpg"; // 이미지의 ID를 활용한 예시
-    }
+
 }

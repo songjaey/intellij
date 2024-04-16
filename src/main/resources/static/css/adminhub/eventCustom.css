@@ -8,6 +8,8 @@
     margin-top: 260px;
     width:30px;
     height:30px;
+    font-size: 2em; /* 아이콘의 크기를 현재 크기의 4배로 설정합니다. */
+    color: white; /* 아이콘의 색상을 하얀색으로 설정합니다. */
 }
 
 .img-box {
@@ -19,4 +21,13 @@
     background-size: cover; /* 배경 이미지를 화면에 꽉 채우도록 설정합니다. */
     background-position: center; /* 배경 이미지를 가운데 정렬합니다. */
     border-radius : 10px;
+}
+#addButton {
+    position: relative;
+    right: 400px;
+    top: 250px;
+    width: 100px; /* 현재 크기의 2배 */
+    height: 50px; /* 현재 크기의 1.5배 */
+    border-radius: 10px;
+    border: none; /* border 제거 */
 }

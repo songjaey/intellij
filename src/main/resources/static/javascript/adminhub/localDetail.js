@@ -1,8 +1,4 @@
 $(document).ready(function () {
-    // 리다이렉트된 후에 실행될 코드
-
-            // 페이지가 리다이렉트된 후에 loadLocalBlocks() 함수 호출
-            loadLocalBlocks();
 
 
     $('#saveModalBtn').click(function () {
@@ -39,7 +35,7 @@ $(document).ready(function () {
         formData.append('features', features);
         formData.append('businessHours', JSON.stringify(businessHours)); // JSON 객체를 문자열로 변환하여 추가
 
-        $.ajax({
+        /*$.ajax({
             type: 'POST',
             url: '/admin/item',
             data: formData,
@@ -69,7 +65,7 @@ $(document).ready(function () {
                 console.error('Form submission failed:', error);
                 alert('저장에 실패했습니다. 다시 시도해주세요.');
             }
-        });
+        });*/
 
     });
 
@@ -111,20 +107,6 @@ $(document).ready(function () {
         $(this).closest('.local_block').remove();
         saveLocalBlocks(); // 삭제 후 로컬 스토리지 업데이트
     });
-
-    function loadLocalBlocks() {
-        var localBlocks = JSON.parse(localStorage.getItem('localBlocks')) || [];
-        localBlocks.forEach(function(blockData) {
-            // 이미지 URL이 undefined가 아닌 경우에만 블록 생성
-            if (blockData.imageUrl !== undefined) {
-                var newBlock = $('<div style="position:relative;" class="local_block"></div>');
-                newBlock.append('<img style="height:150px;width:100%;object-fit:cover;" src="' + blockData.imageUrl + '" alt="Tourist Spot Image">');
-                newBlock.append('<p style="height:20px;background:black;color:white;font-size:20px;padding:0;margin:0;font-weight:bold;">' + blockData.touristSpotName + '</p>');
-                newBlock.append('<button style="position:absolute;left:0;top:0;" class="delete-btn">삭제</button>');
-                $('.content_box').append(newBlock);
-            }
-        });
-    }
 
     function bindImg() {
         $("#imageInput").on("change", function () {

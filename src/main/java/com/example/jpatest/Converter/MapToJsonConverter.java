@@ -8,6 +8,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 @Converter
 public class MapToJsonConverter implements AttributeConverter<Map<String, String>, String> {
 

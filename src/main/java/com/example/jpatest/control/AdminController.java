@@ -4,6 +4,7 @@ import com.example.jpatest.dto.AdminItemDto;
 import com.example.jpatest.entity.AdminEventEntity;
 import com.example.jpatest.entity.AdminItemEntity;
 import com.example.jpatest.entity.LocalEntity;
+import com.example.jpatest.repository.AdminItemRepository;
 import com.example.jpatest.repository.LocalRepository;
 import com.example.jpatest.service.AdminEventService;
 import com.example.jpatest.service.AdminItemService;
@@ -41,15 +42,18 @@ public class AdminController {
 
     private final AdminEventService adminEventService;
     private final AdminItemService adminItemService;
+
+    private final AdminItemRepository adminItemRepository;
     private final FileUploadService fileUploadService;
     private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     private final LocalRepository localRepository;
 
     @Autowired
-    public AdminController(AdminEventService adminEventService, AdminItemService adminItemService, LocalRepository localRepository, FileUploadService fileUploadService) {
+    public AdminController(AdminEventService adminEventService, AdminItemService adminItemService,AdminItemRepository adminItemRepository, LocalRepository localRepository, FileUploadService fileUploadService) {
         this.adminEventService = adminEventService;
         this.localRepository = localRepository;
+        this.adminItemRepository = adminItemRepository;
         this.adminItemService = adminItemService;
         this.fileUploadService = fileUploadService;
     }
@@ -91,7 +95,9 @@ public class AdminController {
     public String showLocalDetail(@RequestParam("country") String country,
                                   @RequestParam("local") String local,
                                   Model model) {
-        // 로직 구현
+        List<AdminItemEntity> adminItemEntity = adminItemRepository.findAll();
+        System.out.println(adminItemEntity);
+        model.addAttribute("adminItemEntity", adminItemEntity);
         return "adminhub/localDetail";
     }
 

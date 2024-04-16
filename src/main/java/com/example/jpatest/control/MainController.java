@@ -3,9 +3,11 @@ package com.example.jpatest.control;
 import com.example.jpatest.dto.BoardDto;
 import com.example.jpatest.dto.CommentDto;
 import com.example.jpatest.dto.MemberFormDto;
+import com.example.jpatest.entity.AdminEventEntity;
 import com.example.jpatest.entity.Board;
 import com.example.jpatest.entity.Comment;
 import com.example.jpatest.entity.Member;
+import com.example.jpatest.service.AdminEventService;
 import com.example.jpatest.service.BoardService;
 import com.example.jpatest.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ public class MainController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final BoardService boardService;
+    private final AdminEventService adminEventService;
     private static final int PAGE_SIZE = 10;
 
     @GetMapping("/")
@@ -141,6 +144,13 @@ public class MainController {
         }
     }
 
+//    @GetMapping("/members/modifPw")
+//    public String findIdGet(Model model){
+//        model.addAttribute("tel", ""); // 빈 문자열로 초기화하여 전화번호 필드를 전달
+//        return "member/modifPw";
+//    }
+
+
     // 회원정보 수정 mymenu
     @GetMapping("/members/mymenu")
     public String myMenu(Model model) {
@@ -242,7 +252,6 @@ public class MainController {
         return "notice/helpRead";
     }
 
-
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
@@ -308,9 +317,11 @@ public class MainController {
     }
 
     @GetMapping("/event")
-    public String event(){
+    public String event(Model model){
+
+        List<AdminEventEntity> events = adminEventService.getAllEvents();
+        model.addAttribute("events", events);
         return "notice/event";
     }
-
 
 }
