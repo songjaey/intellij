@@ -1,5 +1,5 @@
 
-.local_block{
+.local_block, .local_put{
     width:100px;
     height:100px;
     background: rgba(0, 117, 255, 0.5);

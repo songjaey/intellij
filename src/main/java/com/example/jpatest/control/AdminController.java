@@ -123,6 +123,12 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/eventCustom")
+    public String getEvents(Model model) {
+        List<AdminEventEntity> events = adminEventService.getAllEvents();
+        model.addAttribute("events", events);
+        return "adminhub/eventCustom";
+    }
     @PostMapping("/saveEvent")
     public ResponseEntity<String> saveEvent(@RequestParam("image") MultipartFile image,
                                             @RequestParam("content") String content) {
