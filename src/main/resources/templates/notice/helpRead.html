@@ -167,7 +167,7 @@
                         th:onclick="|location.href='@{/board/help}'|"
                         type="button" >목록으로</button>
             </div>
-            <form th:action="@{'/board/help/delete/' + ${board.id}}" method="POST">
+            <form th:action="@{'/board/help/delete/' + ${board.id} }" method="POST">
                 <input type="hidden" id="id" name="id" th:value="${board.id}">
                 <div class="col">
                     <button class="w-100 btn btn-secondary btn-lg" th:if="${currentUserId == board.member.id}" type="submit">삭제</button>

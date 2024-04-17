@@ -24,7 +24,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: 400px;
-        height: 480px;
+        height: 520px;
         background: rgba(200, 200, 200, 0.5); /* 회색 느낌과 적절한 투명도 */
 <!--        border: 2px solid #162938;-->
         border:none;
@@ -68,6 +68,7 @@
     }
 
     .input-box {
+
         position: relative;
         margin-bottom: 30px;
         border-radius: 10px;
@@ -93,6 +94,7 @@
         border-radius: 10px;
         border: none;
         padding-left:30px;
+        height:50px;
     }
 
     .result-box{
@@ -137,26 +139,28 @@
     }
 
 
-    .login-sub {
-        font-size: 0.9em;
-        color: #162938;
-        font-weight: 500;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .submit-button{
+        width: 100%;
+        margin-top: 20px;
+        border: none;
     }
 
-    .login-sub label input {
-        margin-right: 3px;
-    }
-
-    .login-sub a {
-        color: #162938;
+    .submit-button button {
+        text-align: center;
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        background: rgba(200, 200, 200, 0.8); /* 회색 느낌과 적절한 투명도 */
+        border-radius: 10px;
+        border:none;
         text-decoration: none;
+        color: #162938;
+        transition: background 0.3s ease;
     }
 
-    .login-sub a:hover {
-        text-decoration: underline;
+    .submit-button button:hover {
+        background: rgba(84, 124, 228, 0.8); /* 호버 시 파란색 */
+        color: #fff; /* 글자 색상을 흰색으로 변경 */
     }
 
     .login-button{
@@ -185,6 +189,7 @@
         background: rgba(84, 124, 228, 0.8); /* 호버 시 파란색 */
         color: #fff; /* 글자 색상을 흰색으로 변경 */
     }
+
     .error{ color:black; }
     </style>
 </th:block>
@@ -198,27 +203,32 @@
 
 <!-- 폼 요소 -->
 <body>
-<form th:action="@{/members/modifPw}" method="post" id="signFm">
+<form th:action="@{/members/sendTemporaryPassword}" method="post" id="signFm">
     <div class="main-text-box">
         <a class="main-text" href="/" style="font-size:50px; font-style:bold; color:#93EBFF; text-align:center; font-family: 'Bauhaus 93'; display: block; width: 100%;">TravelGenius</a>
     </div>
     <div class="wrapper">
         <div class="form-box">
-            <h2>비밀번호 변경</h2>
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <h2>비밀번호 찾기</h2>
+<!--            <input type="hidden" name="_csrf" th:value="${_csrf.token}">-->
 
-            <div class="phone-box"> 휴대전화 인증 </div>
+            <div class="phone-box"> 휴대전화와 이메일을 입력하시오 </div>
 
             <div class="input-box">
                 <span class="icon"><ion-icon name="mail"></ion-icon></span>
                 <div class="form-detail">
-                    <input type="text" id="tel" name="tel" th:value="${tel}" placeholder="핸드폰 번호를 입력하세요">
-                    <button type="submit" class="btn btn-secondary">인증하기</button>
+                    <input type="text" id="email" name="email" placeholder="이메일을 입력하세요">
+                </div>
+            </div>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="call"></ion-icon></span>
+                <div class="form-detail">
+                    <input type="text" id="tel" name="tel"  placeholder="핸드폰 번호를 입력하세요">
                 </div>
             </div>
 
-            <div class="result-box" th:if="${findIdErrorMsg != null or foundId != null}">
-                <p th:text="${findIdErrorMsg != null ? findIdErrorMsg : foundId}" class="error"></p>
+            <div class="submit-button">
+                <button type="submit" class="btn btn-secondary">임시비밀번호 보내기</button>
             </div>
 
             <div class="login-button">

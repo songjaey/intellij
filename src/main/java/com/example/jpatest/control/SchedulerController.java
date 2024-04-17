@@ -39,11 +39,27 @@ public class SchedulerController {
         return "scheduler/second"; // 두 번째 페이지로 리다이렉트
     }
 
-    @PostMapping("/third")
-    public String third(Model model) {
+    @GetMapping("/third")
+    public String getThird(Model model) {
         SchedulerDto schedulerDto = new SchedulerDto();
         model.addAttribute("schedulerDto", schedulerDto);
         return "scheduler/third";
     }
+
+    @PostMapping("/third")
+    public String postThird(Model model) {
+        SchedulerDto schedulerDto = new SchedulerDto();
+        model.addAttribute("schedulerDto", schedulerDto);
+        return "scheduler/third";
+    }
+
+    @GetMapping("/fifth")
+    public String getFifth(Model model) {
+        SchedulerDto schedulerDto = new SchedulerDto();
+        model.addAttribute("schedulerDto", schedulerDto);
+        return "scheduler/third";
+    }
+
+
 
 }

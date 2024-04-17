@@ -31,6 +31,13 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
     }
 
+    public void modifPw(String email, String temporaryPassword, PasswordEncoder passwordEncoder){
+        Member member = memberRepository.findByEmail(email);
+        member.setPassword(passwordEncoder.encode(temporaryPassword) );
+        memberRepository.save(member);
+    }
+
+
     public void modifyMember(Member member) {
         memberRepository.save(member);
     }
@@ -76,6 +83,20 @@ public class MemberService implements UserDetailsService {
             return null;
         }
     }
+
+    public boolean checkEmailAndPhoneNumberMatch(String email, String tel) {
+
+        Member member = memberRepository.findByEmail(email);
+
+        // 조회된 회원이 없으면 false를 반환합니다.
+        if (member.getEmail() == null) {
+            return false;
+        }
+
+        return member.getTel().equals(tel);
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 

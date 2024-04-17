@@ -388,7 +388,7 @@
             <div class="outer-box">
                 <div class="input-box">
                     <label th:for="tel"></label>
-                    <span class="icon"><i class="bi bi-phone-fill"></i></span>
+                    <span class="icon"><ion-icon name="call"></ion-icon></span>
                     <input type="text" th:field="*{tel}" id="tel" name="tel" placeholder="핸드폰 번호를 입력하세요">
                 </div>
                 <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError"></p>

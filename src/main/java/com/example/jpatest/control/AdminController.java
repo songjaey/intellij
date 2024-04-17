@@ -167,7 +167,7 @@ public class AdminController {
         try {
             // 필수 항목이 비어 있는지 확인
             if ( adminItemDto.getTouristSpotName().isEmpty() || adminItemDto.getAddress().isEmpty() || adminItemDto.getContact().isEmpty() ||
-                 adminItemDto.getFeatures().isEmpty()) {
+                    adminItemDto.getFeatures().isEmpty()) {
                 return ResponseEntity.badRequest().body("모든 필수 항목을 입력해주세요.");
             }
             try {
@@ -175,9 +175,11 @@ public class AdminController {
                 String imgUrl = saveImage(imageFile);
                 adminItemDto.setImgUrl(imgUrl);
 
+                adminItemDto.setBusinessHours("key","value");
+
+
                 adminItemService.saveAdminItem(adminItemDto, localEntityId);
             }catch (Exception e) {
-
                 e.printStackTrace(); // 혹은 다른 로깅 방식으로 오류를 기록할 수 있습니다.
             }
             return ResponseEntity.ok().body("상품이 성공적으로 저장되었습니다.");
@@ -187,6 +189,32 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장에 실패했습니다.");
         }
     }
+
+    @DeleteMapping("/item/delete/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable Long id) {
+        try {
+            adminItemService.deleteItem(id);
+            return ResponseEntity.ok("상품이 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            logger.error("상품 삭제 중 오류 발생: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("상품 삭제에 실패했습니다.");
+        }
+    }
+
+    @PostMapping("/item/{id}")
+    public String getItemDetails(@PathVariable Long id, Model model) {
+
+        // itemId를 사용하여 데이터베이스에서 해당 아이템 정보를 조회
+        AdminItemEntity item = adminItemService.findById(id);
+
+        // 모델에 아이템 정보를 추가하여 View로 전달
+        model.addAttribute("item", item);
+
+        // 해당 아이템의 세부 정보를 렌더링할 Thymeleaf 템플릿 이름을 반환
+        return "adminhub/localDetailShow"; // 실제로 사용할 Thymeleaf 템플릿의 이름으로 수정
+    }
+
+
 
     @GetMapping("/images/{imageName}")
     @ResponseBody

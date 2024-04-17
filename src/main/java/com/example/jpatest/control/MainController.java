@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,11 +27,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,6 +46,7 @@ public class MainController {
     private final BoardService boardService;
     private final AdminEventService adminEventService;
     private static final int PAGE_SIZE = 10;
+    private final JavaMailSender javaMailSender;
 
     @GetMapping("/")
     public String main() {
@@ -144,11 +150,62 @@ public class MainController {
         }
     }
 
-    @GetMapping("/members/modifPw")
-    public String modifPwGet(Model model){
+    @GetMapping("/members/findPw")
+    public String getFindPw(Model model){
 
-        return "member/modifPw";
+        return "member/findPw";
     }
+
+    @PostMapping("/members/sendTemporaryPassword")
+    @ResponseBody
+    public String sendTemporaryPassword(String email, String tel) {
+        // 네이버 메일 계정 설정
+        String naverEmail = "songjaey8237@naver.com";
+//        String naverPassword = "Thdrk2838!";
+
+        // 이메일 주소와 휴대폰 번호가 일치하는지 확인하는 메서드 호출
+        boolean isMatch = memberService.checkEmailAndPhoneNumberMatch(email, tel);
+
+        if (isMatch) {
+            // 임시 비밀번호 생성
+            String temporaryPassword = generateTemporaryPassword();
+
+            // 이메일 발송
+            try {
+                MimeMessage message = javaMailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                helper.setFrom(naverEmail);
+                helper.setTo(email);
+                System.out.println(email);
+                helper.setSubject("TravelGenius 임시 비밀번호 안내");
+                helper.setText("임시 비밀번호는 " + temporaryPassword + " 입니다.");
+
+                javaMailSender.send(message);
+                memberService.modifPw(email, temporaryPassword, passwordEncoder);
+                return "임시비밀번호를 성공적으로 보냈습니다.";
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                return "/member";
+            }
+        } else {
+            return "이메일 주소 또는 휴대폰 번호가 일치하지 않습니다.";
+        }
+    }
+    // 임시 비밀번호 생성 메서드
+    private String generateTemporaryPassword() {
+        // 임시 비밀번호 생성 로직 구현
+        // 예를 들어 랜덤한 문자열 생성 또는 임시 비밀번호 생성 규칙에 따라 생성
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int length = 8;
+        for (int i = 0; i < length; i++) {
+            sb.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return sb.toString();
+    }
+
+
 
 
     // 회원정보 수정 mymenu

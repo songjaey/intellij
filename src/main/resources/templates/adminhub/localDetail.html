@@ -15,8 +15,7 @@
 </head>
 
 <body>
-<form th:action="@{/admin/item}" method="POST" class="box" id="parentForm" enctype="multipart/form-data" th:object="${adminItemDto}">
-
+<div class="box">
     <div class="header">
         <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
         <div style="color: black; background-color: white;"><a href="/admin/first">상품관리목록</a></div>
@@ -25,108 +24,85 @@
 
     <div class="content">
         <div class="content_box">
-            <div class="local_block">
+            <div class="local_plus">
                 <button style="border:0;width:100%;height:100%;background:none;font-size:50px;display:flex;justify-content:center;align-items:center;" type="button" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
             </div>
-        </div>
-        <div class="content_box" th:each="item:${adminItemEntity}" th:if="${adminItemEntity != null}">
-            <div class="local_block" th:style="'background-image: url(' + ${item.imgUrl} + ');'">
-                <p th:text="${item.imgUrl}"></p>
+
+            <div class="local_block" th:each="item : ${adminItemEntity}" th:if="${adminItemEntity != null}" th:style="'background-image: url(' + ${item.imgUrl} + ');'" th:attr="data-item-id=${item.id}">
+                <button class="btn btn-danger delete-btn">삭제</button>
+                <!-- item.id가 selectedItemId와 일치할 때 폼과 버튼을 표시 -->
+
+                    <form th:action="@{/admin/item/{itemId}(itemId=${item.id})}" method="POST">
+                        <button class="block_detail" style="background:black; color:white; border-radius:10px; padding:5px;" th:text="${item.touristSpotName}"></button>
+                    </form>
+
             </div>
         </div>
     </div>
+
     <div class="select_content">
         <div class="content_block"><a>명소</a></div>
         <div class="content_block"><a>식당</a></div>
         <div class="content_block"><a>숙박</a></div>
     </div>
 
-    <!-- 모달 -->
-    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form role="form" method="post" enctype="multipart/form-data" id="modalForm">
-                    <!-- 모달 내에도 CSRF 토큰 포함 -->
-                    <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
-                    <div class="modal-header">
-                        <!-- 닫기 버튼을 오른쪽에 배치 -->
-                        <button type="button" class="close-btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal_input">
-                            <input type="hidden" th:if="${localEntity != null}"name="localEntityId" th:value="${localEntity.id}">
-                            <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <input type="file" name="imageFile" id="imageInput" accept="image/*" style="width: 100%;">
-                            </div>
-                            <div style="flex: 1; width: 100%; border-top: 1px solid black; display: flex; justify-content: center; align-items: center;">
-                                <input id="InputFeatures" style="width: 100%; height: 100%; border: 0; padding: 10px; box-sizing: border-box; text-align: center; background: white;" type="text" name="features" th:field="*{features}"placeholder="특징을 입력하세요">
-                            </div>
+    <form th:action="@{/admin/item}" method="POST"  id="parentForm" enctype="multipart/form-data" th:object="${adminItemDto}">
+        <!-- 모달 -->
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form role="form" method="post" enctype="multipart/form-data" id="modalForm">
+                        <div class="modal-header">
+                            <!-- 닫기 버튼을 오른쪽에 배치 -->
+                            <button type="button" class="close-btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
                         </div>
-                        <div class="modal_input">
-                            <div style="margin: 20px 0;"><input type="text" id="touristSpotName" name="touristSpotName" th:field="*{touristSpotName}"placeholder="관광지명 입력"></div>
-                            <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
-                                <p style="font-size: 30px; margin: 0;">주소 입력</p>
-                                <input type="text" id="modalAddress" name="address" th:field="*{address}" style="width: 100%; font-size: 15px;">
-                            </div>
-                            <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
-                                <p style="font-size: 30px; margin: 0;">연락처</p>
-                                <input type="text" name="contact" th:field="*{contact}" style="width: 100%; font-size: 15px;">
-                            </div>
-                            <div style="height: 270px; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                                <div style="width: 100%; height: 40px; margin: 10px 0; display: flex; justify-content: center;">
-                                    <p style="font-size: 30px; text-align: center;">영업시간 입력</p>
+                        <div class="modal-body">
+                            <div class="modal_input">
+                                <input type="hidden" th:if="${localEntity != null}" name="localEntityId" th:value="${localEntity.id}">
+                                <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
+                                    <input type="file" name="imageFile" id="imageInput" accept="image/*" style="width: 100%;">
                                 </div>
-                                <div style="width: 100%; height: 230px; padding: 20px auto;">
-                                    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
-                                        <div class="day-time-entry">
-                                            <label>월요일</label>
-                                            <input type="text" name="월요일_am" placeholder="오전">
-                                            <input type="text" name="월요일_pm" placeholder="오후">
-                                        </div>
-                                        <div class="day-time-entry">
-                                            <label>화요일</label>
-                                            <input type="text" name="화요일_am" placeholder="오전">
-                                            <input type="text" name="화요일_pm" placeholder="오후">
-                                        </div>
-                                        <div class="day-time-entry">
-                                            <label>수요일</label>
-                                            <input type="text" name="수요일_am" placeholder="오전">
-                                            <input type="text" name="수요일_pm" placeholder="오후">
-                                        </div>
-                                        <div class="day-time-entry">
-                                            <label>목요일</label>
-                                            <input type="text" name="목요일_am" placeholder="오전">
-                                            <input type="text" name="목요일_pm" placeholder="오후">
-                                        </div>
-                                        <div class="day-time-entry">
-                                            <label>금요일</label>
-                                            <input type="text" name="금요일_am" placeholder="오전">
-                                            <input type="text" name="금요일_pm" placeholder="오후">
-                                        </div>
-                                        <div class="day-time-entry">
-                                            <label>토요일</label>
-                                            <input type="text" name="토요일_am" placeholder="오전">
-                                            <input type="text" name="토요일_pm" placeholder="오후">
-                                        </div>
-                                        <div class="day-time-entry">
-                                            <label>일요일</label>
-                                            <input type="text" name="일요일_am" placeholder="오전">
-                                            <input type="text" name="일요일_pm" placeholder="오후">
+                                <div style="flex: 1; width: 100%; border-top: 1px solid black; display: flex; justify-content: center; align-items: center;">
+                                    <input id="InputFeatures" style="width: 100%; height: 100%; border: 0; padding: 10px; box-sizing: border-box; text-align: center; background: white;" type="text" name="features" th:field="*{features}"placeholder="특징을 입력하세요">
+                                </div>
+                            </div>
+                            <div class="modal_input">
+                                <div style="margin: 20px 0;"><input type="text" id="touristSpotName" name="touristSpotName" th:field="*{touristSpotName}" placeholder="관광지명 입력"></div>
+                                <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
+                                    <p style="font-size: 30px; margin: 0;">주소 입력</p>
+                                    <input type="text" id="modalAddress" name="address" th:field="*{address}" style="width: 100%; font-size: 15px;">
+                                </div>
+                                <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
+                                    <p style="font-size: 30px; margin: 0;">연락처</p>
+                                    <input type="text" name="contact" th:field="*{contact}" style="width: 100%; font-size: 15px;">
+                                </div>
+                                <div style="height: 270px; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                    <div style="width: 100%; height: 40px; margin: 10px 0; display: flex; justify-content: center;">
+                                        <p style="font-size: 30px; text-align: center;">영업시간 입력</p>
+                                    </div>
+                                    <div style="width: 100%; height: 230px; padding: 20px auto;">
+                                        <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                            <div class="day-time-entry" th:each="entry : ${adminItemEntity.businessHours.entrySet()}">
+                                                <label th:text="${entry.key}"></label>
+                                                <input type="text" th:value="${entry.value}" placeholder="오전">
+                                                <input type="text" placeholder="오후">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="saveModalBtn">저장</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="saveModalBtn">저장</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 
-</form>
+</div>
+
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>

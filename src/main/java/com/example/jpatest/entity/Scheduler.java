@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import com.example.jpatest.dto.SchedulerDto;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +26,15 @@ public class Scheduler {
     private String trip_duration_start;
     @Column
     private String trip_duration_end;
+
+    @ElementCollection
+    private List<Long> localIds; // LocalEntity의 ID 목록
+
+    @ElementCollection
+    private List<Long> adminItemIds; // AdminItemEntity의 ID 목록
+
+
+
 
     public static Scheduler createScheduler(SchedulerDto schedulerDto) {
         Scheduler scheduler = new Scheduler();

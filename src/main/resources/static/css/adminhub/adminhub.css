@@ -14,7 +14,7 @@ body {
     background-repeat: no-repeat;
 }
 /*---------------------------------------------*/
-form.box {
+.box{
     width: 80%; /* 화면 가로축의 80%를 차지 */
     margin: 0 auto; /* 수평 가운데 정렬 */
 }

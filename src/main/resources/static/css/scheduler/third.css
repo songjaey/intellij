@@ -1,0 +1,121 @@
+#container {
+height: 100%;
+display: flex;
+}
+
+#sidebar {
+flex-basis: 15rem;
+flex-grow: 1;
+padding: 1rem;
+max-width: 30rem;
+height: 100%;
+box-sizing: border-box;
+overflow: auto;
+}
+
+#map {
+flex-basis: 0;
+flex-grow: 4;
+height: 100%;
+}
+
+#floating-panel {
+position: absolute;
+top: 10px;
+left: 25%;
+z-index: 5;
+background-color: #fff;
+padding: 5px;
+border: 1px solid #999;
+text-align: center;
+font-family: "Roboto", "sans-serif";
+line-height: 30px;
+padding-left: 10px;
+}
+
+#floating-panel {
+background-color: #fff;
+border: 0;
+border-radius: 2px;
+box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+margin: 10px;
+padding: 0 0.5em;
+font: 400 18px Roboto, Arial, sans-serif;
+overflow: hidden;
+padding: 5px;
+font-size: 14px;
+text-align: center;
+line-height: 30px;
+height: auto;
+}
+
+#map {
+flex: auto;
+}
+
+#sidebar {
+flex: 0 1 auto;
+padding: 0;
+}
+#sidebar > div {
+    padding: 0.5rem;
+}
+#lcBox{
+border-top: 5px solid #267DFF;
+    border-top-right-radius: 10px;
+    padding-top:10px;
+}
+#locationList {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap; /* 줄 바꿈을 방지하고 모든 요소를 한 줄에 표시합니다. */
+    height: 360px;
+    width: 600px;
+    overflow-y: auto; /* 가로 스크롤을 표시합니다. */
+    padding-top: 30px;
+}
+#locationInput::placeholder {
+    text-align: center; /* placeholder 텍스트를 가운데 정렬 */
+    color: white; /* placeholder 텍스트의 색상을 회색으로 지정 */
+}
+
+
+.selected-item {
+    cursor: pointer;
+    margin: 0 20px;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 117, 255, 0.5);
+    color: white;
+    text-align:center;
+    padding: 20px 0;
+    border-radius: 10px;
+    font-size: 20px;
+    list-style-type: none; /* 목록 마커 제거 */
+}
+
+
+/* 수직 스크롤 바 스타일 */
+::-webkit-scrollbar {
+    background-color: none; /* 스크롤 바 배경색 */
+    width: 5px; /* 스크롤 바의 너비 */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: white; /* 스크롤 바 색상 */
+    width: 5px; /* 스크롤 바의 너비 */
+    height:20px;
+    border-radius: 90px; /* 스크롤 바 모서리 둥글기 */
+}
+
+/* 스크롤 바 hover 시 스타일 변경 */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+#selectItem div{
+    width:100px;
+    height:100px;
+    background-color: rgba(0, 117, 255, 0.5); /* 빨간색, 녹색, 파란색, 투명도(0.5) */
+    color:white;
+}

@@ -23,7 +23,7 @@
     text-decoration: none; /* 밑줄 제거 */
     color: inherit; /* 기본 색상 상속 */
 }
-.local_block{
+.local_block, .local_plus{
     width:210px;
     height:200px;
     background: rgba(0, 117, 255, 0.5);
