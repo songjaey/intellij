@@ -31,11 +31,9 @@
             <div class="local_block" th:each="item : ${adminItemEntity}" th:if="${adminItemEntity != null}" th:style="'background-image: url(' + ${item.imgUrl} + ');'" th:attr="data-item-id=${item.id}">
                 <button class="btn btn-danger delete-btn">삭제</button>
                 <!-- item.id가 selectedItemId와 일치할 때 폼과 버튼을 표시 -->
-
-                    <form th:action="@{/admin/item/{itemId}(itemId=${item.id})}" method="POST">
-                        <button class="block_detail" style="background:black; color:white; border-radius:10px; padding:5px;" th:text="${item.touristSpotName}"></button>
-                    </form>
-
+                <form th:action="@{/admin/item/{itemId}(itemId=${item.id})}" method="POST">
+                    <button class="block_detail" style="background:black; color:white; border-radius:10px; padding:5px;" th:text="${item.touristSpotName}"></button>
+                </form>
             </div>
         </div>
     </div>
@@ -82,10 +80,33 @@
                                     </div>
                                     <div style="width: 100%; height: 230px; padding: 20px auto;">
                                         <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
-                                            <div class="day-time-entry" th:each="entry : ${adminItemEntity.businessHours.entrySet()}">
-                                                <label th:text="${entry.key}"></label>
-                                                <input type="text" th:value="${entry.value}" placeholder="오전">
-                                                <input type="text" placeholder="오후">
+                                            <div class="day-time-entry">
+                                                <label>월요일</label>
+                                                <input type="text" name="Mon" placeholder="00:00-00:00">
+                                            </div>
+                                            <div class="day-time-entry">
+                                                <label>화요일</label>
+                                                <input type="text" name="Tue" placeholder="00:00-00:00">
+                                            </div>
+                                            <div class="day-time-entry">
+                                                <label>수요일</label>
+                                                <input type="text" name="Wed" placeholder="00:00-00:00">
+                                            </div>
+                                            <div class="day-time-entry">
+                                                <label>목요일</label>
+                                                <input type="text" name="Thu" placeholder="00:00-00:00">
+                                            </div>
+                                            <div class="day-time-entry">
+                                                <label>금요일</label>
+                                                <input type="text" name="Fri" placeholder="00:00-00:00">
+                                            </div>
+                                            <div class="day-time-entry">
+                                                <label>토요일</label>
+                                                <input type="text" name="Sat" placeholder="00:00-00:00">
+                                            </div>
+                                            <div class="day-time-entry">
+                                                <label>일요일</label>
+                                                <input type="text" name="Sun" placeholder="00:00-00:00">
                                             </div>
                                         </div>
                                     </div>

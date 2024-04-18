@@ -163,7 +163,14 @@ public class AdminController {
 
     @PostMapping(value = "/item", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
-    public ResponseEntity<String> createAdminItem(@ModelAttribute AdminItemDto adminItemDto, @RequestParam("imageFile") MultipartFile imageFile, Long localEntityId, Model model) {
+    public ResponseEntity<String> createAdminItem(@ModelAttribute AdminItemDto adminItemDto,@RequestParam("Mon") String Mon,
+                                                  @RequestParam("Tue") String Tue,
+                                                  @RequestParam("Wed") String Wed,
+                                                  @RequestParam("Thu") String Thu,
+                                                  @RequestParam("Fri") String Fri,
+                                                  @RequestParam("Sat") String Sat,
+                                                  @RequestParam("Sun") String Sun,
+                                                  @RequestParam("imageFile") MultipartFile imageFile, Long localEntityId, Model model) {
         try {
             // 필수 항목이 비어 있는지 확인
             if ( adminItemDto.getTouristSpotName().isEmpty() || adminItemDto.getAddress().isEmpty() || adminItemDto.getContact().isEmpty() ||
@@ -175,8 +182,13 @@ public class AdminController {
                 String imgUrl = saveImage(imageFile);
                 adminItemDto.setImgUrl(imgUrl);
 
-                adminItemDto.setBusinessHours("key","value");
-
+                adminItemDto.setBusinessHours("Mon",Mon);
+                adminItemDto.setBusinessHours("Tue",Tue);
+                adminItemDto.setBusinessHours("Wed",Wed);
+                adminItemDto.setBusinessHours("Thu",Thu);
+                adminItemDto.setBusinessHours("Fri",Fri);
+                adminItemDto.setBusinessHours("Sat",Sat);
+                adminItemDto.setBusinessHours("Sun",Sun);
 
                 adminItemService.saveAdminItem(adminItemDto, localEntityId);
             }catch (Exception e) {

@@ -35,10 +35,7 @@ public class AdminItemService {
             LocalEntity localEntity = optionalLocalEntity.get();
 
             AdminItemEntity adminItemEntity = convertToEntity(adminItemDto);
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println(adminItemDto.getTouristSpotName());
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println(adminItemEntity.getTouristSpotName());
+
             adminItemEntity.setLocal(localEntity); // Set localEntity directly
 
             adminItemRepository.save(adminItemEntity);
