@@ -65,8 +65,9 @@ border-top: 5px solid #267DFF;
     border-top-right-radius: 10px;
     padding-top:10px;
 }
-#locationList {
+#locationList1{
     display: flex;
+    flex-direction:column;
     align-items: center;
     flex-wrap: nowrap; /* 줄 바꿈을 방지하고 모든 요소를 한 줄에 표시합니다. */
     height: 360px;
@@ -74,6 +75,31 @@ border-top: 5px solid #267DFF;
     overflow-y: auto; /* 가로 스크롤을 표시합니다. */
     padding-top: 30px;
 }
+#locationList2 {
+    display: none;
+    flex-direction:column;
+    align-items: center;
+    flex-wrap: nowrap; /* 줄 바꿈을 방지하고 모든 요소를 한 줄에 표시합니다. */
+    height: 360px;
+    width: 600px;
+    overflow-y: auto; /* 가로 스크롤을 표시합니다. */
+    padding-top: 30px;
+}
+
+/* location1_button에 마우스를 갖다 대었을 때 스타일 */
+#location1_button:hover {
+    width: 60%;
+    transition: width 1s ease;
+    background-color: orange;
+}
+
+/* location2_button에 마우스를 갖다 대었을 때 스타일 */
+#location2_button:hover {
+    width: 60%;
+    transition: width 1s ease;
+    background-color: orange;
+}
+
 #locationInput::placeholder {
     text-align: center; /* placeholder 텍스트를 가운데 정렬 */
     color: white; /* placeholder 텍스트의 색상을 회색으로 지정 */

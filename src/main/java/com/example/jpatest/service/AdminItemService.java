@@ -15,8 +15,10 @@ import java.util.Optional;
 
 @Service
 public class AdminItemService {
+
     private final AdminItemRepository adminItemRepository;
     private final LocalRepository localRepository;
+
     @Autowired
     public AdminItemService(AdminItemRepository adminItemRepository, LocalRepository localRepository) {
         this.adminItemRepository = adminItemRepository;
@@ -35,12 +37,10 @@ public class AdminItemService {
             LocalEntity localEntity = optionalLocalEntity.get();
 
             AdminItemEntity adminItemEntity = convertToEntity(adminItemDto);
-
             adminItemEntity.setLocal(localEntity); // Set localEntity directly
 
             adminItemRepository.save(adminItemEntity);
-        }
-        else {
+        } else {
             throw new RuntimeException("LocalEntity not found with id: " + localId);
         }
     }
@@ -55,20 +55,17 @@ public class AdminItemService {
                 .orElseThrow(() -> new RuntimeException("Item not found with id: " + itemId));
     }
 
-
     private AdminItemEntity convertToEntity(AdminItemDto adminItemDto) {
         AdminItemEntity adminItemEntity = new AdminItemEntity();
-        adminItemEntity.setImgUrl(adminItemDto.getImgUrl()); // 이미지 URL 설정
+        adminItemEntity.setImgUrl(adminItemDto.getImgUrl());
         adminItemEntity.setTouristSpotName(adminItemDto.getTouristSpotName());
         adminItemEntity.setAddress(adminItemDto.getAddress());
         adminItemEntity.setContact(adminItemDto.getContact());
         adminItemEntity.setFeatures(adminItemDto.getFeatures());
         adminItemEntity.setBusinessHours(adminItemDto.getBusinessHours());
+        adminItemEntity.setContentType(adminItemDto.getContentType());
         // 필요한 다른 필드들도 설정
 
         return adminItemEntity;
     }
-
-
-
 }

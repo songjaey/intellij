@@ -11,7 +11,44 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/adminhub/adminhub.css">
     <link rel="stylesheet" href="/css/adminhub/localDetail.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+               // 현재 주소 가져오기
+               var currentUrl = new URL(window.location.href);
 
+               // 명소 링크 설정
+               var touristSpotLink = document.getElementById('touristSpotLink');
+               touristSpotLink.href = createNewUrl(currentUrl, 'content', '명소');
+
+               // 식당 링크 설정
+               var restaurantLink = document.getElementById('restaurantLink');
+               restaurantLink.href = createNewUrl(currentUrl, 'content', '식당');
+
+               // 숙박 링크 설정
+               var accommodationLink = document.getElementById('accommodationLink');
+               accommodationLink.href = createNewUrl(currentUrl, 'content', '숙박');
+
+               // 모달 폼의 contentType input 요소에 content 파라미터 값을 설정
+               var urlParams = new URLSearchParams(window.location.search);
+               var contentValue = urlParams.get('content');
+               var contentTypeInput = document.getElementById('contentType');
+               if (contentTypeInput) {
+                   contentTypeInput.value = contentValue;
+               }
+           });
+
+           // 새로운 URL을 생성하는 함수
+           function createNewUrl(currentUrl, paramName, paramValue) {
+               // URL 객체를 복제하여 새로운 URL 객체 생성
+               var newUrl = new URL(currentUrl);
+
+               // 새로운 URL에 파라미터 추가 또는 대체
+               newUrl.searchParams.set(paramName, paramValue);
+
+               // 문자열 형태로 반환
+               return newUrl.toString();
+           }
+    </script>
 </head>
 
 <body>
@@ -22,27 +59,38 @@
         <div><a href="/admin/eventCustom">이벤트관리</a></div>
     </div>
 
-    <div class="content">
+    <div class="content" >
         <div class="content_box">
             <div class="local_plus">
                 <button style="border:0;width:100%;height:100%;background:none;font-size:50px;display:flex;justify-content:center;align-items:center;" type="button" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
             </div>
-
             <div class="local_block" th:each="item : ${adminItemEntity}" th:if="${adminItemEntity != null}" th:style="'background-image: url(' + ${item.imgUrl} + ');'" th:attr="data-item-id=${item.id}">
                 <button class="btn btn-danger delete-btn">삭제</button>
-                <!-- item.id가 selectedItemId와 일치할 때 폼과 버튼을 표시 -->
                 <form th:action="@{/admin/item/{itemId}(itemId=${item.id})}" method="POST">
                     <button class="block_detail" style="background:black; color:white; border-radius:10px; padding:5px;" th:text="${item.touristSpotName}"></button>
                 </form>
             </div>
+
         </div>
     </div>
 
     <div class="select_content">
-        <div class="content_block"><a>명소</a></div>
-        <div class="content_block"><a>식당</a></div>
-        <div class="content_block"><a>숙박</a></div>
+        <!-- 명소 링크 -->
+        <div class="content_block">
+            <a id="touristSpotLink" href="#">명소</a>
+        </div>
+
+        <!-- 식당 링크 -->
+        <div class="content_block">
+            <a id="restaurantLink" href="#">식당</a>
+        </div>
+
+        <!-- 숙박 링크 -->
+        <div class="content_block">
+            <a id="accommodationLink" href="#">숙박</a>
+        </div>
     </div>
+
 
     <form th:action="@{/admin/item}" method="POST"  id="parentForm" enctype="multipart/form-data" th:object="${adminItemDto}">
         <!-- 모달 -->
@@ -56,6 +104,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="modal_input">
+                                <input type="hidden" id="contentType" name="contentType" th:field="*{contentType}">
                                 <input type="hidden" th:if="${localEntity != null}" name="localEntityId" th:value="${localEntity.id}">
                                 <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
                                     <input type="file" name="imageFile" id="imageInput" accept="image/*" style="width: 100%;">
@@ -134,34 +183,7 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script src="/javascript/adminhub/localDetail.js"></script>
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        $('#saveModalBtn').on('click', function() {-->
-<!--            var formData = new FormData();-->
-<!--            var file = $('#imageInput')[0].files[0]; // 파일 입력 요소에서 파일 가져오기-->
-<!--            formData.append('imageFile', file); // FormData에 파일 추가-->
 
-<!--            // 기타 필요한 데이터도 FormData에 추가 가능-->
-
-<!--            // AJAX 요청 보내기-->
-<!--            $.ajax({-->
-<!--                url: '/admin/item',-->
-<!--                method: 'POST',-->
-<!--                processData: false,-->
-<!--                contentType: false,-->
-<!--                data: formData,-->
-<!--                success: function(response) {-->
-<!--                    // 성공 시 처리-->
-<!--                    console.log(response);-->
-<!--                },-->
-<!--                error: function(xhr, status, error) {-->
-<!--                    // 실패 시 처리-->
-<!--                    console.error(xhr.responseText);-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-</script>
 
 </body>
 

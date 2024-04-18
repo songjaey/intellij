@@ -16,6 +16,9 @@ public class AdminItemEntity {
     @JoinColumn(name = "local_id", nullable = false) // 외래 키 설정
     private LocalEntity local;
 
+    @Column(name = "content_type")
+    private String contentType; // This field will store the type of content: 명소, 식당, 숙박
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

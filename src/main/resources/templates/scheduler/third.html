@@ -13,6 +13,22 @@
 <th:block layout:fragment="script">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script type="module"  src="/javascript/map.js"></script>
+    <!-- jQuery를 사용하여 버튼 클릭 이벤트 처리 -->
+    <script>
+        $(document).ready(function() {
+            // "명소" 버튼 클릭 시 locationList1 표시
+            $("#location1_button").click(function() {
+                $("#locationList1").css("display", "flex");
+                $("#locationList2").css("display", "none");
+            });
+
+            // "식당" 버튼 클릭 시 locationList1 숨김
+            $("#location2_button").click(function() {
+                $("#locationList1").css("display", "none");
+                $("#locationList2").css("display", "flex");
+            });
+        });
+    </script>
 </th:block>
 
 <div layout:fragment="content">
@@ -33,9 +49,16 @@
 
                 <div style="width:800px;height:100%;display:flex;justify-content:center;flex-wrap:wrap;">
                     <p style="height:80px;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">선택한 관광지</p>
+                    <div id="button_item_box" style="display:flex; flex-direction:column;">
+                        <div id="button_box" style="display: flex; justify-content: center; width:100%">
+                            <button id="location1_button" type="button" style="width:50%; height:50px; border-radius:8px;">명소</button>
+                            <button id="location2_button" type="button" style="width:50%; height:50px; border-radius:8px;">식당</button>
+                        </div>
 
-                    <div id="selectItem" style="width:600px; height:150px;display:flex;justify-content:center;align-items:center;">명소/식당 Animation</div>
+                        <div id="selectItem" style="width:600px; height:150px;display:flex;justify-content:center;align-items:center;">
 
+                        </div>
+                    </div>
                     <div style="height:100px;width:600px;display:flex;justify-content:center;align-items:center;">
                         <div style="width:500px;height:50px;display:flex;align-items:center;background-color:#004392;border:3px solid white;border-radius:10px;">
                             <input style="width:100%;height:100%;border:none;" type="text" id="locationInput" placeholder="원하시는 특징 또는 이름을 검색하세요">
@@ -44,23 +67,231 @@
                     </div>
 
                     <div id="lcBox">
-                        <div id="locationList">
-                            <div id="contents">
-
+                        <div id="locationList1">
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+<!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox1">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox1">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5);margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox2">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox2">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox3">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox3">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox4">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox4">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox5">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox5">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox6">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox6">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox7">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox7">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox8">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox8">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox9">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox9">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox10">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox10">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:white; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <div style="display:flex; flex-direction:row; justify-content: space-between; padding-right:20px;">
+                                        <label for="locationCheckBox11">도쿄 타워</label>
+                                        <input type="checkbox" id="locationCheckBox11">
+                                    </div>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="locationList2" >
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>잠실 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5);margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>잠실 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
+                            </div>
+                            <div class="contents" style="height:115px;display:flex; flex-direction:row; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;" >
+                                <!--                                <div th:style="'background-image: url(' + ${item.imgUrl} + ');'">-->
+                                <div style="width:40%; height: 90%; background-color:orange; margin:10px; border-radius:8px"></div>
+                                <div style="color:white">
+                                    <h2>도쿄 타워</h2>
+                                    <span>#도쿄 타워 #도쿄랜드 마크 #도쿄명소 #도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소#도쿄 타워 #도쿄랜드 마크 #도쿄명소</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!--<div id="SelectLocationBox" style="display:none;position:absolute;"> &lt;!&ndash; 숨겨진 영역 &ndash;&gt;
                         <input type="hidden" id="selectedLocations" name="selectedLocations" th:value="${schedulerDto.selectedLocations}">
                     </div>-->
+                    </div>
                 </div>
-            </div>
 
-            <div style="width:11%;height:100%;background:#000A67;display:flex;justify-content:center;align-items:end;">
-                <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold; display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer;">Next</button>
+                <div style="width:11%;height:100%;background:#000A67;display:flex;justify-content:center;align-items:end;">
+                    <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold; display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
+                        <button type="button" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer;">Next</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+    </form>
+</div>
 </html>

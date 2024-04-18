@@ -1,16 +1,16 @@
 $(document).ready(function() {
 
      // CSRF 토큰 가져오기
-        function getCsrfToken() {
-            const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-            const csrfCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
+     function getCsrfToken() {
+        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+        const csrfCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
 
-            if (csrfCookie) {
-                return csrfCookie.split('=')[1];
-            } else {
-                return null; // CSRF 토큰을 찾지 못한 경우
-            }
+        if (csrfCookie) {
+            return csrfCookie.split('=')[1];
+        } else {
+            return null; // CSRF 토큰을 찾지 못한 경우
         }
+     }
 
     // 페이지 로드 시 서버로부터 모든 국가와 지역 정보를 요청하여 블록 생성
     $.ajax({
@@ -21,7 +21,10 @@ $(document).ready(function() {
                 var newLocalBlock = '<div class="local_block">' +
                     '<p class="country">' + local.country + '</p>' +
                     '<p class="local">(' + local.local + ')</p>' +
-                    '</div>';
+                    '<button id="delete">삭제</button>' +
+                    '</div>' ;
+
+
 
                 var $newLocalElement = $(newLocalBlock);
                 $('.content_box').append($newLocalElement);
@@ -30,7 +33,7 @@ $(document).ready(function() {
                     var country = $(this).find('.country').text().trim();
                     var local = $(this).find('.local').text().trim().slice(1, -1);
 
-                    window.location.href = '/admin/localDetail?country=' + encodeURIComponent(country) + '&local=' + encodeURIComponent(local);
+                    window.location.href = '/admin/localDetail?country=' + encodeURIComponent(country) + '&local=' + encodeURIComponent(local)+ '&content=명소';
                 });
             });
         },
@@ -39,9 +42,46 @@ $(document).ready(function() {
         }
     });
 
+// 삭제 버튼 클릭 이벤트 핸들러
+    $(document).on('click', '.local_block #delete', function() {
+        var $localBlock = $(this).closest('.local_block'); // 클릭된 삭제 버튼의 상위 .local_block 요소 선택
+
+        // 삭제할 국가와 지역 정보 가져오기
+        var country = $localBlock.find('.country').text().trim();
+        var local = $localBlock.find('.local').text().trim().slice(1, -1);
+
+        // CSRF 토큰 가져오기
+        var csrfToken = getCsrfToken();
+
+        // 서버에 delete 요청 보내기
+        $.ajax({
+            type: 'POST',
+            url: '/admin/deleteLocal',
+            data: {
+                country: country,
+                local: local
+            },
+            headers: {
+                'X-XSRF-TOKEN': csrfToken // 헤더에 CSRF 토큰 추가
+            },
+            success: function(response) {
+                // 성공한 경우 해당 지역 블록을 화면에서 제거
+                $localBlock.remove();
+                alert('삭제되었습니다.');
+            },
+            error: function(xhr, status, error) {
+                // 오류 발생 시 처리
+                console.error('오류 발생:', error);
+                alert('오류가 발생했습니다: ' + error);
+            }
+        });
+    });
+
+
+
     // 모달 폼에서 데이터를 추가하고 저장할 경우
-    $('#localForm').submit(function (event) {
-        event.preventDefault(); // 기본 동작 방지
+    $('#modal_click').click(function() {
+        //        event.preventDefault(); // 기본 동작 방지
 
         var country = $('#countryInput').val();
         var local = $('#localInput').val();
@@ -66,9 +106,11 @@ $(document).ready(function() {
 
                     // 저장 후, 해당 블록을 다시 불러와서 추가
                     var newLocalBlock = '<div class="local_block">' +
-                        '<p class="country">' + country + '</p>' +
-                        '<p class="local">(' + local + ')</p>' +
-                        '</div>';
+                    '<p class="country">' + local.country + '</p>' +
+                    '<p class="local">(' + local.local + ')</p>' +
+                    '<button id="delete">삭제</button>' +
+                    '</div>' ;
+
 
                     // Append new local block to content box
                     var $newLocalElement = $(newLocalBlock);
@@ -85,6 +127,8 @@ $(document).ready(function() {
                 alert('오류가 발생했습니다: ' + error);
             }
         });
+
     });
+
 
 });

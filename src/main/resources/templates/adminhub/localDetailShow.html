@@ -70,7 +70,7 @@
                                 <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
                                     <div class="day-time-entry" th:each="entry : ${item.businessHours}">
                                         <label th:text="${entry.key}"></label>
-                                        <input th:text="${entry.value}" readonly>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
                                 </div>
                             </div>
