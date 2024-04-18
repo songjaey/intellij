@@ -21,9 +21,8 @@ $(document).ready(function() {
                 var newLocalBlock = '<div class="local_block">' +
                     '<p class="country">' + local.country + '</p>' +
                     '<p class="local">(' + local.local + ')</p>' +
-                    '<button id="delete">삭제</button>' +
+                    '<button class="delete">삭제</button>' +
                     '</div>' ;
-
 
 
                 var $newLocalElement = $(newLocalBlock);
@@ -43,7 +42,7 @@ $(document).ready(function() {
     });
 
 // 삭제 버튼 클릭 이벤트 핸들러
-    $(document).on('click', '.local_block #delete', function() {
+    $(document).on('click', '.delete', function() {
         var $localBlock = $(this).closest('.local_block'); // 클릭된 삭제 버튼의 상위 .local_block 요소 선택
 
         // 삭제할 국가와 지역 정보 가져오기
@@ -55,7 +54,7 @@ $(document).ready(function() {
 
         // 서버에 delete 요청 보내기
         $.ajax({
-            type: 'POST',
+            type: 'DELETE',
             url: '/admin/deleteLocal',
             data: {
                 country: country,
@@ -108,7 +107,7 @@ $(document).ready(function() {
                     var newLocalBlock = '<div class="local_block">' +
                     '<p class="country">' + local.country + '</p>' +
                     '<p class="local">(' + local.local + ')</p>' +
-                    '<button id="delete">삭제</button>' +
+                    '<button class="delete">삭제</button>' +
                     '</div>' ;
 
 

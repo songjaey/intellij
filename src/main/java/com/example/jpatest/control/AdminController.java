@@ -104,13 +104,13 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/deleteLocal")
+    @RequestMapping(value = "/deleteLocal", method = RequestMethod.DELETE)
     public String deleteLocalDetail(@RequestParam("country") String country,
                                     @RequestParam("local") String local,
                                     Model model) {
         adminLocalService.deleteDetail(country, local);
 
-        return "main";
+        return "adminhub/first";
     }
     @GetMapping("/localDetail")
     public String showLocalDetail(@RequestParam("country") String country,
