@@ -4,6 +4,22 @@ let geocoder;
 let selectedCities = new Set(); // 선택된 도시를 저장할 Set
 const MAX_SELECTED_CITIES = 4; // 선택 가능한 최대 도시 개수
 
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    initMap();
+
+    const selectItem = document.getElementById("selectItem");
+
+    selectItem.addEventListener("click", (event) => {
+        if (event.target && event.target.classList.contains("selected-item")) {
+            const locationText = event.target.getAttribute("data-location");
+            const marker = markers.find((m) => m.getTitle() === locationText);
+            const locationBlock = event.target;
+            removeMarkerAndBlock(locationText, marker, locationBlock);
+        }
+    });
+});
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 37.5665, lng: 126.978 }, // 서울 중심 좌표
@@ -18,7 +34,10 @@ function initMap() {
         item.addEventListener('click', () => {
             const cityName = item.querySelector('.B').textContent.trim();
             const countryName = item.querySelector('.C').textContent.trim();
+            const localId = item.querySelector('.D').textContent.trim();
+
             const locationText = `${cityName}, ${countryName}`;
+            const locationText2 = `${localId}`;
 
             if (selectedCities.size >= MAX_SELECTED_CITIES) {
                 alert("고를 수 있는 관광지는 최대 4개입니다. 먼저 등록한 관광지를 눌러 제거해주세요.");
@@ -34,10 +53,11 @@ function initMap() {
             var nationalValue= national.value;
             var cityValue=city.value;
             var id = item.querySelector('.C').dataset.id;
-            var loca = item.querySelector('.B').dataset.location;
+            var local = item.querySelector('.B').dataset.location;
+            var local_Id = item.querySelector('.D').dataset.localID;
 
             national.value=nationalValue+","+id;
-            city.value=cityValue+","+loca;
+            city.value=cityValue+","+local;
 
 
 
@@ -61,7 +81,7 @@ function initMap() {
 
                     markers.push(marker);
 
-                    addCityToSelection(locationText, marker);
+                    addCityToSelection(locationText, locationText2, marker);
                     map.panTo(location); // 맵을 선택된 위치로 이동
                 } else {
                     console.error("위치를 찾을 수 없습니다.");
@@ -70,8 +90,7 @@ function initMap() {
         });
     });
 }
-
-function addCityToSelection(locationText, marker) {
+function addCityToSelection(locationText,locationText2, marker) {
     if (selectedCities.has(locationText)) {
         return;
     }
@@ -94,6 +113,12 @@ function addCityToSelection(locationText, marker) {
     locationBlock.setAttribute("data-location", locationText);
     locationBlock.textContent = locationText;
 
+    const hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = "localId";
+    hiddenInput.value = locationText2;
+    locationBlock.appendChild(hiddenInput);
+
     locationBlock.addEventListener("click", () => {
         removeMarkerAndBlock(locationText, marker, locationBlock);
     });
@@ -101,7 +126,6 @@ function addCityToSelection(locationText, marker) {
     selectItem.appendChild(locationBlock);
     selectedCities.add(locationText);
 }
-
 function removeMarkerAndBlock(locationText, marker, locationBlock) {
     const index = markers.findIndex((m) => m === marker);
     if (index !== -1) {
@@ -112,18 +136,3 @@ function removeMarkerAndBlock(locationText, marker, locationBlock) {
     selectedCities.delete(locationText);
     locationBlock.remove();
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    initMap();
-
-    const selectItem = document.getElementById("selectItem");
-
-    selectItem.addEventListener("click", (event) => {
-        if (event.target && event.target.classList.contains("selected-item")) {
-            const locationText = event.target.getAttribute("data-location");
-            const marker = markers.find((m) => m.getTitle() === locationText);
-            const locationBlock = event.target;
-            removeMarkerAndBlock(locationText, marker, locationBlock);
-        }
-    });
-});

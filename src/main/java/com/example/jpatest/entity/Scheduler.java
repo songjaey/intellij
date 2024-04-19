@@ -26,15 +26,10 @@ public class Scheduler {
     private String trip_duration_start;
     @Column
     private String trip_duration_end;
-
     @ElementCollection
-    private List<Long> localIds; // LocalEntity의 ID 목록
-
+    private List<Long> localIds;
     @ElementCollection
-    private List<Long> adminItemIds; // AdminItemEntity의 ID 목록
-
-
-
+    private List<Long> adminItemIds;
 
     public static Scheduler createScheduler(SchedulerDto schedulerDto) {
         Scheduler scheduler = new Scheduler();

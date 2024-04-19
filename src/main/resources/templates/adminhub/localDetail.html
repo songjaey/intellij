@@ -77,12 +77,12 @@
     <div class="select_content">
         <!-- 명소 링크 -->
         <div class="content_block">
-            <a id="touristSpotLink" href="#">명소</a>
+            <a id="touristSpotLink" href="#" >명소</a>
         </div>
 
         <!-- 식당 링크 -->
         <div class="content_block">
-            <a id="restaurantLink" href="#">식당</a>
+            <a id="restaurantLink" href="#" >식당</a>
         </div>
 
         <!-- 숙박 링크 -->
@@ -93,6 +93,7 @@
 
 
     <form th:action="@{/admin/item}" method="POST"  id="parentForm" enctype="multipart/form-data" th:object="${adminItemDto}">
+
         <!-- 모달 -->
         <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -183,6 +184,19 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script src="/javascript/adminhub/localDetail.js"></script>
+
+<!--<script>-->
+<!--    function setLinkHref() {-->
+<!--        // country, local, content 값 가져오기-->
+<!--        var country = '${localEntity.country}';-->
+<!--        var local = '${localEntity.local}';-->
+<!--        var contentType = '숙박'; // contentType을 하드코딩하거나, 적절한 방식으로 가져오세요.-->
+
+<!--        // href 속성 설정-->
+<!--        var link = document.getElementById('touristSpotLink');-->
+<!--        link.href = '/localDetail?country=' + encodeURIComponent(country) + '&local=' + encodeURIComponent(local) + '&content=' + encodeURIComponent(contentType);-->
+<!--    }-->
+<!--</script>-->
 
 
 </body>

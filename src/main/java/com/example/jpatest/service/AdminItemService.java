@@ -5,11 +5,10 @@ import com.example.jpatest.entity.AdminItemEntity;
 import com.example.jpatest.entity.LocalEntity;
 import com.example.jpatest.repository.AdminItemRepository;
 import com.example.jpatest.repository.LocalRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +52,10 @@ public class AdminItemService {
         // itemId를 사용하여 데이터베이스에서 아이템 정보를 조회
         return adminItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("Item not found with id: " + itemId));
+    }
+    public List<AdminItemEntity> findBylistId(Long localId) {
+        // localId를 사용하여 데이터베이스에서 아이템 정보를 조회
+        return adminItemRepository.findByLocalId(localId);
     }
 
     private AdminItemEntity convertToEntity(AdminItemDto adminItemDto) {
