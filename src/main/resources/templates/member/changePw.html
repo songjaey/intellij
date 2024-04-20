@@ -197,38 +197,80 @@
 <!-- JavaScript 코드 -->
 <th:block layout:fragment="script">
     <script>
+        $(function(){
 
+            $("#confirmPassword").on("keyup", function(){
+                var pw = $("#password").val();
+                var confirm = $(this).val();
+                if( pw == confirm ) {
+                    $(this).next().html("<i class='bi bi-check-circle'></i> 비밀번호가 일치합니다.");
+                    $(this).next().addClass("text-success");
+                }else{
+                    $(this).next().html("<i class='bi bi-x-circle-fill'></i> 비밀번호가 일치하지 않습니다.");
+                    $(this).next().removeClass("text-success");
+                }
+            });
+        });
     </script>
 </th:block>
 
 <!-- 폼 요소 -->
 <body>
-<form th:action="@{/members/sendTemporaryPassword}" method="post" id="signFm">
+<form th:action="@{/members/subChangePw}" th:object="${memberFormDto}" method="post" id="signFm">
     <div class="main-text-box">
         <a class="main-text" href="/" style="font-size:50px; font-style:bold; color:#93EBFF; text-align:center; font-family: 'Bauhaus 93'; display: block; width: 100%;">TravelGenius</a>
     </div>
     <div class="wrapper">
         <div class="form-box">
-            <h2>비밀번호 찾기</h2>
-            <!--            <input type="hidden" name="_csrf" th:value="${_csrf.token}">-->
+            <h2>비밀번호 변경하기</h2>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
 
-            <div class="phone-box"> 휴대전화와 이메일을 입력하시오 </div>
+            <div class="phone-box"> 이메일,휴대전화 원하는 비밀번호 입력 </div>
 
-            <div class="input-box">
-                <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                <div class="form-detail">
-                    <input type="text" id="email" name="email" placeholder="이메일을 입력하세요">
+            <div class="outer-box">
+                <div class="input-box">
+                    <label th:for="email"></label>
+                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                    <input type="email" th:field="*{email}" id="email" name="email" placeholder="이메일 입력하세요">
                 </div>
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></p>
+                <p th:if="${emailError}" class="fieldError" th:text="${emailError}" style="color:red; font-size:12px"></p>
             </div>
-            <div class="input-box">
-                <span class="icon"><ion-icon name="call"></ion-icon></span>
-                <div class="form-detail">
-                    <input type="text" id="tel" name="tel"  placeholder="핸드폰 번호를 입력하세요">
+            <div class="outer-box">
+                <div class="input-box">
+                    <label th:for="tel"></label>
+                    <span class="icon"><ion-icon name="call"></ion-icon></span>
+                    <input type="text" th:field="*{tel}" id="tel" name="tel" placeholder="핸드폰 번호를 입력하세요">
+                </div>
+                <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError"></p>
+            </div>
+
+            <div class="outer-box">
+                <div class="input-box">
+                    <label th:for="password"></label>
+                    <span class="icon" ><ion-icon name="lock-closed"></ion-icon></span>
+                    <input type="password" th:field="*{password}" id="password" name="password" placeholder="비밀번호를 입력하세요">
+                </div>
+
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError"></p>
+            </div>
+            <div class="outer-box">
+                <div class="input-box">
+                    <label th:for="confirmPassword"></label>
+                    <span class="icon" ><ion-icon name="lock-closed"></ion-icon></span>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시입력하세요">
+                    <p class="fieldError"></p>
                 </div>
             </div>
 
             <div class="submit-button">
-                <button type="submit" class="btn btn-secondary">임시비밀번호 보내기</button>
+                <button type="submit" class="btn btn-secondary">비밀번호 변경하기</button>
+            </div>
+
+            <div class="submit-button">
+                <span>
+                    <a th:href="@{/members/findPw}">임시비밀번호 받기</a>
+                </span>
             </div>
 
             <div class="login-button">

@@ -65,29 +65,28 @@ border-top: 5px solid #267DFF;
     border-top-right-radius: 10px;
     padding-top:10px;
 }
-#locationList{
+#locationList ul{
     display:flex;
     align-items:center;
     flex-wrap:wrap;
-    height:360px;width:600px;
+    height:360px;width:625px;
     overflow: auto;
     padding-top:30px;
+    padding-left:30px;
+    padding-right:30px;
 }
 #locationInput::placeholder {
     text-align: center; /* placeholder 텍스트를 가운데 정렬 */
     color: white; /* placeholder 텍스트의 색상을 회색으로 지정 */
 }
-#locationList ul {
-    margin-bottom: 30px; /* 하단 마진 설정 */
-    width: 100%;
-    display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-    padding:0;
-}
 
-#locationList li, .selected-item {
+.landMark, .selected-item{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
     cursor: pointer;
-    margin: 0 20px;
+    margin: 20px 20px;
     width: 100px;
     height: 100px;
     background-color: rgba(0, 117, 255, 0.5);
@@ -99,7 +98,7 @@ border-top: 5px solid #267DFF;
     list-style-type: none; /* 목록 마커 제거 */
 }
 
-#locationList li .C {
+.B, .C {
     font-family: 'LINE Seed Sans KR';
     font-weight: bold;
     width: 100%;
@@ -123,11 +122,4 @@ border-top: 5px solid #267DFF;
 /* 스크롤 바 hover 시 스타일 변경 */
 ::-webkit-scrollbar-thumb:hover {
     background-color: #555;
-}
-
-#selectItem div{
-    width:100px;
-    height:100px;
-    background-color: rgba(0, 117, 255, 0.5); /* 빨간색, 녹색, 파란색, 투명도(0.5) */
-    color:white;
 }

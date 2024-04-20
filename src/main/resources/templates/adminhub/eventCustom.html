@@ -133,62 +133,62 @@
 
 <body>
 <!--<form action="/admin/saveEvent" method="post" class="box" >-->
-    <input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
+<input type="hidden" name="_csrf" value="a3c9b2bf-f3b8-4a94-8c96-dd6f4f69f129">
 
-    <div class="header">
-        <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
-        <div><a href="/admin/first">상품관리목록</a></div>
-        <div style="color: black; background-color: white;"><a href="/admin/eventCustom">이벤트관리</a></div>
-    </div>
+<div class="header">
+    <a href="/" style="text-decoration:none;height:75px; margin-right:300px; font-size:50px; font-style:bold; color:#93EBFF;text-align:right; font-family: 'Bauhaus 93';">TravelGenius</a>
+    <div><a href="/admin/first">상품관리목록</a></div>
+    <div style="color: black; background-color: white;"><a href="/admin/eventCustom">이벤트관리</a></div>
+</div>
 
-    <div class="content">
-        <div class="content_box">
+<div class="content">
+    <div class="content_box">
 
-            <i class="bi bi-arrow-left-square" id="slide-left"></i>
+        <i class="bi bi-arrow-left-square" id="slide-left"></i>
 
-            <div class="img-box" style="background-image: url('/image/image1.jpg');">SNS 이벤트<i class="bi bi-x"></i></div>
-            <div class="img-box" style="background-image: url('/image/image1.jpg');">호텔 쿠폰<i class="bi bi-x"></i></div>
-            <div class="img-box" style="background-image: url('/image/image1.jpg');">항공권 할인<i class="bi bi-x"></i></div>
-            <div class="img-box" style="background-image: url('/image/home.jpg');">공유 이벤트<i class="bi bi-x"></i></div>
-            <div class="img-box" style="background-image: url('/image/image1.jpg');">치킨 쿠폰 이벤트<i class="bi bi-x"></i></div>
-            <div class="img-box" style="background-image: url('/image/image1.jpg');"></div>
-            <div class="img-box" style="background-image: url('/image/home.jpg');"></div>
+        <div class="img-box" style="background-image: url('/image/image1.jpg');">SNS 이벤트<i class="bi bi-x"></i></div>
+        <div class="img-box" style="background-image: url('/image/image1.jpg');">호텔 쿠폰<i class="bi bi-x"></i></div>
+        <div class="img-box" style="background-image: url('/image/image1.jpg');">항공권 할인<i class="bi bi-x"></i></div>
+        <div class="img-box" style="background-image: url('/image/home.jpg');">공유 이벤트<i class="bi bi-x"></i></div>
+        <div class="img-box" style="background-image: url('/image/image1.jpg');">치킨 쿠폰 이벤트<i class="bi bi-x"></i></div>
+        <div class="img-box" style="background-image: url('/image/image1.jpg');"></div>
+        <div class="img-box" style="background-image: url('/image/home.jpg');"></div>
 
-            <!-- 이벤트 이미지 박스 -->
+        <!-- 이벤트 이미지 박스 -->
 
-            <div th:if="${events != null}" th:each="event : ${events}" class="img-box" th:style="'background-image: url(' + ${event.imgUrl} + ');'">
-                <span th:text="${event.content}">이벤트</span>
-                <i class="bi bi-x delete-icon" th:attr="data-event-id=${event.id}"></i>
-            </div>
-
-
-            <i class="bi bi-arrow-right-square" id="slide-right"></i>
-
+        <div th:if="${events != null}" th:each="event : ${events}" class="img-box" th:style="'background-image: url(' + ${event.imgUrl} + ');'">
+            <span th:text="${event.content}">이벤트</span>
+            <i class="bi bi-x delete-icon" th:attr="data-event-id=${event.id}"></i>
         </div>
 
-        <button id="addButton">등록</button>
+
+        <i class="bi bi-arrow-right-square" id="slide-right"></i>
+
     </div>
 
-    <!-- 모달 창 -->
-    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">이벤트 등록</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- 이미지 업로드 폼과 내용 입력 폼 -->
-                    <input type="file" id="imageInput" accept="image/*">
-                    <textarea id="contentInput" rows="4" cols="50"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-primary" id="saveButton">저장</button>
-                </div>
+    <button id="addButton">등록</button>
+</div>
+
+<!-- 모달 창 -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">이벤트 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 이미지 업로드 폼과 내용 입력 폼 -->
+                <input type="file" id="imageInput" accept="image/*">
+                <textarea id="contentInput" rows="4" cols="50"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="saveButton">저장</button>
             </div>
         </div>
     </div>
+</div>
 <!--</form>-->
 </body>
 

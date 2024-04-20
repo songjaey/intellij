@@ -1,8 +1,18 @@
-.box {
+body {
+    margin: 0; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    overflow: hidden; /* 스크롤링 방지 */
+}
+
+html, body, .box {
+    height: 100%; /* html, body, .box 요소의 높이를 100%로 설정하여 화면 전체를 채우도록 함 */
+}
+
+.box{
     border-top: 5px solid #0041A4;
-    height: 100%;
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1));
     width: 1920px;
     display: flex;
-    box-sizing:border-box;
+    /*flex-direction: column; *//* 내부 요소들을 수직 방향으로 배치 */
+    overflow: hidden; /* .box 요소 내부의 오버플로우를 숨김 */
 }

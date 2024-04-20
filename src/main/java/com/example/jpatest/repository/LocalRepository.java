@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface LocalRepository extends JpaRepository<LocalEntity, Long> {
     Optional<LocalEntity> findByCountryAndLocal(String country, String local);
     boolean existsByCountryAndLocal(String country, String local);
+
+    void deleteByCountryAndLocal(String country, String local);
 }

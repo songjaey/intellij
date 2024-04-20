@@ -5,18 +5,19 @@ import com.example.jpatest.entity.AdminItemEntity;
 import com.example.jpatest.entity.LocalEntity;
 import com.example.jpatest.repository.AdminItemRepository;
 import com.example.jpatest.repository.LocalRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AdminItemService {
+
     private final AdminItemRepository adminItemRepository;
     private final LocalRepository localRepository;
+
     @Autowired
     public AdminItemService(AdminItemRepository adminItemRepository, LocalRepository localRepository) {
         this.adminItemRepository = adminItemRepository;
@@ -35,15 +36,10 @@ public class AdminItemService {
             LocalEntity localEntity = optionalLocalEntity.get();
 
             AdminItemEntity adminItemEntity = convertToEntity(adminItemDto);
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println(adminItemDto.getTouristSpotName());
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println(adminItemEntity.getTouristSpotName());
             adminItemEntity.setLocal(localEntity); // Set localEntity directly
 
             adminItemRepository.save(adminItemEntity);
-        }
-        else {
+        } else {
             throw new RuntimeException("LocalEntity not found with id: " + localId);
         }
     }
@@ -57,21 +53,22 @@ public class AdminItemService {
         return adminItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("Item not found with id: " + itemId));
     }
-
+    public List<AdminItemEntity> findBylistId(Long localId) {
+        // localId를 사용하여 데이터베이스에서 아이템 정보를 조회
+        return adminItemRepository.findByLocalId(localId);
+    }
 
     private AdminItemEntity convertToEntity(AdminItemDto adminItemDto) {
         AdminItemEntity adminItemEntity = new AdminItemEntity();
-        adminItemEntity.setImgUrl(adminItemDto.getImgUrl()); // 이미지 URL 설정
+        adminItemEntity.setImgUrl(adminItemDto.getImgUrl());
         adminItemEntity.setTouristSpotName(adminItemDto.getTouristSpotName());
         adminItemEntity.setAddress(adminItemDto.getAddress());
         adminItemEntity.setContact(adminItemDto.getContact());
         adminItemEntity.setFeatures(adminItemDto.getFeatures());
         adminItemEntity.setBusinessHours(adminItemDto.getBusinessHours());
+        adminItemEntity.setContentType(adminItemDto.getContentType());
         // 필요한 다른 필드들도 설정
 
         return adminItemEntity;
     }
-
-
-
 }

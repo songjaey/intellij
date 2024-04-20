@@ -12,4 +12,8 @@ import java.util.List;
 public interface AdminItemRepository extends JpaRepository<AdminItemEntity, Long> {
     // 필요한 추가적인 Repository 메서드 정의 가능
     List<AdminItemEntity> findByLocal(LocalEntity localEntity);
+
+    List<AdminItemEntity> findByLocalAndContentType(LocalEntity localEntity, String contentType);
+
+    List<AdminItemEntity> findByLocalId(Long localId);
 }

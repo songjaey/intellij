@@ -150,6 +150,27 @@ public class MainController {
         }
     }
 
+    @GetMapping("/members/changePw")
+    public String getChangePw(Model model){
+
+        model.addAttribute("memberFormDto", new MemberFormDto());
+        return "member/changePw";
+    }
+
+    @PostMapping("members/subChangePw")
+    public String postChangePw(@Valid MemberFormDto memberFormDto,
+                               BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            // 필드 검증 오류가 있는 경우
+            return "member/changePw"; // 회원가입 폼을 다시 표시
+        }
+
+
+
+
+        return "member/loginForm";
+    }
+
     @GetMapping("/members/findPw")
     public String getFindPw(Model model){
 
@@ -158,7 +179,7 @@ public class MainController {
 
     @PostMapping("/members/sendTemporaryPassword")
     @ResponseBody
-    public String sendTemporaryPassword(String email, String tel) {
+    public String sendTemporaryPassword(@NotBlank String email, @NotBlank String tel) {
         // 네이버 메일 계정 설정
         String naverEmail = "songjaey8237@naver.com";
 //        String naverPassword = "Thdrk2838!";

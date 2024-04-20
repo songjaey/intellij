@@ -68,40 +68,9 @@
                             </div>
                             <div style="width: 100%; height: 230px; padding: 20px auto;">
                                 <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
-                                    <div class="day-time-entry">
-                                        <label>월요일</label>
-                                        <input type="text" name="월요일_am">
-                                        <input type="text" name="월요일_pm">
-                                    </div>
-                                    <div class="day-time-entry">
-                                        <label>화요일</label>
-                                        <input type="text" name="화요일_am">
-                                        <input type="text" name="화요일_pm">
-                                    </div>
-                                    <div class="day-time-entry">
-                                        <label>수요일</label>
-                                        <input type="text" name="수요일_am">
-                                        <input type="text" name="수요일_pm">
-                                    </div>
-                                    <div class="day-time-entry">
-                                        <label>목요일</label>
-                                        <input type="text" name="목요일_am">
-                                        <input type="text" name="목요일_pm">
-                                    </div>
-                                    <div class="day-time-entry">
-                                        <label>금요일</label>
-                                        <input type="text" name="금요일_am">
-                                        <input type="text" name="금요일_pm">
-                                    </div>
-                                    <div class="day-time-entry">
-                                        <label>토요일</label>
-                                        <input type="text" name="토요일_am">
-                                        <input type="text" name="토요일_pm">
-                                    </div>
-                                    <div class="day-time-entry">
-                                        <label>일요일</label>
-                                        <input type="text" name="일요일_am">
-                                        <input type="text" name="일요일_pm">
+                                    <div class="day-time-entry" th:each="entry : ${item.businessHours}">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
                                 </div>
                             </div>

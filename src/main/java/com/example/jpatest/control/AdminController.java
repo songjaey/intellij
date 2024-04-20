@@ -9,9 +9,8 @@ import com.example.jpatest.repository.AdminItemRepository;
 import com.example.jpatest.repository.LocalRepository;
 import com.example.jpatest.service.AdminEventService;
 import com.example.jpatest.service.AdminItemService;
+import com.example.jpatest.service.AdminLocalService;
 import com.example.jpatest.service.FileUploadService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -34,7 +34,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,12 +50,20 @@ public class AdminController {
 
     private final LocalRepository localRepository;
 
+    private final AdminLocalService adminLocalService;
+
     @Autowired
-    public AdminController(AdminEventService adminEventService, AdminItemService adminItemService,AdminItemRepository adminItemRepository, LocalRepository localRepository, FileUploadService fileUploadService) {
+    public AdminController(AdminEventService adminEventService,
+                           AdminItemService adminItemService,
+                           AdminItemRepository adminItemRepository,
+                           LocalRepository localRepository,
+                           AdminLocalService adminLocalService,
+                           FileUploadService fileUploadService) {
         this.adminEventService = adminEventService;
         this.localRepository = localRepository;
         this.adminItemRepository = adminItemRepository;
         this.adminItemService = adminItemService;
+        this.adminLocalService = adminLocalService;
         this.fileUploadService = fileUploadService;
     }
 
@@ -64,33 +71,32 @@ public class AdminController {
 
     @GetMapping("/first")
     public String itemForm(Model model) {
-        model.addAttribute("localDto",new LocalDto());
+        // 폼을 위한 빈 객체 생성
+        LocalDto localDto = new LocalDto();
+
+        // 모델에 폼 객체 추가
+        model.addAttribute("localDto", localDto);
+
+        // 모든 LocalEntity 조회
+        List<LocalEntity> allLocals = localRepository.findAll();
+
+        // 모델에 조회된 데이터 추가
+        model.addAttribute("allLocals", allLocals);
+
         return "adminhub/first"; // 상품 작성 페이지 제공
     }
 
-    @GetMapping("/getAllLocals")
-    @ResponseBody
-    public ResponseEntity<List<LocalEntity>> getAllLocals() {
-        try {
-            List<LocalEntity> locals = localRepository.findAll();
-            return ResponseEntity.ok(locals);
-        } catch (Exception e) {
-            logger.error("모든 로컬 정보를 가져오는 중 오류 발생: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+
 
     @PostMapping("/saveLocal")
-    @ResponseBody
-    public ResponseEntity<String> saveLocal(@RequestParam("country") String country,
-                                            @RequestParam("local") String local) {
+    public ResponseEntity<String> saveLocal(@ModelAttribute LocalDto localDto) {
         try {
             // 이미 존재하는지 확인
-            if (localRepository.existsByCountryAndLocal(country, local)) {
+            if (localRepository.existsByCountryAndLocal(localDto.getCountry(), localDto.getLocal())) {
                 return ResponseEntity.badRequest().body("이미 존재하는 지역입니다.");
             }
 
-            LocalEntity newLocal = new LocalEntity(country, local);
+            LocalEntity newLocal = new LocalEntity(localDto.getCountry(), localDto.getLocal());
             localRepository.save(newLocal);
             return ResponseEntity.ok("저장되었습니다!");
         } catch (Exception e) {
@@ -98,28 +104,97 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장에 실패했습니다.");
         }
     }
+    @Transactional
+    @PostMapping("/deleteLocal")
+    public ResponseEntity<String> deleteLocal(@RequestParam("country") String country,
+                                              @RequestParam("local") String local) {
+        try {
+            localRepository.deleteByCountryAndLocal(country, local);
+            return ResponseEntity.ok("삭제되었습니다.");
+        } catch (Exception e) {
+            logger.error("지역 삭제 중 오류 발생: country={}, local={}", country, local, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 중 오류가 발생했습니다.");
+        }
+    }
 
     @GetMapping("/localDetail")
-    public String showLocalDetail(@RequestParam("country") String country,
-                                  @RequestParam("local") String local,
-                                  Model model) {
-        // country와 local에 해당하는 LocalEntity를 찾기
+    public String getLocalDetail(@RequestParam("country") String country,
+                                 @RequestParam("local") String local,
+                                 @RequestParam("content") String contentType,
+                                 Model model) {
 
+        // country와 local에 해당하는 LocalEntity 찾기
         Optional<LocalEntity> optionalLocalEntity = localRepository.findByCountryAndLocal(country, local);
+
         if (optionalLocalEntity.isPresent()) {
             LocalEntity localEntity = optionalLocalEntity.get();
-            List<AdminItemEntity> adminItemEntity = adminItemRepository.findByLocal(localEntity);
-            System.out.println(adminItemEntity);
+
+
+            // URL에 따라 contentType 결정
+            String contentType1 = determineContentType(contentType); // determineContentType 메서드 구현 필요
+
+            // localEntity와 contentType에 따라 admin item 가져오기
+            List<AdminItemEntity> adminItemEntity = adminItemRepository.findByLocalAndContentType(localEntity, contentType1);
+
             model.addAttribute("adminItemDto", new AdminItemDto());
             model.addAttribute("localEntity", localEntity);
             model.addAttribute("adminItemEntity", adminItemEntity);
 
             return "adminhub/localDetail";
         } else {
+            // LocalEntity를 찾지 못한 경우 처리
+            return "adminhub/localDetail"; // 또는 적절한 오류 뷰 반환
+        }
+    }
 
-            // 해당하는 LocalEntity를 찾지 못한 경우에 대한 처리
-            // 예: 예외 처리 등
+
+    @PostMapping("/localDetail")
+    public String showLocalDetail(@RequestParam("country") String country,
+                                  @RequestParam("local") String local,
+                                  @RequestParam("content") String contentType,
+                                  Model model) {
+
+        // country와 local에 해당하는 LocalEntity 찾기
+        Optional<LocalEntity> optionalLocalEntity = localRepository.findByCountryAndLocal(country, local);
+
+        if (optionalLocalEntity.isPresent()) {
+            LocalEntity localEntity = optionalLocalEntity.get();
+
+
+            // URL에 따라 contentType 결정
+            String contentType1 = determineContentType(contentType); // determineContentType 메서드 구현 필요
+
+            // localEntity와 contentType에 따라 admin item 가져오기
+            List<AdminItemEntity> adminItemEntity = adminItemRepository.findByLocalAndContentType(localEntity, contentType1);
+
+            model.addAttribute("adminItemDto", new AdminItemDto());
+            model.addAttribute("localEntity", localEntity);
+            model.addAttribute("adminItemEntity", adminItemEntity);
+
             return "adminhub/localDetail";
+        } else {
+            // LocalEntity를 찾지 못한 경우 처리
+            return "adminhub/localDetail"; // 또는 적절한 오류 뷰 반환
+        }
+    }
+
+    private String determineContentType(String locationType) {
+        if (locationType == null) {
+            return "기타"; // 기본적으로 처리할 contentType 설정
+        }
+
+        // 'locationType' 매개변수를 기반으로 contentType 결정하는 로직 구현
+        // if-else나 switch 문을 사용하여 'locationType'을 contentType으로 매핑
+        // 예를 들어:
+        if (locationType.equals("명소")) {
+            return "명소";
+        } else if (locationType.equals("식당")) {
+            return "식당";
+        } else if (locationType.equals("숙박")) {
+            return "숙박";
+        } else {
+            // 알 수 없는 contentType 처리 또는 기본값 설정
+            return "기타";
         }
     }
 
@@ -129,6 +204,7 @@ public class AdminController {
         model.addAttribute("events", events);
         return "adminhub/eventCustom";
     }
+
     @PostMapping("/saveEvent")
     public ResponseEntity<String> saveEvent(@RequestParam("image") MultipartFile image,
                                             @RequestParam("content") String content) {
@@ -163,23 +239,42 @@ public class AdminController {
 
     @PostMapping(value = "/item", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
-    public ResponseEntity<String> createAdminItem(@ModelAttribute AdminItemDto adminItemDto, @RequestParam("imageFile") MultipartFile imageFile, Long localEntityId, Model model) {
+    public ResponseEntity<String> createAdminItem(@ModelAttribute AdminItemDto adminItemDto,
+                                                  @RequestParam("Mon") String Mon,
+                                                  @RequestParam("Tue") String Tue,
+                                                  @RequestParam("Wed") String Wed,
+                                                  @RequestParam("Thu") String Thu,
+                                                  @RequestParam("Fri") String Fri,
+                                                  @RequestParam("Sat") String Sat,
+                                                  @RequestParam("Sun") String Sun,
+                                                  @RequestParam("contentType") String contentType,
+                                                  @RequestParam("imageFile") MultipartFile imageFile,
+                                                  Long localEntityId,
+                                                  Model model) {
         try {
             // 필수 항목이 비어 있는지 확인
-            if ( adminItemDto.getTouristSpotName().isEmpty() || adminItemDto.getAddress().isEmpty() || adminItemDto.getContact().isEmpty() ||
+            if (adminItemDto.getTouristSpotName().isEmpty() || adminItemDto.getAddress().isEmpty() || adminItemDto.getContact().isEmpty() ||
                     adminItemDto.getFeatures().isEmpty()) {
                 return ResponseEntity.badRequest().body("모든 필수 항목을 입력해주세요.");
             }
+
             try {
                 // 이미지 저장
                 String imgUrl = saveImage(imageFile);
                 adminItemDto.setImgUrl(imgUrl);
 
-                adminItemDto.setBusinessHours("key","value");
-
-
+                adminItemDto.setBusinessHours("Mon", Mon);
+                adminItemDto.setBusinessHours("Tue", Tue);
+                adminItemDto.setBusinessHours("Wed", Wed);
+                adminItemDto.setBusinessHours("Thu", Thu);
+                adminItemDto.setBusinessHours("Fri", Fri);
+                adminItemDto.setBusinessHours("Sat", Sat);
+                adminItemDto.setBusinessHours("Sun", Sun);
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!");
+                System.out.println(contentType);
+                adminItemDto.setContentType(contentType); // contentType 설정
                 adminItemService.saveAdminItem(adminItemDto, localEntityId);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace(); // 혹은 다른 로깅 방식으로 오류를 기록할 수 있습니다.
             }
             return ResponseEntity.ok().body("상품이 성공적으로 저장되었습니다.");
@@ -189,6 +284,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장에 실패했습니다.");
         }
     }
+
 
     @DeleteMapping("/item/delete/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
