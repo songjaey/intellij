@@ -42,7 +42,7 @@
                         <button id="location1_button" type="button" style="color: white; border:2px solid #0066F8;background:#0066F8;">명소</button>
                         <button id="location2_button" type="button" style="color : white; border:2px solid #FF3D00;background:none;">식당</button>
                     </div>
-
+                    <div id="countryData" th:text="${country}" style="display:none;"></div>
                     <div id="selectItem">
 
                     </div>
@@ -129,7 +129,7 @@
             </div>
         </div>
     </form>
-    <script type="module"  src="/javascript/scheduler/map2.js"></script>
+    <script type="module"  src="/javascript/scheduler/map3.js"></script>
     <script>
         $(document).ready(function() {
             let currentContentType = "명소"; // 초기에는 "명소"로 설정

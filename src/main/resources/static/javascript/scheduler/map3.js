@@ -3,13 +3,25 @@ document.addEventListener("DOMContentLoaded", () => {
      let map;
      let geocoder;
      let selectedSpots = new Set(); // 선택된 도시를 저장할 Set
+     let initialPosition;
 
-    initMap();
+    var country = document.getElementById("countryData").textContent;
+
+    if (country == '한국') {
+        initialPosition = { lat: 37.5665, lng: 126.978 };
+    } else if (country == '일본') {
+        initialPosition = { lat: 35.6895, lng: 139.6917 };
+    } else {
+        // 기본적으로 설정할 위치가 없는 경우, 기본값을 설정할 수 있습니다.
+        initialPosition = { lat: 0, lng: 0 };
+    }
+
+     initMap();
 
   function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 37.5665, lng: 126.978 },
-            zoom: 8,
+            center: initialPosition,
+            zoom: 11,
         });
 
         geocoder = new google.maps.Geocoder();

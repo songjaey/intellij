@@ -6,6 +6,7 @@ import com.example.jpatest.entity.LocalEntity;
 import com.example.jpatest.entity.Scheduler;
 import com.example.jpatest.repository.LocalRepository;
 import com.example.jpatest.service.AdminItemService;
+import com.example.jpatest.service.AdminLocalService;
 import com.example.jpatest.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ public class SchedulerController {
 
     private final SchedulerService schedulerService;
     private final LocalRepository localRepository;
+    private final AdminLocalService adminLocalService;
 
     private final AdminItemService adminItemService;
     private static final Logger logger = LoggerFactory.getLogger(SchedulerController.class);
@@ -74,12 +76,17 @@ public class SchedulerController {
 
             // 각 localId에 해당하는 관련 데이터를 가져와서 모델에 추가합니다.
             List<AdminItemEntity> adminItemEntityList = new ArrayList<>();
+            String country = null;
             for (String localId : localIdArray) {
                 List<AdminItemEntity> itemsForLocalId = adminItemService.findBylistId(Long.parseLong(localId));
                 adminItemEntityList.addAll(itemsForLocalId);
+
+                LocalEntity localEntity = adminLocalService.findByLocalId(Long.parseLong(localId));
+                country = localEntity.getCountry();
             }
 
             // 모델에 데이터를 추가합니다.
+            model.addAttribute("country", country);
             model.addAttribute("adminItemEntity", adminItemEntityList);
             model.addAttribute("schedulerDto", schedulerDto);
 

@@ -4,6 +4,7 @@ import com.example.jpatest.entity.LocalEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -12,4 +13,5 @@ public interface LocalRepository extends JpaRepository<LocalEntity, Long> {
     boolean existsByCountryAndLocal(String country, String local);
 
     void deleteByCountryAndLocal(String country, String local);
+
 }
