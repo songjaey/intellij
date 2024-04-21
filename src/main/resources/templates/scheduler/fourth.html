@@ -61,7 +61,15 @@
                             <div class="spot-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                 <p class="spot-name" th:text="${spot.touristSpotName}" for="locationCheckBox1" th:value="${spot.id}"></p>
                                 <p class="spot-features" th:text="${spot.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+
                                 <p class="D" th:text="${spot.id}" style="display:none;"></p>
+                                <p class="spot-address" th:text="${spot.address}" style="display:none;"></p>
+                                <p class="spot-contact" th:text="${spot.contact}" style="display:none;"></p>
+                                <div class="day-time-entry" th:each="entry : ${spot.businessHours}" style="display:none">
+                                    <label th:text="${entry.key}"></label>
+                                    <div th:text="${entry.value}"></div>
+                                </div>
+
                             </div>
                             <input style="width:50px;margin: auto 0;" type="checkbox" id="locationCheckBox1" class="location-checkbox">
                         </div>
@@ -70,6 +78,45 @@
                 <!--<div id="SelectLocationBox" style="display:none;position:absolute;"> &lt;!&ndash; 숨겨진 영역 &ndash;&gt;
                     <input type="hidden" id="selectedLocations" name="selectedLocations" th:value="${schedulerDto.selectedLocations}">
                 </div>-->
+            </div>
+        </div>
+
+        <!-- 모달 -->
+        <div id="modal" class="modal-content" style="display:none; position:absolute; top:15%; left:20%; justify-content:center;">
+            <div class="modal-header" style="width:90%;">
+                <button type="button" class="close-btn btn-secondary" onclick="closeModal()"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal_input">
+                    <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
+                        <!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${spot.imgUrl} + '); background-position:center; background-size:cover;'">-->
+                        <img id="imageInput" style="width: 90%; margin-left:30px; height:100%; border-radius:15px;cursor: pointer;">
+                    </div>
+                </div>
+                <div class="modal_input">
+                    <div style="margin: 20px 0;"><h2 id="touristSpotName"></h2></div>
+                    <div style="height: 90px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; flex-direction:column; align-items:center; justify-content: center; flex-wrap: wrap; margin: 10px;">
+                        <p style="font-size: 30px; margin: 0;">주소</p>
+                        <!--                        <input type="text" id="modalAddress" name="address" style="width: 100%; font-size: 15px;" readonly>-->
+                        <h3 id="modalAddress" style="font-size: 15px;"></h3>
+                    </div>
+
+                    <div style="height: 90px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; flex-direction:column; align-items:center;justify-content: center; flex-wrap: wrap; margin: 10px;">
+                        <p style="font-size: 30px; margin: 0;">연락처</p>
+                        <!--                        <input type="text" id="modalContact" name="contact" style="width: 100%; font-size: 15px;" readonly>-->
+                        <div id="modalContact" style="font-size: 15px; margin-top:5px;"></div>
+                    </div>
+
+                    <div style="height: 270px; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="width: 100%; height: 40px; margin: 10px 0; display: flex; justify-content: center;">
+                            <p style="font-size: 30px; text-align: center;">영업시간</p>
+                        </div>
+                        <div id="modalBusinessHours" style="width: 100%; height: 230px; padding: 20px auto; text-align: center;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
 
@@ -175,6 +222,36 @@
                 // 폼 제출
                 this.submit();
             });
+
+            $('.spot-image').click(function() {
+                // 모달에 표시될 정보 추출
+                const imgUrl = $(this).css('background-image');
+                const touristSpotName = $(this).siblings('.spot-details').find('.spot-name').text();
+                const contact = $(this).siblings('.spot-details').find('.spot-contact').text();
+                const address = $(this).siblings('.spot-details').find('.spot-address').text();
+                const businessHours = $(this).siblings('.spot-details').find('.day-time-entry').map(function() {
+                    return $(this).find('label').text() + ': ' + $(this).find('div').text();
+                }).get().join('<br>'); // 각 businessHour를 줄바꿈으로 연결하여 표시
+
+
+                // 이미지 URL 추출
+                const imageUrl = imgUrl.slice(5, -2); // "url('...')" 형식에서 URL만 추출
+                // 모달에 정보 설정
+                $('#imageInput').attr('src', imageUrl); // src 속성 설정
+                $('#touristSpotName').text(touristSpotName);
+                $('#modalContact').text(contact);
+                $('#modalAddress').text(address);
+                $('#modalBusinessHours').html(businessHours);
+
+                // 모달 창 보이기
+                $('#modal').show();
+            });
+
+            // 모달 창 닫기 버튼 클릭 이벤트 처리
+            $('.close-btn').click(function() {
+                $('#modal').hide();
+            });
+
         });
 
     </script>

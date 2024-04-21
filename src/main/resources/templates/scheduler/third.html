@@ -18,9 +18,10 @@
 </th:block>
 
 <div layout:fragment="content">
-    <form th:action="@{/schedulers/four}" th:object="${schedulerDto}" method="post" class="box">
+    <form th:action="@{/schedulers/fourth}" th:object="${schedulerDto}" method="post" class="box">
         <input type="hidden" id="national">
         <input type="hidden" id="spot">
+        <input type="hidden" id="localId">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
             <input type="text" id="input1_header" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
             <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>
@@ -89,7 +90,8 @@
             <div class="modal-body">
                 <div class="modal_input">
                     <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
-                        <img id="imageInput" style="width: 100%;">
+<!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${spot.imgUrl} + '); background-position:center; background-size:cover;'">-->
+                        <img id="imageInput" style="width: 90%; margin-left:30px; height:100%; border-radius:15px;cursor: pointer;">
                     </div>
                 </div>
                 <div class="modal_input">
@@ -123,7 +125,7 @@
 
         <div style="width:11%;height:100%;background:#000A67;display:flex;justify-content:center;align-items:end;">
             <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold; display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                <button type="button" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer;">Next</button>
+                <button type="submit" style="background-color: white; border: none; cursor: pointer;">Next</button>
             </div>
         </div>
     </form>
@@ -202,8 +204,11 @@
                     return $(this).find('label').text() + ': ' + $(this).find('div').text();
                 }).get().join('<br>'); // 각 businessHour를 줄바꿈으로 연결하여 표시
 
+
+                // 이미지 URL 추출
+                const imageUrl = imgUrl.slice(5, -2); // "url('...')" 형식에서 URL만 추출
                 // 모달에 정보 설정
-                $('#imageInput').css('background-image', imgUrl);
+                $('#imageInput').attr('src', imageUrl); // src 속성 설정
                 $('#touristSpotName').text(touristSpotName);
                 $('#modalContact').text(contact);
                 $('#modalAddress').text(address);
