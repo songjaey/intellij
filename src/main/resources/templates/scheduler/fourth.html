@@ -16,14 +16,13 @@
 
 <div layout:fragment="content">
     <form th:action="@{/schedulers/result}" th:object="${schedulerDto}" method="post" class="box">
-        <input type="hidden" id="national">
-        <input type="hidden" id="spot">
+        <!--<input type="hidden" id="national">-->
         <input type="hidden" id="localId">
-        <input type="hidden" id="spotId" />
+        <input type="hidden" id="spotMarks" th:value="${session.spotMarks}">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
-            <input type="text" id="input1_header" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
+            <input type="text" id="DurationStart" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
             <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>
-            <input type="text" id="input2_header" readonly th:value="${schedulerDto.trip_duration_end}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;">
+            <input type="text" id="DurationEnd" readonly th:value="${schedulerDto.trip_duration_end}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;">
             <p id="weekday_display" style="font-family:LINE Seed Sans KR; font-weight:bold;width:auto;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></p>
         </div>
 
@@ -34,10 +33,10 @@
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs&callback=initMap&v=weekly" defer></script>
 
             <div style="width:800px;height:100%;display:flex;justify-content:center;flex-wrap:wrap;align-items:center;">
-                <p style="height:80px;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">이용하실 교통수단을 골라주세요</p>
+                <p style="height:50px;padding:0;margin:0;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">이용하실 교통수단을 골라주세요</p>
                 <div id="button_item_box" style="display:flex; flex-direction:column;">
 
-                    <div id="button_box" style="display: flex; justify-content: center;align-items:center; width:100%; height:100px;">
+                    <div id="button_box" style="display: flex; justify-content: center; align-items:center;width:100%;margin:10px 0;">
                         <button class="Transportation" value="MassTransit" type="button" style="background:#717FFF;color: white;">대중교통</button>
                         <button class="Transportation" value="Rental" type="button" style="background:none;color: #717FFF;">렌트</button>
                         <input type="hidden" id="transportation">
@@ -51,26 +50,24 @@
                 <div style="height:100px;width:600px;display:flex;justify-content:center;align-items:center;">
                     <div style="width:500px;height:50px;display:flex;align-items:center;background-color:#004392;border:3px solid white;border-radius:10px;">
                         <input style="width:100%;height:100%;border:none;" type="text" id="locationInput" placeholder="원하시는 특징 또는 이름을 검색하세요">
-                        <button style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" onclick="searchLocation()"><i class="bi bi-search"></i></button>
+                        <button style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" id="searchButton"><i class="bi bi-search"></i></button>
                     </div>
                 </div>
 
                 <div id="lcBox">
                     <div id="locationList">
-                        <div th:each="spot : ${adminItemEntity}" th:if="${spot != null}" class="contents" th:attr="data-content-type=${spot.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;">
-                            <div class="spot-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${spot.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                            <div class="spot-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                <p class="spot-name" th:text="${spot.touristSpotName}" for="locationCheckBox1" th:value="${spot.id}"></p>
-                                <p class="spot-features" th:text="${spot.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-
-                                <p class="D" th:text="${spot.id}" style="display:none;"></p>
-                                <p class="spot-address" th:text="${spot.address}" style="display:none;"></p>
-                                <p class="spot-contact" th:text="${spot.contact}" style="display:none;"></p>
-                                <div class="day-time-entry" th:each="entry : ${spot.businessHours}" style="display:none">
+                        <div th:each="stay : ${adminItemEntity}" th:if="${stay != null}" class="contents" th:attr="data-content-type=${stay.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;">
+                            <div class="stay-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${stay.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                            <div class="stay-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                <p class="stay-name" th:text="${stay.touristSpotName}" for="locationCheckBox1" th:value="${stay.id}"></p>
+                                <p class="stay-features" th:text="${stay.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                <p class="D" th:text="${stay.id}" style="display:none;"></p>
+                                <p class="stay-address" th:text="${stay.address}" style="display:none;"></p>
+                                <p class="stay-contact" th:text="${stay.contact}" style="display:none;"></p>
+                                <div class="day-time-entry" th:each="entry : ${stay.businessHours}" style="display:none">
                                     <label th:text="${entry.key}"></label>
                                     <div th:text="${entry.value}"></div>
                                 </div>
-
                             </div>
                             <input style="width:50px;margin: auto 0;" type="checkbox" id="locationCheckBox1" class="location-checkbox">
                         </div>
@@ -87,7 +84,7 @@
             <div class="modal-body">
                 <div class="modal_input">
                     <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
-                        <!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${spot.imgUrl} + '); background-position:center; background-size:cover;'">-->
+                        <!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${stay.imgUrl} + '); background-position:center; background-size:cover;'">-->
                         <img id="imageInput" style="width: 90%; margin-left:30px; height:100%; border-radius:15px;cursor: pointer;">
                     </div>
                 </div>
@@ -135,7 +132,7 @@
             </div>
         </div>
     </form>
-    <script type="module"  src="/javascript/scheduler/map2.js"></script>
+    <script type="module"  src="/javascript/scheduler/map3.js"></script>
     <script>
         $(document).ready(function() {
             let currentContentType = "숙박"; // 초기에는 "숙박"으로 설정
@@ -160,10 +157,11 @@
                 searchLocation(contentType); // 위치에 따라 해당 컨텐츠 검색 실행
             });
 
-            // Enter 키 입력 시 검색 이벤트 처리
+            // 위치 입력란인 locationInput에서 Enter 키 입력 처리
             $('#locationInput').keypress(function(e) {
-                if (e.which === 13) { // Enter 키
-                    searchLocation(currentContentType); // 현재 contentType에 따라 검색 실행
+                if (e.which === 13) { // Enter 키가 눌렸는지 확인
+                    e.preventDefault(); // 기본 동작(폼 제출) 방지
+                    searchLocation(currentContentType); // 사용자 정의 검색 동작 실행
                 }
             });
 
@@ -188,12 +186,12 @@
 
                 // contentType에 해당하는 contents 중 검색어와 일치하는 항목만 보이기
                 $(`.contents[data-content-type="${contentType}"]`).each(function() {
-                    const spotName = $(this).find('.spot-name').text().trim().toLowerCase();
-                    const spotFeatures = $(this).find('.spot-features').text().trim().toLowerCase();
-                    const spotParent = $(this);
+                    const stayName = $(this).find('.stay-name').text().trim().toLowerCase();
+                    const stayFeatures = $(this).find('.stay-features').text().trim().toLowerCase();
+                    const stayParent = $(this);
 
-                    if (spotName.includes(searchTerm) || spotFeatures.includes(searchTerm)) {
-                        spotParent.show();
+                    if (stayName.includes(searchTerm) || stayFeatures.includes(searchTerm)) {
+                        stayParent.show();
                     }
                 });
 
@@ -232,13 +230,13 @@
                 this.submit();
             });
 
-            $('.spot-image').click(function() {
+            $('.stay-image').click(function() {
                 // 모달에 표시될 정보 추출
                 const imgUrl = $(this).css('background-image');
-                const touristSpotName = $(this).siblings('.spot-details').find('.spot-name').text();
-                const contact = $(this).siblings('.spot-details').find('.spot-contact').text();
-                const address = $(this).siblings('.spot-details').find('.spot-address').text();
-                const businessHours = $(this).siblings('.spot-details').find('.day-time-entry').map(function() {
+                const touristSpotName = $(this).siblings('.stay-details').find('.stay-name').text();
+                const contact = $(this).siblings('.stay-details').find('.stay-contact').text();
+                const address = $(this).siblings('.stay-details').find('.stay-address').text();
+                const businessHours = $(this).siblings('.stay-details').find('.day-time-entry').map(function() {
                     return $(this).find('label').text() + ': ' + $(this).find('div').text();
                 }).get().join('<br>'); // 각 businessHour를 줄바꿈으로 연결하여 표시
 

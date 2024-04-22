@@ -64,7 +64,7 @@ function handleDateClick(clickedCell, year, month) {
     if (!inputDate1) {
         // 입력값1이 비어있을 때 클릭된 날짜를 입력값1으로 설정
         inputDate1 = clickedDate;
-        document.getElementById('input1').value = formatDate(inputDate1);
+        document.getElementById('DurationStart').value = formatDate(inputDate1);
         clickedCell.classList.add('selected');
     } else if (!inputDate2) {
         // 입력값2가 비어있을 때 클릭된 날짜를 입력값2로 설정
@@ -72,14 +72,23 @@ function handleDateClick(clickedCell, year, month) {
             // 입력값1보다 이전 날짜를 클릭하면 입력값1 재설정
             resetInputDates(); // 현재 선택을 초기화
             inputDate1 = clickedDate;
-            document.getElementById('input1').value = formatDate(inputDate1);
+            document.getElementById('DurationStart').value = formatDate(inputDate1);
             clickedCell.classList.add('selected');
         } else {
             // 입력값1 이후의 날짜를 클릭하면 입력값2 설정
             inputDate2 = clickedDate;
-            document.getElementById('input2').value = formatDate(inputDate2);
-            clickedCell.classList.add('selected');
-            highlightSelectedRange();
+
+            const diffInDays = Math.ceil((inputDate2 - inputDate1) / (1000 * 60 * 60 * 24));
+
+            if (diffInDays > 10) {
+                // 선택된 날짜 간격이 10일을 초과하는 경우
+                alert("여행일정은 10일을 넘길 수 없습니다.");
+                resetInputDates(); // 선택 초기화
+            } else {
+                document.getElementById('DurationEnd').value = formatDate(inputDate2);
+                clickedCell.classList.add('selected');
+                highlightSelectedRange();
+            }
         }
     } else {
         // 이미 입력값1과 입력값2가 모두 설정된 경우
@@ -87,10 +96,11 @@ function handleDateClick(clickedCell, year, month) {
         resetInputDates();
         // 클릭된 날짜를 입력값1으로 설정
         inputDate1 = clickedDate;
-        document.getElementById('input1').value = formatDate(inputDate1);
+        document.getElementById('DurationStart').value = formatDate(inputDate1);
         clickedCell.classList.add('selected');
     }
 }
+
 
 
 function formatDate(date) {
@@ -125,8 +135,8 @@ function highlightSelectedRange() {
 function resetInputDates() {
     inputDate1 = null;
     inputDate2 = null;
-    document.getElementById('input1').value = '';
-    document.getElementById('input2').value = '';
+    document.getElementById('DurationStart').value = '';
+    document.getElementById('DurationEnd').value = '';
 
     const cells = document.querySelectorAll('td');
     cells.forEach(cell => {

@@ -147,6 +147,12 @@ function addCityToSelection(locationText, locationId, marker) {
         hiddenInput.value = locationId;
         locationBlock.appendChild(hiddenInput);
 
+        const hiddenInput2 = document.createElement("input");
+        hiddenInput2.type = "hidden";
+        hiddenInput2.name = "spotMark";
+        hiddenInput2.value = locationText;
+        locationBlock.appendChild(hiddenInput2);
+
         selectItem.appendChild(locationBlock);
         selectedSpots.add(locationText);
     }

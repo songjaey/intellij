@@ -66,14 +66,16 @@ border-top: 5px solid #267DFF;
     padding-top:10px;
 }
 #locationList ul{
+    height:410px;
     display:flex;
     align-items:center;
     flex-wrap:wrap;
-    height:360px;width:625px;
+    width:625px;
     overflow: auto;
     padding-top:30px;
     padding-left:30px;
     padding-right:30px;
+    margin:0;
 }
 #locationInput::placeholder {
     text-align: center; /* placeholder 텍스트를 가운데 정렬 */

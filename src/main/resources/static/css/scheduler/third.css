@@ -3,9 +3,10 @@
     justify-content:center;
     align-items:center;
     flex-wrap:wrap;
-    height:360px;width:600px;
+    width:600px; height:410px;
+    margin:0;
     overflow: auto;
-    padding-top:50px;
+    padding-top:30px;
     border-top:5px solid #267DFF;
     border-radius:10px;
 }
@@ -16,21 +17,20 @@
 }
 #selectItem {
     width: 600px; /* 요소의 고정 너비 설정 */
-    height: 150px; /* 요소의 높이 설정 */
+    height: 120px; /* 요소의 높이 설정 */
     display: flex;
     justify-content: flex-start;
     align-items: center;
     background: none;
     border-radius: 10px;
     border: 5px solid white;
-    margin-top: 20px;
     overflow-x: auto; /* x 축으로 스크롤을 허용 */
     overflow-y: hidden; /* y 축 스크롤은 숨김 */
     white-space: nowrap; /* 자식 요소들이 한 줄로 나열되도록 설정 */
 }
 .selected-item{
-    width: 100px; /* 선택된 항목의 고정 너비 설정 */
-    height: 100px; /* 선택된 항목의 고정 높이 설정 */
+    width: 80px; /* 선택된 항목의 고정 너비 설정 */
+    height: 80px; /* 선택된 항목의 고정 높이 설정 */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,14 +41,14 @@
     text-align: center;
     padding: 20px 0;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 15px;
     list-style-type: none; /* 목록 마커 제거 */
     flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
 }
 #button_box button{
     width:40%; height:50px; border-radius:10px;
     margin: auto 50px;
-
+    padding:5px auto;
     font-family:LINE Seed Sans KR;
     font-weight:bold;
 }

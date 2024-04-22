@@ -48,9 +48,9 @@
         <p style="font-family:LINE Seed Sans KR; font-weight:bold; color:white; font-size:25px;">현지 여행 기간(여행지 도착 날짜,  출발 날짜)로 입력</p>
       </div>
       <div style="display:flex;justify-content:center;align-items:center; width:700px;height:50px;background-color:#0041A4;border-radius:10px;">
-        <div style="width:260px; height:50px;display:flex;align-items:center;justify-content:center;"><span style="font-family:LINE Seed Sans KR; font-weight:bold; color:white; font-size:25px;padding-top:8px;">여행지 도착날짜 : </span><input th:field="*{trip_duration_start}" type="text" id="input1" readonly style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></div>
+        <div style="width:260px; height:50px;display:flex;align-items:center;justify-content:center;"><span style="font-family:LINE Seed Sans KR; font-weight:bold; color:white; font-size:25px;padding-top:8px;">여행지 도착날짜 : </span><input th:field="*{trip_duration_start}" type="text" id="DurationStart" readonly style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></div>
         <span style="font-family:LINE Seed Sans KR; font-weight:bold; color:white; font-size:20px;margin-left:30px;margin-right:30px;padding-top:8px;">></span>
-        <div style="width:260px; height:50px;display:flex;align-items:center;justify-content:center;"><span style="font-family:LINE Seed Sans KR; font-weight:bold; color:white; font-size:25px;padding-top:8px;">여행지 출발날짜 : </span><input th:field="*{trip_duration_end}" type="text" id="input2" readonly style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></div>
+        <div style="width:260px; height:50px;display:flex;align-items:center;justify-content:center;"><span style="font-family:LINE Seed Sans KR; font-weight:bold; color:white; font-size:25px;padding-top:8px;">여행지 출발날짜 : </span><input th:field="*{trip_duration_end}" type="text" id="DurationEnd" readonly style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></div>
       </div>
       <div id="calendar_box" style="display: flex; justify-content: center; align-items: center;">
         <!-- 현재 달력 -->
@@ -65,7 +65,7 @@
         </div>
       </div>
     </div>
-    <div style="width:11%;background:#000A67;display:flex;justify-content:center;align-items:end;">
+    <div style="width:11%;background:#000A67;display:flex;justify-content:center;align-items:end;height:100%;">
       <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
         <button type="submit" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">Next</button>
       </div>
@@ -74,8 +74,8 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.querySelector("form");
-      const arrivalDateInput = document.getElementById("input1");
-      const departureDateInput = document.getElementById("input2");
+      const arrivalDateInput = document.getElementById("DurationStart");
+      const departureDateInput = document.getElementById("DurationEnd");
 
       form.addEventListener("submit", (event) => {
           // 여행지 도착날짜와 출발날짜 입력값을 확인
@@ -100,10 +100,6 @@
           departureDateInput.readOnly = true;
       });
   });
-  <!--window.addEventListener('error', function() {
-      // 페이지가 오류로 인해 로드되지 않았을 때 자동으로 페이지를 다시로드
-      location.reload();
-  });-->
   </script>
 </div>
 

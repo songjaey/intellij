@@ -19,9 +19,9 @@
     <input type="hidden" id="national">
     <input type="hidden" id="city">
     <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
-      <input type="text" id="input1_header" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
+      <input type="text" id="DurationStart" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
       <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>
-      <input type="text" id="input2_header" readonly th:value="${schedulerDto.trip_duration_end}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;">
+      <input type="text" id="DurationEnd" readonly th:value="${schedulerDto.trip_duration_end}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;">
       <p id="weekday_display" style="font-family:LINE Seed Sans KR; font-weight:bold;width:auto;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></p>
     </div>
     <div style="width:89%;display:flex;justify-content:space-around;align-items:center;">
@@ -29,8 +29,8 @@
       <div id="map" style="width:650px;height:650px;margin:100px;"></div>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs&callback=initMap&v=weekly" defer></script>
 
-      <div style="width:800px;height:100%;display:flex;justify-content:center;flex-wrap:wrap;">
-        <p style="height:80px;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">선택한 관광지</p>
+      <div style="width:800px;padding:0;height:100%;display:flex;flex-direction:column;justify-content:top;flex-wrap:wrap;align-items:center;">
+        <p style="height:80px; padding:0;margin:0; width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">선택한 관광지</p>
 
         <div id="selectItem" style="width:600px; height:150px;display:flex;justify-content:center;align-items:center;">
           <div class="initialLocals" style="display: none;">
@@ -81,30 +81,63 @@
   <script type="module"  src="/javascript/scheduler/map.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("form");
-    const selectItem = document.getElementById("selectItem");
-    const scheduleButton = document.querySelector("#scheduleButton");
+     const form = document.querySelector("form");
+     const locationInput = document.getElementById("locationInput");
+     const locationList = document.getElementById("locationList");
 
-    form.addEventListener("submit", (event) => {
-        // 선택한 관광지 항목 수 확인
-        const selectedItems = selectItem.querySelectorAll(".selected-item");
+     form.addEventListener("submit", (event) => {
+       // 선택한 관광지 항목 수 확인
+       const selectedItems = document.querySelectorAll(".selected-item");
 
-        // 선택된 항목이 없는 경우 폼 제출 중지 및 알림창 표시
-        if (selectedItems.length === 0) {
-            event.preventDefault(); // 폼 제출 중지
+       // 선택된 항목이 없는 경우 폼 제출 중지 및 알림창 표시
+       if (selectedItems.length === 0) {
+         event.preventDefault(); // 폼 제출 중지
 
-            // 알림창 표시
-            alert("관광지를 골라주세요.");
-        }
-    });
+         // 알림창 표시
+         alert("관광지를 골라주세요.");
+       }
+     });
 
      // '일정' 버튼 클릭 시
-      $("#scheduleButton").click(function() {
-          // first.html 페이지로 이동
-          window.location.href = "/schedulers/first";
-      });
+     const scheduleButton = document.getElementById("scheduleButton");
+     scheduleButton.addEventListener("click", () => {
+       // first.html 페이지로 이동
+       window.location.href = "/schedulers/first";
+     });
 
-  });
+     // 위치 입력란인 locationInput에서 Enter 키 입력 처리
+     locationInput.addEventListener("keydown", (e) => {
+       if (e.keyCode === 13) {
+         e.preventDefault(); // 기본 동작(폼 제출) 방지
+         searchLocation(); // 사용자 정의 검색 동작 실행
+       }
+     });
+
+     // 검색 버튼 클릭 시 검색 이벤트 처리
+     const searchButton = document.getElementById("searchButton");
+     searchButton.addEventListener("click", () => {
+       searchLocation();
+     });
+
+     function searchLocation() {
+       const searchTerm = locationInput.value.trim().toLowerCase(); // 입력된 검색어를 소문자로 변환하여 저장
+
+       // 모든 관광지 항목 숨기기
+       const items = locationList.querySelectorAll(".landMark");
+       items.forEach((item) => {
+         item.style.display = "none";
+       });
+
+       // 입력된 검색어와 일치하는 항목 보이기
+       items.forEach((item) => {
+         const textB = item.querySelector(".B").textContent.trim().toLowerCase(); // class="B"인 요소의 텍스트를 소문자로 변환하여 저장
+         if (textB.includes(searchTerm)) {
+           item.style.display = "block";
+         }
+       });
+     }
+   });
+
   </script>
 </div>
 </html>
