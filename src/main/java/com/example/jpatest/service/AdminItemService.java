@@ -58,6 +58,11 @@ public class AdminItemService {
         return adminItemRepository.findByLocalId(localId);
     }
 
+    public List<AdminItemEntity> findByIds(List<Long> localIdList){
+        return adminItemRepository.findByIds(localIdList);
+    }
+
+
     private AdminItemEntity convertToEntity(AdminItemDto adminItemDto) {
         AdminItemEntity adminItemEntity = new AdminItemEntity();
         adminItemEntity.setImgUrl(adminItemDto.getImgUrl());

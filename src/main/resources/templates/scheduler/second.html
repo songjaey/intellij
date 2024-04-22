@@ -33,6 +33,14 @@
         <p style="height:80px;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">선택한 관광지</p>
 
         <div id="selectItem" style="width:600px; height:150px;display:flex;justify-content:center;align-items:center;">
+          <div class="initialLocals" style="display: none;">
+            <div th:each="initialLocal : ${initialLocals}">
+              <div class="initialCountry" th:text="${initialLocal.local}"></div>
+              <div class="initialLocal" th:text="${initialLocal.country}"></div>
+              <div class="initialId" th:text="${initialLocal.id}"></div>
+            </div>
+          </div>
+
         </div>
 
         <div style="height:100px;width:600px;display:flex;justify-content:center;align-items:center;">
@@ -59,12 +67,44 @@
       </div>
     </div>
 
-    <div style="width:11%;height:100%;background:#000A67;display:flex;justify-content:center;align-items:end;">
+    <div style="width:11%;height:100%;background:#000A67;display:flex;flex-direction:column; justify-content:space-between;align-items:center;">
+      <div style="margin-top:50px;">
+        <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
+          <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">일정</button>
+        </div>
+      </div>
       <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
         <button type="submit" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">Next</button>
       </div>
     </div>
   </form>
   <script type="module"  src="/javascript/scheduler/map.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
+    const selectItem = document.getElementById("selectItem");
+    const scheduleButton = document.querySelector("#scheduleButton");
+
+    form.addEventListener("submit", (event) => {
+        // 선택한 관광지 항목 수 확인
+        const selectedItems = selectItem.querySelectorAll(".selected-item");
+
+        // 선택된 항목이 없는 경우 폼 제출 중지 및 알림창 표시
+        if (selectedItems.length === 0) {
+            event.preventDefault(); // 폼 제출 중지
+
+            // 알림창 표시
+            alert("관광지를 골라주세요.");
+        }
+    });
+
+     // '일정' 버튼 클릭 시
+      $("#scheduleButton").click(function() {
+          // first.html 페이지로 이동
+          window.location.href = "/schedulers/first";
+      });
+
+  });
+  </script>
 </div>
 </html>

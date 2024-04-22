@@ -8,9 +8,6 @@
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/scheduler/scheduler.css}">
     <link rel="stylesheet" th:href="@{/css/scheduler/third.css}">
-    <style>
-
-    </style>
 </th:block>
 
 <th:block layout:fragment="script">
@@ -22,6 +19,7 @@
         <input type="hidden" id="national">
         <input type="hidden" id="spot">
         <input type="hidden" id="localId">
+
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
             <input type="text" id="input1_header" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
             <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>
@@ -32,9 +30,10 @@
         <div style="width:89%;display:flex;justify-content:space-around;align-items:center;">
 
             <div id="map" style="width:650px;height:650px;margin:100px;"></div>
+            <input type="hidden" id="initialLocal" th:value="${initialLocal.local}">
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs&callback=initMap&v=weekly" defer></script>
 
-            <div style="width:800px;height:100%;display:flex;justify-content:start;flex-wrap:wrap;align-items:center;">
+            <div style="width:800px;height:100%;display:flex;justify-content:center;flex-wrap:wrap;align-items:center;">
                 <p style="height:80px;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">선택한 관광지</p>
                 <div id="button_item_box" style="display:flex; flex-direction:column;">
 
@@ -42,9 +41,13 @@
                         <button id="location1_button" type="button" style="color: white; border:2px solid #0066F8;background:#0066F8;">명소</button>
                         <button id="location2_button" type="button" style="color : white; border:2px solid #FF3D00;background:none;">식당</button>
                     </div>
-                    <div id="countryData" th:text="${country}" style="display:none;"></div>
-                    <div id="selectItem">
 
+                    <div id="selectItem">
+                        <div class="initialItem" th:if="${initialItems != null}" th:each="initialItem : ${initialItems}" style="display:none;">
+                            <div class="initialSpotName" th:text="${initialItem.touristSpotName}"></div>
+                            <div class="initialLocal" th:text="${initialItem.address}"></div>
+                            <div class="initialId" th:text="${initialItem.id}"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -76,9 +79,6 @@
                         </div>
                     </div>
                 </div>
-                <!--<div id="SelectLocationBox" style="display:none;position:absolute;"> &lt;!&ndash; 숨겨진 영역 &ndash;&gt;
-                    <input type="hidden" id="selectedLocations" name="selectedLocations" th:value="${schedulerDto.selectedLocations}">
-                </div>-->
             </div>
         </div>
 
@@ -90,7 +90,7 @@
             <div class="modal-body">
                 <div class="modal_input">
                     <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
-<!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${spot.imgUrl} + '); background-position:center; background-size:cover;'">-->
+                        <!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${spot.imgUrl} + '); background-position:center; background-size:cover;'">-->
                         <img id="imageInput" style="width: 90%; margin-left:30px; height:100%; border-radius:15px;cursor: pointer;">
                     </div>
                 </div>
@@ -98,13 +98,13 @@
                     <div style="margin: 20px 0;"><h2 id="touristSpotName"></h2></div>
                     <div style="height: 90px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; flex-direction:column; align-items:center; justify-content: center; flex-wrap: wrap; margin: 10px;">
                         <p style="font-size: 30px; margin: 0;">주소</p>
-<!--                        <input type="text" id="modalAddress" name="address" style="width: 100%; font-size: 15px;" readonly>-->
+                        <!--                        <input type="text" id="modalAddress" name="address" style="width: 100%; font-size: 15px;" readonly>-->
                         <h3 id="modalAddress" style="font-size: 15px;"></h3>
                     </div>
 
                     <div style="height: 90px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; flex-direction:column; align-items:center;justify-content: center; flex-wrap: wrap; margin: 10px;">
                         <p style="font-size: 30px; margin: 0;">연락처</p>
-<!--                        <input type="text" id="modalContact" name="contact" style="width: 100%; font-size: 15px;" readonly>-->
+                        <!--                        <input type="text" id="modalContact" name="contact" style="width: 100%; font-size: 15px;" readonly>-->
                         <div id="modalContact" style="font-size: 15px; margin-top:5px;"></div>
                     </div>
 
@@ -121,18 +121,25 @@
             </div>
         </div>
 
-
-
-        <div style="width:11%;height:100%;background:#000A67;display:flex;justify-content:center;align-items:end;">
+        <div style="width:11%;height:100%;background:#000A67;display:flex;flex-direction:column; justify-content:space-between;align-items:center;">
+            <div style="margin-top:50px;">
+                <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
+                    <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">일정</button>
+                </div>
+                <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
+<!--                    <button type="button" id="localButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">관광지</button>-->
+                    <a href="/schedulers/second" id="localButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">관광지</a>
+                </div>
+            </div>
             <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold; display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
                 <button type="submit" style="background-color: white; border: none; cursor: pointer;">Next</button>
             </div>
         </div>
     </form>
-    <script type="module"  src="/javascript/scheduler/map3.js"></script>
+    <script type="module"  src="/javascript/scheduler/map2.js"></script>
     <script>
         $(document).ready(function() {
-            let currentContentType = "명소"; // 초기에는 "명소"로 설정
+               let currentContentType = "명소"; // 초기에는 "명소"로 설정
 
             // 페이지가 로드되면 모든 contents 숨기기
             $('.contents').hide();
@@ -144,12 +151,28 @@
             $("#location1_button").click(function() {
                 currentContentType = "명소";
                 showContentsByType(currentContentType);
+                $("#location2_button").css({
+                    "background" : "none",
+                    "color" : "white"
+                });
+                $("#location1_button").css({
+                    "background" : "#0066F8",
+                    "color" : "white"
+                });
             });
 
             // "식당" 버튼 클릭 시 '식당' 타입의 관광지 목록 표시
             $("#location2_button").click(function() {
                 currentContentType = "식당";
                 showContentsByType(currentContentType);
+                $("#location1_button").css({
+                    "background" : "none",
+                    "color" : "white"
+                });
+                $("#location2_button").css({
+                    "background" : "#FF3D00",
+                    "color" : "white"
+                });
             });
 
             // Enter 키 입력 시 검색 이벤트 처리
@@ -162,6 +185,13 @@
             // 검색 버튼 클릭 시 검색 이벤트 처리
             $('#searchButton').click(function() {
                 searchLocation(currentContentType); // 현재 contentType에 따라 검색 실행
+            });
+
+            // .selected-item 클릭 시 검색 이벤트 처리
+            $(document).on('click', '.selected-item', function() {
+                const locationText = $(this).attr('data-location'); // 클릭된 아이템의 위치 정보 가져오기
+                $('#locationInput').val(locationText); // 위치 입력란에 선택된 아이템의 위치 정보 설정
+                searchLocation(currentContentType); // 위치에 따라 해당 컨텐츠 검색 실행
             });
 
             function showContentsByType(contentType) {
@@ -193,36 +223,47 @@
                 $('#locationInput').val('');
             }
 
+             $('.spot-image').click(function() {
+                        // 모달에 표시될 정보 추출
+                        const imgUrl = $(this).css('background-image');
+                        const touristSpotName = $(this).siblings('.spot-details').find('.spot-name').text();
+                        const contact = $(this).siblings('.spot-details').find('.spot-contact').text();
+                        const address = $(this).siblings('.spot-details').find('.spot-address').text();
+                        const businessHours = $(this).siblings('.spot-details').find('.day-time-entry').map(function() {
+                            return $(this).find('label').text() + ': ' + $(this).find('div').text();
+                        }).get().join('<br>'); // 각 businessHour를 줄바꿈으로 연결하여 표시
 
-            $('.spot-image').click(function() {
-                // 모달에 표시될 정보 추출
-                const imgUrl = $(this).css('background-image');
-                const touristSpotName = $(this).siblings('.spot-details').find('.spot-name').text();
-                const contact = $(this).siblings('.spot-details').find('.spot-contact').text();
-                const address = $(this).siblings('.spot-details').find('.spot-address').text();
-                const businessHours = $(this).siblings('.spot-details').find('.day-time-entry').map(function() {
-                    return $(this).find('label').text() + ': ' + $(this).find('div').text();
-                }).get().join('<br>'); // 각 businessHour를 줄바꿈으로 연결하여 표시
+
+                        // 이미지 URL 추출
+                        const imageUrl = imgUrl.slice(5, -2); // "url('...')" 형식에서 URL만 추출
+                        // 모달에 정보 설정
+                        $('#imageInput').attr('src', imageUrl); // src 속성 설정
+                        $('#touristSpotName').text(touristSpotName);
+                        $('#modalContact').text(contact);
+                        $('#modalAddress').text(address);
+                        $('#modalBusinessHours').html(businessHours);
+
+                        // 모달 창 보이기
+                        $('#modal').show();
+                    });
+
+                    // 모달 창 닫기 버튼 클릭 이벤트 처리
+                    $('.close-btn').click(function() {
+                        $('#modal').hide();
+                    });
 
 
-                // 이미지 URL 추출
-                const imageUrl = imgUrl.slice(5, -2); // "url('...')" 형식에서 URL만 추출
-                // 모달에 정보 설정
-                $('#imageInput').attr('src', imageUrl); // src 속성 설정
-                $('#touristSpotName').text(touristSpotName);
-                $('#modalContact').text(contact);
-                $('#modalAddress').text(address);
-                $('#modalBusinessHours').html(businessHours);
-
-                // 모달 창 보이기
-                $('#modal').show();
+            // '일정' 버튼 클릭 시
+            $("#scheduleButton").click(function() {
+                // first.html 페이지로 이동
+                window.location.href = "/schedulers/first";
             });
 
-            // 모달 창 닫기 버튼 클릭 이벤트 처리
-            $('.close-btn').click(function() {
-                $('#modal').hide();
-            });
 
+            // Handle click event for '관광지' button
+            $("#localButton").click(function() {
+                window.location.href = "/schedulers/second";
+            });
         });
     </script>
 </div>

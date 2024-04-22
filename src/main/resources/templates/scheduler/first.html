@@ -71,6 +71,41 @@
       </div>
     </div>
   </form>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector("form");
+      const arrivalDateInput = document.getElementById("input1");
+      const departureDateInput = document.getElementById("input2");
+
+      form.addEventListener("submit", (event) => {
+          // 여행지 도착날짜와 출발날짜 입력값을 확인
+          const arrivalDate = arrivalDateInput.value.trim();
+          const departureDate = departureDateInput.value.trim();
+
+          // 입력값이 비어있는 경우 폼 제출을 중지하고 알림창을 띄움
+          if (arrivalDate === "" || departureDate === "") {
+              event.preventDefault(); // 폼 제출 중지
+
+              // 알림창 표시
+              alert("도착날짜와 출발날짜를 달력을 클릭해 입력해주세요.");
+          }
+      });
+
+      // 달력 클릭 시 도착날짜 및 출발날짜 입력필드 읽기 전용 설정
+      arrivalDateInput.addEventListener("click", () => {
+          arrivalDateInput.readOnly = true;
+      });
+
+      departureDateInput.addEventListener("click", () => {
+          departureDateInput.readOnly = true;
+      });
+  });
+  <!--window.addEventListener('error', function() {
+      // 페이지가 오류로 인해 로드되지 않았을 때 자동으로 페이지를 다시로드
+      location.reload();
+  });-->
+  </script>
 </div>
+
 
 </html>

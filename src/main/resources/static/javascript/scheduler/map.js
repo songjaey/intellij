@@ -5,9 +5,43 @@
  const MAX_SELECTED_CITIES = 4; // 선택 가능한 최대 도시 개수
 
 document.addEventListener("DOMContentLoaded", () => {
-    initMap();
 
+    // 추가-----------------------------------------------//
+    createInitialLocalElements();
     const selectItem = document.getElementById("selectItem");
+    const initialLocalDivs = document.querySelectorAll(".initialLocals > div"); // ".initialLocals"의 자식인 <div> 요소들을 선택합니다.
+
+    if (initialLocalDivs) {
+        initialLocalDivs.forEach((div) => {
+            const countryElement = div.querySelector(".initialCountry");
+            const localElement = div.querySelector(".initialLocal");
+            const idElement = div.querySelector(".initialId");
+
+            if (countryElement && localElement && idElement) {
+                const country = countryElement.textContent.trim();
+                const local = localElement.textContent.trim();
+                const initialId = idElement.textContent.trim();
+                const initialLocationText = `${country}, ${local}`;
+
+                const locationBlock = document.createElement("div");
+                locationBlock.classList.add("selected-item");
+                locationBlock.setAttribute("data-location", initialLocationText);
+                locationBlock.textContent = initialLocationText;
+
+                const hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = "localId";
+                hiddenInput.value = initialId;
+                locationBlock.appendChild(hiddenInput);
+
+                selectItem.appendChild(locationBlock);
+                selectedCities.add(initialLocationText);
+            }
+        });
+    }
+
+     // 추가-----------------------------------------------//
+    initMap();
 
     selectItem.addEventListener("click", (event) => {
         if (event.target && event.target.classList.contains("selected-item")) {
@@ -26,8 +60,58 @@ function initMap() {
 
         geocoder = new google.maps.Geocoder();
 
-        const locationItems = document.querySelectorAll('#locationList li');
 
+       const selectItem = document.getElementById("selectItem");
+       if (selectItem) {
+           const initLocation = selectItem.querySelectorAll('.selected-item');
+           initLocation.forEach((item) => {
+               const locationData = item.getAttribute('data-location');
+               const [city, country] = locationData.split(',').map(item => item.trim());
+
+               const locationText = `${city}, ${country}`;
+               alert(locationText); // 수정된 locationText 변수 출력
+
+               var national = document.querySelector("#national");
+               var cityInput = document.querySelector("#city");
+               var nationalValue = national.value;
+               var cityValue = cityInput.value;
+//               var id = item.querySelector('.initialId').textContent.trim(); // 수정
+//               var local = city; // 수정
+//               var local_Id = id; // 수정
+
+//               national.value = nationalValue + "," + country; // 수정
+//               cityInput.value = cityValue + "," + city; // 수정
+
+               geocoder.geocode({ address: locationText }, (results, status) => {
+                   if (status === "OK" && results && results.length > 0) {
+                       const location = results[0].geometry.location;
+
+                       const marker = new google.maps.Marker({
+                           map: map,
+                           position: location,
+                           title: locationText,
+                       });
+
+                       const infowindow = new google.maps.InfoWindow({
+                           content: locationText,
+                       });
+
+                       marker.addListener("click", () => {
+                           infowindow.open(map, marker);
+                       });
+
+                       markers.push(marker);
+
+                       map.panTo(location); // 맵을 선택된 위치로 이동
+                   } else {
+                       console.error("위치를 찾을 수 없습니다.");
+                   }
+               });
+           });
+       }
+
+
+        const locationItems = document.querySelectorAll('#locationList li');
         locationItems.forEach((item) => {
             item.addEventListener('click', () => {
                 const cityName = item.querySelector('.B').textContent.trim();
@@ -134,5 +218,9 @@ function removeMarkerAndBlock(locationText, marker, locationBlock) {
         selectedCities.delete(locationText);
         locationBlock.remove();
     }
+
+function createInitialLocalElements() {
+
+ }
 
 });
