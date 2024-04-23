@@ -15,7 +15,7 @@
         position:absolute;
         width:400px;
         left:50%;
-        top:150px;
+        top:130px;
         transform: translate(-50%, 0);
     }
     .wrapper {
@@ -24,7 +24,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: 400px;
-        height: 520px;
+        height: 550px;
         background: rgba(200, 200, 200, 0.5); /* 회색 느낌과 적절한 투명도 */
 <!--        border: 2px solid #162938;-->
         border:none;
@@ -233,8 +233,8 @@
                     <span class="icon"><ion-icon name="mail"></ion-icon></span>
                     <input type="email" th:field="*{email}" id="email" name="email" placeholder="이메일 입력하세요">
                 </div>
-                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></p>
-                <p th:if="${emailError}" class="fieldError" th:text="${emailError}" style="color:red; font-size:12px"></p>
+<!--                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></p>-->
+<!--                <p th:if="${emailError}" class="fieldError" th:text="${emailError}" style="color:red; font-size:12px"></p>-->
             </div>
             <div class="outer-box">
                 <div class="input-box">
@@ -242,17 +242,17 @@
                     <span class="icon"><ion-icon name="call"></ion-icon></span>
                     <input type="text" th:field="*{tel}" id="tel" name="tel" placeholder="핸드폰 번호를 입력하세요">
                 </div>
-                <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError"></p>
+<!--                <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError"></p>-->
             </div>
 
             <div class="outer-box">
                 <div class="input-box">
                     <label th:for="password"></label>
                     <span class="icon" ><ion-icon name="lock-closed"></ion-icon></span>
-                    <input type="password" th:field="*{password}" id="password" name="password" placeholder="비밀번호를 입력하세요">
+                    <input type="password" th:field="*{password}" id="password" name="password" placeholder="변경할 비밀번호를 입력하세요">
                 </div>
 
-                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError"></p>
+<!--                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError"></p>-->
             </div>
             <div class="outer-box">
                 <div class="input-box">
@@ -260,6 +260,13 @@
                     <span class="icon" ><ion-icon name="lock-closed"></ion-icon></span>
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시입력하세요">
                     <p class="fieldError"></p>
+                </div>
+            </div>
+            <div class="outer-box">
+                <div class="input-box">
+                    <label th:for="confirmPassword"></label>
+                    <span class="icon" ><ion-icon name="lock-closed"></ion-icon></span>
+                    <input type="password" id="memberPassword" name="memberPassword" placeholder="기존의 비밀번호 입력하세요">
                 </div>
             </div>
 

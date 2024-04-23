@@ -69,7 +69,6 @@ function initMap() {
                const [city, country] = locationData.split(',').map(item => item.trim());
 
                const locationText = `${city}, ${country}`;
-               alert(locationText); // 수정된 locationText 변수 출력
 
                var national = document.querySelector("#national");
                var cityInput = document.querySelector("#city");

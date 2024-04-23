@@ -4,8 +4,11 @@
       layout:decorate="~{fragment/basic}">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/.css}">
+<!--    <link rel="stylesheet" th:href="@{/css/.css}">-->
     <style>
+        body {
+            font-family: 'LINE Seed Sans KR', sans-serif; /* 전체 폰트를 LINE Seed Sans KR로 지정 */
+        }
         .wrapper {
             position:relative;
             max-width:1427.766px;
@@ -14,8 +17,10 @@
             margin-top: 50px;
         }
         .notice-menu{
+            margin-right:167px;
             display:flex;
             flex-direction:row;
+            justify-content:end;
             column-gap:30px;
         }
         .notice-menu a {
@@ -31,11 +36,20 @@
             background-color: #555; /* 마우스 호버시 약간 더 어둡게 */
         }
 
+        .table-container {
+            width:1100px;
+            border-radius:15px;
+            display:flex;
+            flex-direction:column;
+            justify-content:start;
+            overflow:hidden;
+            margin:50px auto;
+        }
+
         table {
-            width: 80%; /* 테이블 전체 너비 */
+            width: 100%; /* 테이블 전체 너비 */
             margin: auto; /* 가운데 정렬 */
-            margin-top:50px;
-            border-collapse: collapse; /* 테이블 셀 간의 간격을 없애기 위해 사용 */
+                      border-collapse: collapse; /* 테이블 셀 간의 간격을 없애기 위해 사용 */
         }
 
         th, td {
@@ -55,9 +69,10 @@
 
         /* 각 열의 너비 지정 */
         th:nth-child(1), td:nth-child(1) { width: 10%; }
-        th:nth-child(2), td:nth-child(2) { width: 60%; }
-        th:nth-child(3), td:nth-child(3) { width: 15%; }
-        th:nth-child(4), td:nth-child(4) { width: 15%; }
+        th:nth-child(2), td:nth-child(2) { width: 45%; }
+        th:nth-child(3), td:nth-child(3) { width: 10%; }
+        th:nth-child(4), td:nth-child(4) { width: 10%; }
+        th:nth-child(5), td:nth-child(5) { width: 25%; }
     </style>
 
 </th:block>
@@ -86,54 +101,59 @@
 
         <!--        테이블 만들기-->
         <!-- 게시판 테이블 -->
-        <table>
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>등록자명</th>
-                <th>조회수</th>
-                <th>등록일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- 각 게시물을 반복하여 표시 -->
-            <tr th:each="board : ${boards}">
-                <td th:text="${board.id}">글 ID</td>
-                <td><a th:href="@{/board/help/read/{id}(id=${board.id})}" th:text="${board.subject}">제목</a></td>
-                <td th:text="${board.name}">작성자</td>
-                <td th:text="${board.viewcnt}">조회수</td>
-                <td th:if="${board.regdate != null}" th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}">등록일</td>
-            </tr>
-            </tbody>
-        </table>
-        <div id="pagination">
-            <ul class="pagination justify-content-center">
-                <!-- 이전 페이지로 이동하는 버튼 -->
-                <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/board/help(page=${currentPage - 1})}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <!-- 페이지 번호 -->
-                <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}" class="page-item" th:class="${pageNum == currentPage} ? 'active' : ''">
-                    <a class="page-link" th:href="@{/board/help(page=${pageNum})}" th:text="${pageNum}">1</a>
-                </li>
-                <!-- 다음 페이지로 이동하는 버튼 -->
-                <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/board/help(page=${currentPage + 1})}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>등록자명</th>
+                    <th>조회수</th>
+                    <th>등록일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 각 게시물을 반복하여 표시 -->
+                <tr th:each="board : ${boards}">
+                    <td th:text="${board.id}">글 ID</td>
+                    <td><a th:href="@{/board/help/read/{id}(id=${board.id})}" th:text="${board.subject}">제목</a></td>
+                    <td th:text="${board.name}">작성자</td>
+                    <td th:text="${board.viewcnt}">조회수</td>
+                    <td th:if="${board.regdate != null}" th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}">등록일</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div id="bottom-menu">
-            <!-- 이전 페이지로 이동하는 버튼 -->
+        <div class="table-container">
+            <div id="pagination" style="display:flex; flex-direction: row; justify-content:end; margin-top:20px;">
+                <ul class="pagination justify-content-center">
+                    <!-- 이전 페이지로 이동하는 버튼 -->
+                    <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{/board/help(page=${currentPage - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <!-- 페이지 번호 -->
+                    <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}" class="page-item" th:class="${pageNum == currentPage} ? 'active' : ''">
+                        <a class="page-link" th:href="@{/board/help(page=${pageNum})}" th:text="${pageNum}">1</a>
+                    </li>
+                    <!-- 다음 페이지로 이동하는 버튼 -->
+                    <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{/board/help(page=${currentPage + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+                <div id="bottom-menu" style="margin-left:400px;">
+                    <!-- 이전 페이지로 이동하는 버튼 -->
 
-            <button class="btn btn-primary float-end"
-                    th:onclick="|location.href='@{/board/add}'|"
-                    type="button" >글 등록</button>
+                    <button class="btn btn-primary float-end"
+                            th:onclick="|location.href='@{/board/add}'|"
+                            type="button" >글 등록</button>
+                </div>
+            </div>
         </div>
+
 
     </div>
 </div>

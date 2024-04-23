@@ -21,4 +21,5 @@ public interface AdminItemRepository extends JpaRepository<AdminItemEntity, Long
 
     @Query("SELECT a FROM AdminItemEntity a WHERE a.id IN :ids")
     List<AdminItemEntity> findByIds(@Param("ids") List<Long> ids);
+
 }

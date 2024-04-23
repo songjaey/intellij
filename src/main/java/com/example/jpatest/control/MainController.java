@@ -158,17 +158,20 @@ public class MainController {
     }
 
     @PostMapping("members/subChangePw")
-    public String postChangePw(@Valid MemberFormDto memberFormDto,
-                               BindingResult bindingResult, Model model){
-        if (bindingResult.hasErrors()) {
-            // 필드 검증 오류가 있는 경우
-            return "member/changePw"; // 회원가입 폼을 다시 표시
+    public String postChangePw(@RequestParam("memberPassword") String memberPassword, MemberFormDto memberFormDto, Model model){
+        String email = memberFormDto.getEmail(); String tel = memberFormDto.getTel(); String password = memberFormDto.getPassword();
+        if (email == null || tel == null || password == null || memberPassword == null) {
+            return "redirect:/member/changePw"; // 회원가입 폼을 다시 표시
         }
-
-
-
-
-        return "member/loginForm";
+        Member member = memberService.findByEmail(email);
+        if (member.getTel().equals(tel) && passwordEncoder.matches(memberPassword, member.getPassword()) ){
+            memberService.changePw(email, password);
+            return "member/loginForm";
+        }
+        else{
+            System.out.println("changePw Error");
+            return "member/loginForm";
+        }
     }
 
     @GetMapping("/members/findPw")
@@ -225,8 +228,6 @@ public class MainController {
         }
         return sb.toString();
     }
-
-
 
 
     // 회원정보 수정 mymenu

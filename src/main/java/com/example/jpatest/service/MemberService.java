@@ -42,6 +42,22 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
     }
 
+    public void changePw(String email, String password) {
+        Member member = memberRepository.findByEmail(email);
+        if (member != null) {
+            // 비밀번호 해싱
+            String encodedPassword = passwordEncoder.encode(password);
+            member.setPassword(encodedPassword);
+            memberRepository.save(member);
+        } else {
+            throw new MemberNotFoundException("User not found");
+        }
+    }
+    public class MemberNotFoundException extends RuntimeException {
+        public MemberNotFoundException(String message) {
+            super(message);
+        }
+    }
 
     private void validEmail(Member member){
         Member find = memberRepository.findByEmail(member.getEmail());

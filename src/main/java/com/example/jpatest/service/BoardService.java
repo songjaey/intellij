@@ -88,7 +88,7 @@ public class BoardService {
     public Page<Board> getBoardsPage(int page, int pageSize) {
         // 페이지 번호는 0부터 시작하므로 -1 처리
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        return boardRepository.findAll(pageable);
+        return boardRepository.findAllDesc(pageable);
     }
 
     public Optional<Board> findBoardById(Long id) {

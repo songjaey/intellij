@@ -39,9 +39,8 @@ function initMap(initialLocation) {
     //////////////////////////////////////////////////////////////////////////////
     const selectItem = document.getElementById("selectItem");
     const locationItems = document.querySelectorAll('.contents');
-
-   if (selectItem) {
-       const initItem = selectItem.querySelectorAll('.initialItem');
+    const initItem = selectItem.querySelectorAll('.initialItem');
+    if ( $(initItem).length > 0) {
        initItem.forEach((item) => {
            const spotName = item.querySelector('.initialSpotName').textContent;
            const initId = item.querySelector('.initialId').textContent.trim();
@@ -72,9 +71,43 @@ function initMap(initialLocation) {
                }
            });
        }); // forEach 메서드의 괄호 닫기
-   } // if 문의 괄호 닫기
+    }
 
+    const initialItem2 = selectItem.querySelectorAll('.initialItem2');
+//    //////////////////////////////////////////////////////////////////////////////
+    if ( $(initialItem2).length > 0) {
+       initialItem2.forEach((item) => {
+           const spotName = item.querySelector('.initialSpotName').textContent;
+           const initId = item.querySelector('.initialId').textContent.trim();
+           const locationText = spotName;
 
+           locationItems.forEach((spot) => {
+               const checkbox = spot.querySelector('.location-checkbox');
+               const spotId = spot.querySelector('.D').textContent;
+               if (initId === spotId) {
+                   checkbox.checked = true;
+               }
+           });
+           geocoder.geocode({ address: locationText }, (results, status) => {
+               if (status === "OK" && results && results.length > 0) {
+                   const location = results[0].geometry.location;
+
+                   const marker = new google.maps.Marker({
+                       map: map,
+                       position: location,
+                       title: locationText,
+                   });
+
+                   markers.push(marker);
+                   addCityToSelection(locationText, initId, marker);
+                   map.panTo(location);
+               } else {
+                   console.error("위치를 찾을 수 없습니다.");
+               }
+           });
+       }); // forEach 메서드의 괄호 닫기
+    }
+    //////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////
 

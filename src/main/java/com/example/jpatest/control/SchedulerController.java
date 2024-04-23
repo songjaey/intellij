@@ -53,8 +53,8 @@ public class SchedulerController {
             session.setAttribute("schedulerDto", schedulerDto);
             logger.info("Received schedulerDto: {}", schedulerDto.getTrip_duration_end());
 
-            System.out.println("--------------------------------------------------------");
-            System.out.println(schedulerDto.getTrip_duration_end());
+//            System.out.println("--------------------------------------------------------");
+//            System.out.println(schedulerDto.getTrip_duration_end());
 
             // 두 번째 페이지로 리다이렉트
             return "scheduler/second";
@@ -69,8 +69,23 @@ public class SchedulerController {
                         @RequestParam("localId") String localIds, Model model,
                         HttpSession session) {
         try {
+            /////////////////////////추가///////////////////////////////
+            String spotIds = (String) session.getAttribute("spotIds");
+            if (spotIds != null) {
+                // localIds 세션이 존재할 때만 JavaScript 코드를 모델에 추가
+                model.addAttribute("spotIds", spotIds);
+                String[] spotIdArray = spotIds.split(",");
+                if (spotIdArray.length > 0) {
+                    List<AdminItemEntity> adminItemEntityList2 = new ArrayList<>();
+                    for (String spotId : spotIdArray) {
+                        AdminItemEntity itemsForSpotId = adminItemService.findById(Long.parseLong(spotId));
+                        adminItemEntityList2.add(itemsForSpotId);
+                    }
+                    model.addAttribute("initItemEntity2", adminItemEntityList2);
+                }
+            }
+            /////////////////////////추가///////////////////////////////
             schedulerDto = (SchedulerDto) session.getAttribute("schedulerDto");
-
             // localIds를 쉼표(,)로 분할하여 각 localId를 추출합니다.
             String[] localIdArray = localIds.split(",");
 
@@ -224,6 +239,7 @@ public class SchedulerController {
     public String getSecondPage(Model model, HttpSession session) {
         SchedulerDto schedulerDto = (SchedulerDto) session.getAttribute("schedulerDto");
         String localIds = (String) session.getAttribute("localIds");
+
         model.addAttribute("schedulerDto", schedulerDto);
         model.addAttribute("localIds", localIds);
         try {
