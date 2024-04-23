@@ -270,8 +270,7 @@ public class AdminController {
                 adminItemDto.setBusinessHours("Fri", Fri);
                 adminItemDto.setBusinessHours("Sat", Sat);
                 adminItemDto.setBusinessHours("Sun", Sun);
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!");
-                System.out.println(contentType);
+
                 adminItemDto.setContentType(contentType); // contentType 설정
                 adminItemService.saveAdminItem(adminItemDto, localEntityId);
             } catch (Exception e) {
