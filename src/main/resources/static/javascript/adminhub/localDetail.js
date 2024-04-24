@@ -12,43 +12,47 @@ $(document).ready(function () {
         }
     }
      $('#saveModalBtn').on('click', function() {
-            var formData = new FormData();
-            var businessHours = {}; // 요일과 시간을 저장할 객체
+         var formData = new FormData();
+         var businessHours = {}; // 요일과 시간을 저장할 객체
 
-            // 각 요일과 시간 값을 수집하여 객체에 저장
-            $('.day-time-entry').each(function() {
-                var dayOfWeek = $(this).find('label').text(); // 요일
-                var amValue = $(this).find('input[name$="_am"]').val(); // 오전 시간
-                var pmValue = $(this).find('input[name$="_pm"]').val(); // 오후 시간
+         // 각 요일과 시간 값을 수집하여 객체에 저장
+         $('.day-time-entry').each(function() {
+             var dayOfWeek = $(this).find('label').text().trim();
+             var amValue = $(this).find('input[name$="_am"]').val().trim();
+             var pmValue = $(this).find('input[name$="_pm"]').val().trim();
 
-                businessHours[dayOfWeek] = {
-                    am: amValue,
-                    pm: pmValue
-                };
-            });
+             businessHours[dayOfWeek] = {
+                 am: amValue,
+                 pm: pmValue
+             };
+         });
 
-            // FormData에 요일과 시간 데이터 추가
-            formData.append('businessHours', businessHours);
+         // FormData에 요일과 시간 데이터 추가
+         formData.append('businessHours', JSON.stringify(businessHours));
 
-            // 기타 필요한 데이터도 FormData에 추가 가능
+         // 기타 필요한 데이터도 FormData에 추가 가능
 
-            // AJAX 요청 보내기
-            $.ajax({
-                url: '/admin/item',
-                method: 'POST',
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(response) {
-                    // 성공 시 처리
-                    console.log(response);
-                },
-                error: function(xhr, status, error) {
-                    // 실패 시 처리
-                    console.error(xhr.responseText);
-                }
-            });
-        });
+         // AJAX 요청 보내기
+         $.ajax({
+             url: '/admin/item',
+             method: 'POST',
+             processData: false,
+             contentType: false,
+             data: formData,
+             success: function(response) {
+                 // 성공 시 처리 로직
+                 // 예를 들어, 성공 메시지를 특정 요소에 추가하거나, 페이지 리로드 등의 동작 수행
+                 alert('상품이 성공적으로 저장되었습니다.');
+                 window.location.reload(); // 페이지 리로드
+             },
+             error: function(xhr, status, error) {
+                 // 실패 시 처리 로직
+                 alert('상품 저장 중 오류가 발생했습니다.');
+                 console.error(xhr.responseText); // 오류 응답 내용 확인 (필요한 경우)
+             }
+         });
+     });
+
 
      $('.delete-btn').on('click', function(event) {
          event.preventDefault(); // 기본 동작 중지

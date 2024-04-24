@@ -3,52 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Local Detail Manage</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/adminhub/adminhub.css">
-    <link rel="stylesheet" href="/css/adminhub/localDetail.css">
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-               // 현재 주소 가져오기
-               var currentUrl = new URL(window.location.href);
+    <link rel="stylesheet" href="/css/adminhub/localDetail.css?v=1.0">
 
-               // 명소 링크 설정
-               var touristSpotLink = document.getElementById('touristSpotLink');
-               touristSpotLink.href = createNewUrl(currentUrl, 'content', '명소');
-
-               // 식당 링크 설정
-               var restaurantLink = document.getElementById('restaurantLink');
-               restaurantLink.href = createNewUrl(currentUrl, 'content', '식당');
-
-               // 숙박 링크 설정
-               var accommodationLink = document.getElementById('accommodationLink');
-               accommodationLink.href = createNewUrl(currentUrl, 'content', '숙박');
-
-               // 모달 폼의 contentType input 요소에 content 파라미터 값을 설정
-               var urlParams = new URLSearchParams(window.location.search);
-               var contentValue = urlParams.get('content');
-               var contentTypeInput = document.getElementById('contentType');
-               if (contentTypeInput) {
-                   contentTypeInput.value = contentValue;
-               }
-           });
-
-           // 새로운 URL을 생성하는 함수
-           function createNewUrl(currentUrl, paramName, paramValue) {
-               // URL 객체를 복제하여 새로운 URL 객체 생성
-               var newUrl = new URL(currentUrl);
-
-               // 새로운 URL에 파라미터 추가 또는 대체
-               newUrl.searchParams.set(paramName, paramValue);
-
-               // 문자열 형태로 반환
-               return newUrl.toString();
-           }
-    </script>
 </head>
 
 <body>
@@ -64,11 +29,9 @@
             <div class="local_plus">
                 <button style="border:0;width:100%;height:100%;background:none;font-size:50px;display:flex;justify-content:center;align-items:center;" type="button" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#myModal">+</button>
             </div>
-            <div class="local_block" th:each="item : ${adminItemEntity}" th:if="${adminItemEntity != null}" th:style="'background-image: url(' + ${item.imgUrl} + ');'" th:attr="data-item-id=${item.id}">
+            <div class="local_block" th:each="item : ${adminItemEntity}" th:if="${adminItemEntity != null}" th:style="'background-image: url(' + ${item.imgUrl} + ');background-position:center;background-size:cover;background-repeat: no-repeat;'" th:attr="data-item-id=${item.id}">
                 <button class="btn btn-danger delete-btn">삭제</button>
-                <form th:action="@{/admin/item/{itemId}(itemId=${item.id})}" method="POST">
-                    <button class="block_detail" style="background:black; color:white; border-radius:10px; padding:5px;" th:text="${item.touristSpotName}"></button>
-                </form>
+                <button class="btn btn-primary open-modal" type="button" style="background:black; color:white; border-radius:10px; padding:5px;" th:text="${item.touristSpotName}" th:attr="data-bs-target='#detailModal-' + ${item.id}" data-bs-toggle="modal"></button>
             </div>
 
         </div>
@@ -77,12 +40,12 @@
     <div class="select_content">
         <!-- 명소 링크 -->
         <div class="content_block">
-            <a id="touristSpotLink" href="#" >명소</a>
+            <a id="touristSpotLink" href="#">명소</a>
         </div>
 
         <!-- 식당 링크 -->
         <div class="content_block">
-            <a id="restaurantLink" href="#" >식당</a>
+            <a id="restaurantLink" href="#">식당</a>
         </div>
 
         <!-- 숙박 링크 -->
@@ -93,7 +56,6 @@
 
 
     <form th:action="@{/admin/item}" method="POST"  id="parentForm" enctype="multipart/form-data" th:object="${adminItemDto}">
-
         <!-- 모달 -->
         <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -170,9 +132,97 @@
                 </div>
             </div>
         </div>
+
+        <!-- 정보모달 -->
+        <div class="modal fade" th:each="item : ${adminItemEntity}"  th:id="'detailModal-' + ${item.id}" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:none">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="width:90%;">
+                        <button type="button" class="close-btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal_input">
+                            <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
+                                <img style="width: 100%;"  th:src="${item.imgUrl}">
+                            </div>
+                            <div style="flex: 1; width: 100%; border-top: 1px solid black; display: flex; justify-content: center; align-items: center;">
+                                <input style="width: 100%; height: 100%; border: 0; padding: 10px; box-sizing: border-box; text-align: center; background: white;" type="text" name="features" th:value="${item.features}"placeholder="특징을 입력하세요">
+                            </div>
+                        </div>
+                        <div class="modal_input">
+                            <div style="margin: 20px 0;"><input type="text" name="touristSpotName" th:value="${item.touristSpotName}" placeholder="관광지명 입력"></div>
+                            <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
+                                <p style="font-size: 30px; margin: 0;">주소 입력</p>
+                                <input type="text" name="address" th:value="${item.address}" style="width: 100%; font-size: 15px;">
+                            </div>
+                            <div style="height: 70px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; justify-content: center; flex-wrap: wrap; margin: 10px;">
+                                <p style="font-size: 30px; margin: 0;">연락처</p>
+                                <input type="text" name="contact" style="width: 100%; font-size: 15px;" th:value="${item.contact}">
+                            </div>
+                            <div style="height: 270px; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <div style="width: 100%; height: 40px; margin: 10px 0; display: flex; justify-content: center;">
+                                    <p style="font-size: 30px; text-align: center;">영업시간 입력</p>
+                                </div>
+                                <div style="width: 100%; height: 230px; padding: 20px auto;">
+                                    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                        <div class="day-time-entry-detail" th:each="entry : ${item.businessHours}">
+                                            <label th:text="${entry.key}"></label>
+                                            <div th:text="${entry.value}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 
 </div>
+<script>
+    <!-- JavaScript -->
+    document.addEventListener('DOMContentLoaded', function() {
+    // 현재 주소 가져오기
+    var currentUrl = new URL(window.location.href);
+
+    // 명소 링크 설정
+    var touristSpotLink = document.getElementById('touristSpotLink');
+    touristSpotLink.href = createNewUrl(currentUrl, 'content', '명소');
+
+    // 식당 링크 설정
+    var restaurantLink = document.getElementById('restaurantLink');
+    restaurantLink.href = createNewUrl(currentUrl, 'content', '식당');
+
+    // 숙박 링크 설정
+    var accommodationLink = document.getElementById('accommodationLink');
+    accommodationLink.href = createNewUrl(currentUrl, 'content', '숙박');
+
+    // 모달 폼의 contentType input 요소에 content 파라미터 값을 설정
+    var urlParams = new URLSearchParams(window.location.search);
+    var contentValue = urlParams.get('content');
+    var contentTypeInput = document.getElementById('contentType');
+    if (contentTypeInput) {
+    contentTypeInput.value = contentValue;
+    }
+    });
+
+    // 새로운 URL을 생성하는 함수
+    function createNewUrl(currentUrl, paramName, paramValue) {
+    // URL 객체를 복제하여 새로운 URL 객체 생성
+    var newUrl = new URL(currentUrl);
+
+    // 새로운 URL에 파라미터 추가 또는 대체
+    newUrl.searchParams.set(paramName, paramValue);
+
+    // 문자열 형태로 반환
+    return newUrl.toString();
+    }
+
+</script>
 
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"
@@ -184,20 +234,6 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script src="/javascript/adminhub/localDetail.js"></script>
-
-<!--<script>-->
-<!--    function setLinkHref() {-->
-<!--        // country, local, content 값 가져오기-->
-<!--        var country = '${localEntity.country}';-->
-<!--        var local = '${localEntity.local}';-->
-<!--        var contentType = '숙박'; // contentType을 하드코딩하거나, 적절한 방식으로 가져오세요.-->
-
-<!--        // href 속성 설정-->
-<!--        var link = document.getElementById('touristSpotLink');-->
-<!--        link.href = '/localDetail?country=' + encodeURIComponent(country) + '&local=' + encodeURIComponent(local) + '&content=' + encodeURIComponent(contentType);-->
-<!--    }-->
-<!--</script>-->
-
 
 </body>
 

@@ -84,7 +84,6 @@
             <div class="modal-body">
                 <div class="modal_input">
                     <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
-                        <!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${stay.imgUrl} + '); background-position:center; background-size:cover;'">-->
                         <img id="imageInput" style="width: 90%; margin-left:30px; height:100%; border-radius:15px;cursor: pointer;">
                     </div>
                 </div>
@@ -137,6 +136,19 @@
         $(document).ready(function() {
             let currentContentType = "숙박"; // 초기에는 "숙박"으로 설정
             let selectedTransportation = "MassTransit"; // 선택된 Transportation 값
+            const form = document.querySelector("form");
+
+            form.addEventListener("submit", (event) => {
+             const selectedItems = document.querySelectorAll(".selected-item");
+
+             // 선택된 항목이 없는 경우 폼 제출 중지 및 알림창 표시
+             if (selectedItems.length === 0) {
+               event.preventDefault(); // 폼 제출 중지
+
+               // 알림창 표시
+               alert("한개 이상 골라주세요.");
+             }
+           });
 
             // 페이지가 로드되면 모든 contents 숨기기
             $('.contents').hide();
@@ -168,6 +180,13 @@
             // 검색 버튼 클릭 시 검색 이벤트 처리
             $('#searchButton').click(function() {
                 searchLocation(currentContentType); // 현재 contentType에 따라 검색 실행
+            });
+
+            // .selected-item 클릭 시 검색 이벤트 처리
+            $(document).on('click', '.selected-item', function() {
+                const locationText = $(this).attr('data-location'); // 클릭된 아이템의 위치 정보 가져오기
+                $('#locationInput').val(locationText); // 위치 입력란에 선택된 아이템의 위치 정보 설정
+                searchLocation(currentContentType); // 위치에 따라 해당 컨텐츠 검색 실행
             });
 
             function showContentsByType(contentType) {
@@ -219,17 +238,6 @@
                 selectedTransportation = value;
             });
 
-            // 폼 제출 시 이벤트 처리
-            $("form").submit(function(event) {
-                event.preventDefault(); // 폼 제출 방지
-
-                // 선택된 Transportation 값을 hidden input에 설정
-                $("#transportaion").val(selectedTransportation);
-
-                // 폼 제출
-                this.submit();
-            });
-
             $('.stay-image').click(function() {
                 // 모달에 표시될 정보 추출
                 const imgUrl = $(this).css('background-image');
@@ -254,6 +262,11 @@
                 $('#modal').show();
             });
 
+            // 모달 창 닫기 버튼 클릭 이벤트 처리
+            $('.close-btn').click(function() {
+                $('#modal').hide();
+            });
+
             // '일정' 버튼 클릭 시
             $("#scheduleButton").click(function() {
                 // first.html 페이지로 이동
@@ -269,6 +282,7 @@
             $("#localButton").click(function() {
                 window.location.href = "/schedulers/third";
             });
+
         });
 
     </script>

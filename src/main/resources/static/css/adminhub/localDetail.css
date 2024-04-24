@@ -105,9 +105,23 @@
     border:none;
 }
 .day-time-entry{
-    height:30px;
-    padding:0;
+    height:50px;
+    width:50%;
+    padding:5px 0;
     margin:0;
+    display:flex;
+    justify-content:center;
+}
+.day-time-entry-detail{
+    height:20px;
+    width:100%;
+    padding:10px 0;
+    margin:0;
+    display:flex;
+    justify-content:center;
+}
+.day-time-entry-detail label{
+    margin-right:20px;
 }
 /*
  input[type="text"], input[type="file"] {
