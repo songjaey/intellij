@@ -6,7 +6,9 @@ import com.example.jpatest.entity.LocalEntity;
 import com.example.jpatest.entity.Scheduler;
 import com.example.jpatest.repository.LocalRepository;
 import com.example.jpatest.service.AdminItemService;
+import com.example.jpatest.service.GoogleMapsService;
 import com.example.jpatest.service.SchedulerService;
+import com.google.maps.model.DirectionsRoute;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,7 @@ public class SchedulerController {
     private final LocalRepository localRepository;
 
     private final AdminItemService adminItemService;
+    private final GoogleMapsService googleMapsService;
     private static final Logger logger = LoggerFactory.getLogger(SchedulerController.class);
 
     @GetMapping("/first")
@@ -114,8 +117,8 @@ public class SchedulerController {
             session.setAttribute("localIds", localIds); // localIds는 쉼표(,)로 구분된 문자열입니다.
             session.setAttribute("schedulerDto", schedulerDto);
 
-            System.out.println(localIds);
-            System.out.println(schedulerDto.getTrip_duration_end());
+            //System.out.println(localIds);
+            //System.out.println(schedulerDto.getTrip_duration_end());
 
             return "scheduler/third";
         } catch (Exception e) {
@@ -163,9 +166,9 @@ public class SchedulerController {
         session.setAttribute("spotIds", spotIds);
         session.setAttribute("spotMarks", spotMarks);
 
-        System.out.println(localIds);
-        System.out.println(spotIds);
-        System.out.println(schedulerDto.getTrip_duration_end());
+        //System.out.println(localIds);
+        //System.out.println(spotIds);
+        //System.out.println(schedulerDto.getTrip_duration_end());
 
         return "scheduler/fourth";
 
@@ -174,6 +177,7 @@ public class SchedulerController {
     @PostMapping("/result")
     public String result(@ModelAttribute("schedulerDto") SchedulerDto schedulerDto,
                          @RequestParam("stayId") String stayIds,
+                         @RequestParam("stayMark") String stayMarks,
                          Model model, HttpSession session) {
 
         schedulerDto = (SchedulerDto) session.getAttribute("schedulerDto");
@@ -219,17 +223,21 @@ public class SchedulerController {
             }
         }
 
-        // model에 필터링된 adminItemEntity 리스트 추가
+        String origin="인천광역시 중구 공항로424번길 47"; String destination="인천광역시 중구 공항로424번길 47";
+
+        DirectionsRoute[] routes = googleMapsService.getOptimalRoute(origin, destination, filteredAdminItems);
+
+        if (routes != null && routes.length > 0) {
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < routes.length; i++) {
+                result.append("Route ").append(i + 1).append(": ");
+                result.append("Distance: ").append(routes[i].legs[0].distance).append(", ");
+                result.append("Duration: ").append(routes[i].legs[0].duration).append("<br>");
+            }
+        }
+        session.setAttribute("stayMarks", stayMarks);
         model.addAttribute("adminItemEntity", filteredAdminItems);
-
-        // schedulerDto와 선택된 stay, spot 아이템 정보 추가
         model.addAttribute("schedulerDto", schedulerDto);
-
-        System.out.println("--------^^-------------------------------------");
-        System.out.println(localIds);
-        System.out.println(spotIds);
-        System.out.println(stayIds);
-        System.out.println(schedulerDto.getTrip_duration_end());
 
         return "scheduler/result";
     }
@@ -261,7 +269,7 @@ public class SchedulerController {
             model.addAttribute("schedulerDto", schedulerDto);
             // schedulerDto 저장
             /*        schedulerService.saveScheduler(schedulerDto);*/
-            System.out.println(schedulerDto.getTrip_duration_end());
+            //System.out.println(schedulerDto.getTrip_duration_end());
             logger.info("Received schedulerDto: {}", schedulerDto.getTrip_duration_end());
 
             // 두 번째 페이지로 리다이렉트

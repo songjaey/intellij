@@ -75,7 +75,6 @@
                                     <label th:text="${entry.key}"></label>
                                     <div th:text="${entry.value}"></div>
                                 </div>
-
                             </div>
                             <input style="width:50px;margin: auto 0;" type="checkbox" id="locationCheckBox1" class="location-checkbox">
                         </div>
@@ -92,7 +91,6 @@
             <div class="modal-body">
                 <div class="modal_input">
                     <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
-                        <!--                        <div id="imageInput" th:style="'width:100% background-image: url(' + ${spot.imgUrl} + '); background-position:center; background-size:cover;'">-->
                         <img id="imageInput" style="width: 90%; margin-left:30px; height:100%; border-radius:15px;cursor: pointer;">
                     </div>
                 </div>
@@ -100,13 +98,11 @@
                     <div style="margin: 20px 0;"><h2 id="touristSpotName"></h2></div>
                     <div style="height: 90px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; flex-direction:column; align-items:center; justify-content: center; flex-wrap: wrap; margin: 10px;">
                         <p style="font-size: 30px; margin: 0;">주소</p>
-                        <!--                        <input type="text" id="modalAddress" name="address" style="width: 100%; font-size: 15px;" readonly>-->
                         <h3 id="modalAddress" style="font-size: 15px;"></h3>
                     </div>
 
                     <div style="height: 90px; width: 100%; font-family: 'LINE Seed Sans KR'; display: flex; flex-direction:column; align-items:center;justify-content: center; flex-wrap: wrap; margin: 10px;">
                         <p style="font-size: 30px; margin: 0;">연락처</p>
-                        <!--                        <input type="text" id="modalContact" name="contact" style="width: 100%; font-size: 15px;" readonly>-->
                         <div id="modalContact" style="font-size: 15px; margin-top:5px;"></div>
                     </div>
 
@@ -140,7 +136,19 @@
     <script type="module"  src="/javascript/scheduler/map2.js"></script>
     <script>
         $(document).ready(function() {
-               let currentContentType = "명소"; // 초기에는 "명소"로 설정
+           let currentContentType = "명소"; // 초기에는 "명소"로 설정
+            const form = document.querySelector("form");
+             form.addEventListener("submit", (event) => {
+             const selectedItems = document.querySelectorAll(".selected-item");
+
+             // 선택된 항목이 없는 경우 폼 제출 중지 및 알림창 표시
+             if (selectedItems.length === 0) {
+               event.preventDefault(); // 폼 제출 중지
+
+               // 알림창 표시
+               alert("한개 이상 골라주세요.");
+             }
+           });
 
             // 페이지가 로드되면 모든 contents 숨기기
             $('.contents').hide();
@@ -176,10 +184,11 @@
                 });
             });
 
-            // Enter 키 입력 시 검색 이벤트 처리
+            // 위치 입력란인 locationInput에서 Enter 키 입력 처리
             $('#locationInput').keypress(function(e) {
-                if (e.which === 13) { // Enter 키
-                    searchLocation(currentContentType); // 현재 contentType에 따라 검색 실행
+                if (e.which === 13) { // Enter 키가 눌렸는지 확인
+                    e.preventDefault(); // 기본 동작(폼 제출) 방지
+                    searchLocation(currentContentType); // 사용자 정의 검색 동작 실행
                 }
             });
 
@@ -265,6 +274,7 @@
             $("#localButton").click(function() {
                 window.location.href = "/schedulers/second";
             });
+
         });
     </script>
 </div>

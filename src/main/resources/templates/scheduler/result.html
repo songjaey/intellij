@@ -16,7 +16,9 @@
 
 <div layout:fragment="content">
     <form th:action="@{/schedulers/result}" th:object="${schedulerDto}" method="post" class="box">
-
+        <input type="hidden" id="localId">
+        <input type="hidden" id="stayMarks" th:value="${session.stayMarks}">
+        <input type="hidden" id="spotMarks" th:value="${session.spotMarks}">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
             <input type="text" id="DurationStart" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
             <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>

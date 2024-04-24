@@ -115,10 +115,10 @@ function initMap(initialLocation) {
         const checkbox = spot.querySelector('.location-checkbox');
         const spotName = spot.querySelector('.spot-name').textContent;
         const spotId = spot.querySelector('.D').textContent.trim();
-
+        const Address = spot.querySelector('.spot-address').textContent.trim();
         checkbox.addEventListener('change', (event) => {
             const locationText = spotName;
-
+            const locationAddress = Address
             if (event.target.checked) {
                 if (selectedSpots.has(locationText)) {
                     alert(`'${locationText}'는 이미 선택된 장소입니다.`);
@@ -126,7 +126,7 @@ function initMap(initialLocation) {
                     return;
                 }
 
-                geocoder.geocode({ address: locationText }, (results, status) => {
+                geocoder.geocode({ address: locationAddress }, (results, status) => {
                     if (status === "OK" && results && results.length > 0) {
                         const location = results[0].geometry.location;
 
