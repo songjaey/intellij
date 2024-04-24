@@ -16,7 +16,6 @@
 
 <div layout:fragment="content">
     <form th:action="@{/schedulers/result}" th:object="${schedulerDto}" method="post" class="box">
-        <!--<input type="hidden" id="national">-->
         <input type="hidden" id="localId">
         <input type="hidden" id="spotMarks" th:value="${session.spotMarks}">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
@@ -117,17 +116,17 @@
         <div style="width:11%;height:100%;background:#000A67;display:flex;flex-direction:column; justify-content:space-between;align-items:center;">
             <div style="margin-top:50px;">
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">일정</button>
+                    <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">일정</button>
                 </div>
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <a href="/schedulers/second" id="localButton2" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">관광지</a>
+                    <button type="button" id="localButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">관광지</button>
                 </div>
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <a href="/schedulers/third" id="localButton3" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">명소/식당</a>
+                    <button type="button" id="spotButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">명소/식당</button>
                 </div>
             </div>
             <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                <button type="button" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer; color:black;font-size:30px;font-family:LINE Seed Sans KR;">결과보기</button>
+                <button type="submit" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">Next</button>
             </div>
         </div>
     </form>

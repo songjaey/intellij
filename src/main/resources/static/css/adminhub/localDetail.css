@@ -113,12 +113,12 @@
     justify-content:center;
 }
 .day-time-entry-detail{
-    height:20px;
+    height:30px;
     width:100%;
-    padding:10px 0;
     margin:0;
     display:flex;
     justify-content:center;
+    align-items:center;
 }
 .day-time-entry-detail label{
     margin-right:20px;
