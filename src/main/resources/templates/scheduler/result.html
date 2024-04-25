@@ -43,186 +43,186 @@
                         </div>
                         <!-- 동적으로 렌더링될 adminItemEntity -->
 <!--                        <th:block th:each="index : ${#numbers.sequence(0, 9)}">-->
-                            <div th:id="adminItemEntity0" class="adminItemEntity" th:style="'display:block;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity0}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        <div th:id="adminItemEntity0" class="adminItemEntity" th:style="'display:block;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity0}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox0" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity1" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity0}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity1" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity1}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox1" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity2" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity2}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity2" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity2}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox2" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity3" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity3}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity3" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity3}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox3" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity4" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity4}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity4" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity4}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox4" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity5" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity5}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity5" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity5}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox5" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity6" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity6}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity6" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity6}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox6" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity7" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity7}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity7" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity7}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox7" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity8" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity8}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity8" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity8}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox8" class="location-checkbox">
                             </div>
-                            <div th:id="adminItemEntity9" class="adminItemEntity" th:style="'display:none;'">
-                                <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                                <div th:each="result : ${adminItemEntity9}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
-                                    <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
-                                    <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
-                                        <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                        <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-                                        <p class="D" th:text="${result.id}" style="display:none;"></p>
-                                        <p class="result-address" th:text="${result.address}" style="display:none;"></p>
-                                        <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
-                                        <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
-                                            <label th:text="${entry.key}"></label>
-                                            <div th:text="${entry.value}"></div>
-                                        </div>
+                        </div>
+                        <div th:id="adminItemEntity9" class="adminItemEntity" th:style="'display:none;'">
+                            <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
+                            <div th:each="result : ${adminItemEntity9}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                                <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
+                                <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
+                                    <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="D" th:text="${result.id}" style="display:none;"></p>
+                                    <p class="result-address" th:text="${result.address}" style="display:none;"></p>
+                                    <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
+                                    <div class="day-time-entry" th:each="entry : ${result.businessHours}" style="display:none">
+                                        <label th:text="${entry.key}"></label>
+                                        <div th:text="${entry.value}"></div>
                                     </div>
-                                    <input style="width:50px;margin: auto 0;" type="checkbox" th:id="'locationCheckBox' + ${index}" class="location-checkbox">
                                 </div>
+                                <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox9" class="location-checkbox">
                             </div>
+                        </div>
 <!--                        </th:block>-->
 
 

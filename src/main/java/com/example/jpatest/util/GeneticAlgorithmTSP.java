@@ -105,7 +105,7 @@ public class GeneticAlgorithmTSP {
             if (contentType == ContentType.숙박) {
                 stayTime = 600; // 분 단위로 변환
             }
-            if (contentType == ContentType.식당 || contentType == ContentType.명소 ) {
+            if (contentType == ContentType.식당 ) {
                 stayTime = 60; // 10시간 -> 분 단위로 변환
             }
             if (contentType == ContentType.명소 ) {
@@ -203,14 +203,17 @@ public class GeneticAlgorithmTSP {
             if (!visited.contains(i)) {
                 double travelTime = travelTimes[currentCity.getIndex()][i];
                 if (travelTime < minTravelTime) {
-                    String contentType = places.get(i - 1).getContentType().trim().toLowerCase();
-                    if (shouldSkipToNextRestaurant(currentTime) && "식당".equals(contentType)) {
+                    String contentType = places.get(i - 1).getContentType().trim();
+
+                    if (shouldSkipToNextRestaurant(currentTime) && contentType.equals("식당")) {
+                        System.out.println("currentTime1 : " + currentTime);
                         minIndex = i;
                         minTravelTime = travelTime;
-                    } else if (shouldSkipToNextLodging(currentTime) && "숙박".equals(contentType)) {
+                    }else if (shouldSkipToNextLodging(currentTime) && contentType.equals("숙박")) {
+                        System.out.println("currentTime2 : " + currentTime);
                         minIndex = i;
                         minTravelTime = travelTime;
-                    } else if (!(shouldSkipToNextRestaurant(currentTime) || shouldSkipToNextLodging(currentTime))) {
+                    }else if (!(shouldSkipToNextRestaurant(currentTime) || shouldSkipToNextLodging(currentTime))) {
                         minIndex = i;
                         minTravelTime = travelTime;
                     }
@@ -242,8 +245,10 @@ public class GeneticAlgorithmTSP {
     }
 
     private static boolean shouldSkipToNextLodging(LocalDateTime currentTime) {
-        LocalTime timeOfDay = currentTime.toLocalTime(); // 현재 시간의 시분을 가져옴
-        return timeOfDay.isAfter(LocalTime.of(20, 0)) && timeOfDay.isBefore(LocalTime.of(23, 59));
+        LocalTime timeOfDay = currentTime.toLocalTime();
+        System.out.println("timeofLodging"+timeOfDay);
+        return (timeOfDay.isAfter(LocalTime.of(20, 0)) && timeOfDay.isBefore(LocalTime.MAX)) ||
+                (timeOfDay.isAfter(LocalTime.MIN) && timeOfDay.isBefore(LocalTime.of(5, 0)));
     }
 
     private static List<Route> generateInitialPopulation(List<City> cities) {

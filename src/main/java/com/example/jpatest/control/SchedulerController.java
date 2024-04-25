@@ -258,59 +258,62 @@ public class SchedulerController {
         int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth(); // day 4.25일
         int i=0;
+        System.out.println("startDay : " + day);
         for(SchedulerDto route : routes){
-            if( i == (routes.size()-2) ) break;
+            if( i == 0) {i++; continue;}
+            if( i == (routes.size()-1) ) break;
             LocalDate dateTemp = route.getArrivalTime().toLocalDate();
             int yearTemp = dateTemp.getYear();
             int dayTemp = dateTemp.getDayOfMonth();
             int diff;
+            System.out.println("nextDay : " + dayTemp);
             if (dayTemp >= day) { //dayTemp 5월 1일
                 diff = dayTemp - day;
-            } else {
+             } else  {
                 YearMonth yearMonthObject = YearMonth.of(year, month);
                 int daysInMonth = yearMonthObject.lengthOfMonth(); // 해당 월의 날짜 수
                 diff = daysInMonth + dayTemp - day;
             }
-            System.out.println("i : " + i);
+
             switch(diff) {
                 case 0:
-                    day1Routes.add(reFilteredAdminItems.get(i));
+                    day1Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 1:
-                    day2Routes.add(reFilteredAdminItems.get(i));
+                    day2Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 2:
-                    day3Routes.add(reFilteredAdminItems.get(i));
+                    day3Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 3:
-                    day4Routes.add(reFilteredAdminItems.get(i));
+                    day4Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 4:
-                    day5Routes.add(reFilteredAdminItems.get(i));
+                    day5Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 5:
-                    day6Routes.add(reFilteredAdminItems.get(i));
+                    day6Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 6:
-                    day7Routes.add(reFilteredAdminItems.get(i));
+                    day7Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 7:
-                    day8Routes.add(reFilteredAdminItems.get(i));
+                    day8Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 8:
-                    day9Routes.add(reFilteredAdminItems.get(i));
+                    day9Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
                 case 9:
-                    day10Routes.add(reFilteredAdminItems.get(i));
+                    day10Routes.add(reFilteredAdminItems.get(i-1));
                     i++;
                     break;
             }

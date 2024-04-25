@@ -1,63 +1,93 @@
 document.addEventListener("DOMContentLoaded", () => {
     let map;
     let geocoder;
-    let markers = [];
     const locationList = document.getElementById("locationList");
+    const markersByDay = {}; // 각 날짜별 마커를 저장할 객체
 
     initMap();
 
     function initMap() {
         // 지도 초기화
         map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 37.5665, lng: 126.978 }, // 지도를 서울 시청을 중심으로 초기화
+            center: { lat: 37.5665, lng: 126.978 }, // 서울 시청을 중심으로
             zoom: 11,
         });
 
         geocoder = new google.maps.Geocoder();
 
-        // 모든 .resultContents 요소를 가져와서 처리
-        const contents = Array.from(locationList.querySelectorAll('.resultContents'));
+        const adminItemEntities = Array.from(locationList.querySelectorAll('.adminItemEntity'));
+        const colors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF', '#87CEEB', '#000080', '#800080', '#FF0000', '#FFA500', '#FFFF00'];
 
-        // 각 .resultContents 요소를 처리하고 지도에 마커를 추가
-        contents.forEach((content, index) => {
-            // 위도와 경도 값 가져오기
+        // 각 .adminItemEntity 요소를 처리
+        for (let i = 0; i < adminItemEntities.length; i++) {
+            const entity = adminItemEntities[i];
+            const contentsList = Array.from(entity.children).filter(child => child.classList.contains('contents'));
+            let dayNumber = i % colors.length; // 초기 색상 인덱스
+            let iter = 1;
 
-            const lat = parseFloat(content.querySelector('.resultRoute:nth-child(1)').value);
-            const lng = parseFloat(content.querySelector('.resultRoute:nth-child(2)').value);
-            // 장소 이름 가져오기
-            const resultName = "여행계획"
+            // 각 .contents 요소를 처리
+            processContents(0); // 초기 호출
 
-            // LatLng 객체 생성
-            const location = { lat: lat, lng: lng };
+            function processContents(index) {
+                if (index >= contentsList.length) {
+                    return; // 모든 contents 처리가 완료되면 종료
+                }
 
-            // 각 위치에 대한 마커 생성
-            const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                label: (index + 1).toString(), // 레이블 부여 (1, 2, 3, ...)
-                title: resultName // 제목은 장소 이름으로 설정
-            });
+                const contents = contentsList[index];
+                const address = contents.querySelector('.result-address').textContent;
+                const resultName = contents.querySelector('.result-name').textContent;
 
-            markers.push(marker);
+                // 주소값으로 지오코딩하여 위치 가져오기
+                geocoder.geocode({ 'address': address }, function (results, status) {
+                    if (status === 'OK') {
+                        const location = results[0].geometry.location;
 
-            // 마커가 여러 개인 경우 현재 마커와 이전 마커 사이에 선을 그림
-            if (markers.length > 1) {
-                const prevMarker = markers[markers.length - 2];
-                const currentMarker = markers[markers.length - 1];
+                        // 각 위치에 대한 마커 생성
+                        const marker = new google.maps.Marker({
+                            position: location,
+                            map: map,
+                            title: resultName, // 제목은 장소 이름으로 설정
+                            label: iter.toString(), // 핀에 번호 부여,
+                            icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                fillColor: colors[dayNumber], // 핀 색상 설정
+                                fillOpacity: 1,
+                                strokeWeight: 0,
+                                scale: 10
+                            }
+                        });
+                        iter++; // 다음 번호로 증가
 
-                const line = new google.maps.Polyline({
-                    path: [prevMarker.getPosition(), currentMarker.getPosition()],
-                    map: map,
-                    strokeColor: "#FF0000", // 빨간색 선
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2
+                        // 해당 날짜의 마커 배열에 추가
+                        markersByDay[dayNumber] = markersByDay[dayNumber] || [];
+                        markersByDay[dayNumber].push(marker);
+
+                        // 마커가 2개 이상인 경우 선으로 연결
+                        if (markersByDay[dayNumber].length > 1) {
+                            const prevMarker = markersByDay[dayNumber][markersByDay[dayNumber].length - 2];
+                            const currentMarker = markersByDay[dayNumber][markersByDay[dayNumber].length - 1];
+
+                            const line = new google.maps.Polyline({
+                                path: [prevMarker.getPosition(), currentMarker.getPosition()],
+                                map: map,
+                                strokeColor: colors[dayNumber], // 선 색상 설정
+                                strokeOpacity: 1.0,
+                                strokeWeight: 2
+                            });
+                        }
+
+                        // 지도 중심을 첫 번째 마커의 위치로 설정
+                        if (iter === 2) {
+                            map.setCenter(location);
+                        }
+                    } else {
+                        console.error('지오코딩 실패: ' + status);
+                    }
+
+                    // 다음 contents 처리를 위해 재귀적으로 호출
+                    processContents(index + 1);
                 });
             }
-
-            // 지도 중심을 첫 번째 마커의 위치로 설정
-            if (index === 0) {
-                map.setCenter(location);
-            }
-        });
+        }
     }
 });
