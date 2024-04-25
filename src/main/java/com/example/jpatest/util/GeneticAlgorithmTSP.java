@@ -105,10 +105,10 @@ public class GeneticAlgorithmTSP {
             ContentType contentType = ContentType.valueOf(places.get(i).getContentType());
             int stayTime = 0; // 머무는 시간
             if (contentType == ContentType.숙박) {
-                stayTime = 600; // 10시간 -> 분 단위로 변환
+                stayTime = 540; // 10시간 -> 분 단위로 변환
             }
             if (contentType == ContentType.식당 || contentType == ContentType.명소 ) {
-                stayTime = 60; // 10시간 -> 분 단위로 변환
+                stayTime = 90; // 10시간 -> 분 단위로 변환
             }
             cities.add(new City(waypointLatLng.lat, waypointLatLng.lng, contentType, i+1, null, stayTime));
         }
@@ -149,13 +149,22 @@ public class GeneticAlgorithmTSP {
         // 최적 경로 계산
         List<City> optimalRoute = new ArrayList<>();
         Set<Integer> visited = new HashSet<>();
+        int nextCityIndex = 0;
         City currentCity = cities.get(0); // 시작 도시
         optimalRoute.add(currentCity);
         visited.add(0);
         LocalTime currentTime = currentCity.arrivalTime; // 현재 시간을 출발 시간으로 설정.
 
         for (int i = 0; i < cities.size() - 1; i++) {
-            int nextCityIndex = findNearestCityIndex(travelTimes, currentCity, visited, currentTime, places);
+            if(i < cities.size() - 2) {
+                nextCityIndex = findNearestCityIndex(travelTimes, currentCity, visited, currentTime, places);
+            }
+            else{
+                nextCityIndex = cities.size() - 1;
+            }
+
+            System.out.println(i+"/"+nextCityIndex);
+
             City nextCity = cities.get(nextCityIndex); // 다음 도시
             // 다음 도시까지 이동하는 시간 계산
             double travelTimeToNextCity = travelTimes[currentCity.getIndex()][nextCityIndex];
@@ -180,17 +189,18 @@ public class GeneticAlgorithmTSP {
         int minIndex = -1;
         double minTravelTime = Double.MAX_VALUE;
 
-        for (int i = 1; i < travelTimes.length; i++) {
+        for (int i = 1; i < travelTimes.length-1; i++) {
             if (!visited.contains(i)) {
                 double travelTime = travelTimes[currentCity.getIndex()][i];
                 if (travelTime < minTravelTime) {
-                    // 현재 시간이 특정 조건을 충족할 때 해당 조건에 맞는 다음 도시를 선택
-                    if (shouldSkipToNextPlace(currentTime, places.get(i - 1))) {
-                        if (places.get(i - 1).getContentType().equals("식당")) {
-                            minIndex = i;
-                            minTravelTime = travelTime;
-                        }
-                    } else {
+                    if (shouldSkipToNextRestaurant(currentTime) && places.get(i - 1).getContentType().equals("식당")) {
+                        minIndex = i;
+                        minTravelTime = travelTime;
+                    } else if (shouldSkipToNextLodging(currentTime) && places.get(i - 1).getContentType().equals("숙박")) {
+                        System.out.println(i);
+                        minIndex = i;
+                        minTravelTime = travelTime;
+                    } else if (!(shouldSkipToNextRestaurant(currentTime) || shouldSkipToNextLodging(currentTime))) {
                         minIndex = i;
                         minTravelTime = travelTime;
                     }
@@ -200,18 +210,25 @@ public class GeneticAlgorithmTSP {
 
         return minIndex;
     }
-
-    private static boolean shouldSkipToNextPlace(LocalTime currentTime, AdminItemEntity place) {
-        // arrivalTime이 12:00이 넘거나 18:00이 넘으면 true 반환
-        if (currentTime.isAfter(LocalTime.of(12, 0)) && place.getContentType().equals("식당")) {
+    private static boolean shouldSkipToNextRestaurant(LocalTime currentTime) {
+        // arrivalTime이 12:00가 지나거나 18:00이 지났으면서 place가 식당이면 true 반환
+        if (currentTime.isAfter(LocalTime.of(11, 30)) && currentTime.isBefore(LocalTime.of(13, 30))) {
             return true;
-        } else if (currentTime.isAfter(LocalTime.of(18, 0)) && place.getContentType().equals("식당")) {
-            return true;
-        } else if (currentTime.isAfter(LocalTime.of(20, 0)) && place.getContentType().equals("숙박")) {
+        }
+        if (currentTime.isAfter(LocalTime.of(17, 30)) && currentTime.isBefore(LocalTime.of(19, 0))) {
             return true;
         }
         return false;
+    }
 
+
+    private static boolean shouldSkipToNextLodging(LocalTime currentTime) {
+        // arrivalTime이 12:00가 지나거나 18:00이 지났으면서 place가 식당이면 true 반환
+        System.out.println("Lodging Time : "+currentTime);
+        if (currentTime.isAfter(LocalTime.of(20, 0)) && currentTime.isBefore(LocalTime.of(23, 0))) {
+            return true;
+        }
+        return false;
     }
 
     private static List<Route> generateInitialPopulation(List<City> cities) {
