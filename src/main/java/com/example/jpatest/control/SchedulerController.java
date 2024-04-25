@@ -226,25 +226,40 @@ public class SchedulerController {
                 filteredAdminItems.add(itemForSpotId);
             }
         }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        List<AdminItemEntity> day1Routes = new ArrayList<>(); List<AdminItemEntity> day2Routes = new ArrayList<>(); List<AdminItemEntity> day3Routes = new ArrayList<>();
+        List<AdminItemEntity> day4Routes = new ArrayList<>(); List<AdminItemEntity> day5Routes = new ArrayList<>(); List<AdminItemEntity> day6Routes = new ArrayList<>();
+        List<AdminItemEntity> day7Routes = new ArrayList<>(); List<AdminItemEntity> day8Routes = new ArrayList<>(); List<AdminItemEntity> day9Routes = new ArrayList<>();
+        List<AdminItemEntity> day10Routes = new ArrayList<>();
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
         String origin="인천광역시 중구 공항로424번길 47"; String destination="인천광역시 중구 공항로424번길 47";
 
         List<SchedulerDto> routes = googleMapsService.getOptimalRoute(origin, destination, filteredAdminItems);
         System.out.println(routes);
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        List<SchedulerDto> day1Routes = new ArrayList<>(); List<SchedulerDto> day2Routes = new ArrayList<>(); List<SchedulerDto> day3Routes = new ArrayList<>();
-        List<SchedulerDto> day4Routes = new ArrayList<>(); List<SchedulerDto> day5Routes = new ArrayList<>(); List<SchedulerDto> day6Routes = new ArrayList<>();
-        List<SchedulerDto> day7Routes = new ArrayList<>(); List<SchedulerDto> day8Routes = new ArrayList<>(); List<SchedulerDto> day9Routes = new ArrayList<>();
-        List<SchedulerDto> day10Routes = new ArrayList<>();
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        String[] combinedArray = new String[stayIdArray.length + spotIdArray.length];
+        System.arraycopy(stayIdArray, 0, combinedArray, 0, stayIdArray.length);
+        System.arraycopy(spotIdArray, 0, combinedArray, stayIdArray.length, spotIdArray.length);
+
+        List<AdminItemEntity> reFilteredAdminItems = new ArrayList<>();
+        for(int i=1; i < routes.size(); i++){
+            for(int j=0; j < combinedArray.length; j++) {
+                if(Long.parseLong(combinedArray[j]) == routes.get(i).getResultItemId() ){
+                    reFilteredAdminItems.add(googleMapsService.getScheduler(Long.parseLong(combinedArray[j])));
+                }
+            }
+        }
 
         LocalDate currentDate = routes.get(0).getArrivalTime().toLocalDate();
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth(); // day 4.25일
-
+        int i=0;
         for(SchedulerDto route : routes){
+            if( i == (routes.size()-2) ) break;
             LocalDate dateTemp = route.getArrivalTime().toLocalDate();
             int yearTemp = dateTemp.getYear();
             int dayTemp = dateTemp.getDayOfMonth();
@@ -256,44 +271,65 @@ public class SchedulerController {
                 int daysInMonth = yearMonthObject.lengthOfMonth(); // 해당 월의 날짜 수
                 diff = daysInMonth + dayTemp - day;
             }
-
+            System.out.println("i : " + i);
             switch(diff) {
                 case 0:
-                    day1Routes.add(route);
+                    day1Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 1:
-                    day2Routes.add(route);
+                    day2Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 2:
-                    day3Routes.add(route);
+                    day3Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 3:
-                    day4Routes.add(route);
+                    day4Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 4:
-                    day5Routes.add(route);
+                    day5Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 5:
-                    day6Routes.add(route);
+                    day6Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 6:
-                    day7Routes.add(route);
+                    day7Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 7:
-                    day8Routes.add(route);
+                    day8Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 8:
-                    day9Routes.add(route);
+                    day9Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
                 case 9:
-                    day10Routes.add(route);
+                    day10Routes.add(reFilteredAdminItems.get(i));
+                    i++;
                     break;
             }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         session.setAttribute("stayMarks", stayMarks);
-        model.addAttribute("adminItemEntity", filteredAdminItems);
+        model.addAttribute("adminItemEntity0", day1Routes);
+        model.addAttribute("adminItemEntity1", day2Routes);
+        model.addAttribute("adminItemEntity2", day3Routes);
+        model.addAttribute("adminItemEntity3", day4Routes);
+        model.addAttribute("adminItemEntity4", day5Routes);
+        model.addAttribute("adminItemEntity5", day6Routes);
+        model.addAttribute("adminItemEntity6", day7Routes);
+        model.addAttribute("adminItemEntity7", day8Routes);
+        model.addAttribute("adminItemEntity8", day9Routes);
+        model.addAttribute("adminItemEntity9", day10Routes);
+
+        //model.addAttribute("adminItemEntity", filteredAdminItems);
         model.addAttribute("schedulerDto", schedulerDto);
         model.addAttribute("routes", routes);
 

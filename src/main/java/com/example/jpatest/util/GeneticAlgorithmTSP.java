@@ -120,7 +120,7 @@ public class GeneticAlgorithmTSP {
             System.out.println("목적지 주소를 좌표로 변환할 수 없습니다.");
             return null;
         }
-        cities.add(new City(destinationLatLng.lat, destinationLatLng.lng, ContentType.DESTINATION, places.size()+1 ,1, null, 0, 0L));
+        cities.add(new City(destinationLatLng.lat, destinationLatLng.lng, ContentType.DESTINATION, places.size()+1 ,1, null, 0, 1000L));
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

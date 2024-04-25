@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 각 .resultContents 요소를 처리하고 지도에 마커를 추가
         contents.forEach((content, index) => {
             // 위도와 경도 값 가져오기
-            alert(parseFloat(content.querySelector('.resultRoute:nth-child(1)').value));
+
             const lat = parseFloat(content.querySelector('.resultRoute:nth-child(1)').value);
             const lng = parseFloat(content.querySelector('.resultRoute:nth-child(2)').value);
             // 장소 이름 가져오기
