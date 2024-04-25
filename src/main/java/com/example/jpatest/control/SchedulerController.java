@@ -18,10 +18,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 
 @Controller
@@ -226,12 +230,70 @@ public class SchedulerController {
         String origin="인천광역시 중구 공항로424번길 47"; String destination="인천광역시 중구 공항로424번길 47";
 
         List<SchedulerDto> routes = googleMapsService.getOptimalRoute(origin, destination, filteredAdminItems);
+        System.out.println(routes);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        List<SchedulerDto> day1Routes = new ArrayList<>(); List<SchedulerDto> day2Routes = new ArrayList<>(); List<SchedulerDto> day3Routes = new ArrayList<>();
+        List<SchedulerDto> day4Routes = new ArrayList<>(); List<SchedulerDto> day5Routes = new ArrayList<>(); List<SchedulerDto> day6Routes = new ArrayList<>();
+        List<SchedulerDto> day7Routes = new ArrayList<>(); List<SchedulerDto> day8Routes = new ArrayList<>(); List<SchedulerDto> day9Routes = new ArrayList<>();
+        List<SchedulerDto> day10Routes = new ArrayList<>();
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        LocalDate currentDate = routes.get(0).getArrivalTime().toLocalDate();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue();
+        int day = currentDate.getDayOfMonth(); // day 4.25일
 
+        for(SchedulerDto route : routes){
+            LocalDate dateTemp = route.getArrivalTime().toLocalDate();
+            int yearTemp = dateTemp.getYear();
+            int dayTemp = dateTemp.getDayOfMonth();
+            int diff;
+            if (dayTemp >= day) { //dayTemp 5월 1일
+                diff = dayTemp - day;
+            } else {
+                YearMonth yearMonthObject = YearMonth.of(year, month);
+                int daysInMonth = yearMonthObject.lengthOfMonth(); // 해당 월의 날짜 수
+                diff = daysInMonth + dayTemp - day;
+            }
 
+            switch(diff) {
+                case 0:
+                    day1Routes.add(route);
+                    break;
+                case 1:
+                    day2Routes.add(route);
+                    break;
+                case 2:
+                    day3Routes.add(route);
+                    break;
+                case 3:
+                    day4Routes.add(route);
+                    break;
+                case 4:
+                    day5Routes.add(route);
+                    break;
+                case 5:
+                    day6Routes.add(route);
+                    break;
+                case 6:
+                    day7Routes.add(route);
+                    break;
+                case 7:
+                    day8Routes.add(route);
+                    break;
+                case 8:
+                    day9Routes.add(route);
+                    break;
+                case 9:
+                    day10Routes.add(route);
+                    break;
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         session.setAttribute("stayMarks", stayMarks);
-        //model.addAttribute("adminItemEntity", filteredAdminItems);
+        model.addAttribute("adminItemEntity", filteredAdminItems);
         model.addAttribute("schedulerDto", schedulerDto);
         model.addAttribute("routes", routes);
 

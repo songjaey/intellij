@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.ElementCollection;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SchedulerDto {
     private String[] stayId;
     private double lat;
     private double lng;
-    private LocalTime arrivalTime;
+    private LocalDateTime arrivalTime;
     private Long resultItemId;
     private Long id; // 식별자(ID) 필드
 
