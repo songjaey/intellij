@@ -35,6 +35,12 @@
                 </div>
                 <div id="lcBox">
                     <div id="locationList">
+                        <div th:each="route : ${routes}" th:if="${routes != null}" class="resultContents" th:style="'display:none;'">
+                            <input class="resultRoute" th:value="${route.lat}">
+                            <input class="resultRoute" th:value="${route.lng}">
+                            <input class="resultRoute" th:value="${route.arrivalTime}">
+                        </div>
+
                         <div th:each="result : ${adminItemEntity}" th:if="${result != null}" class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
                             <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                             <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">

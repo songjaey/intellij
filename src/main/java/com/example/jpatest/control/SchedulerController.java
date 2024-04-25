@@ -225,19 +225,16 @@ public class SchedulerController {
 
         String origin="인천광역시 중구 공항로424번길 47"; String destination="인천광역시 중구 공항로424번길 47";
 
-        DirectionsRoute[] routes = googleMapsService.getOptimalRoute(origin, destination, filteredAdminItems);
+        List<SchedulerDto> routes = googleMapsService.getOptimalRoute(origin, destination, filteredAdminItems);
 
-        if (routes != null && routes.length > 0) {
-            StringBuilder result = new StringBuilder();
-            for (int i = 0; i < routes.length; i++) {
-                result.append("Route ").append(i + 1).append(": ");
-                result.append("Distance: ").append(routes[i].legs[0].distance).append(", ");
-                result.append("Duration: ").append(routes[i].legs[0].duration).append("<br>");
-            }
-        }
+
+
+
         session.setAttribute("stayMarks", stayMarks);
-        model.addAttribute("adminItemEntity", filteredAdminItems);
+        //model.addAttribute("adminItemEntity", filteredAdminItems);
         model.addAttribute("schedulerDto", schedulerDto);
+        model.addAttribute("routes", routes);
+
 
         return "scheduler/result";
     }

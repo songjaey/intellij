@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.ElementCollection;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -18,8 +19,21 @@ public class SchedulerDto {
     private String[] localId;
     private String[] spotId;
     private String[] stayId;
+    private double lat;
+    private double lng;
+    private LocalTime arrivalTime;
+    private Long resultItemId;
     private Long id; // 식별자(ID) 필드
 
     // Getter 및 Setter 메서드
     // 필요에 따라 다른 메서드들을 추가할 수 있습니다.
+    @Override
+    public String toString() {
+        return "SchedulerDto{" +
+                ", arrivalTime='" + arrivalTime + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
+
+                '}';
+    }
 }

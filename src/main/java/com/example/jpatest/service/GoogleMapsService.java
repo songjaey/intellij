@@ -1,5 +1,6 @@
 package com.example.jpatest.service;
 
+import com.example.jpatest.dto.SchedulerDto;
 import com.example.jpatest.entity.AdminItemEntity;
 import com.example.jpatest.util.GeneticAlgorithmTSP;
 import com.google.maps.model.DirectionsRoute;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoogleMapsService {
 
-    public DirectionsRoute[] getOptimalRoute(String originAdd, String destiAdd, List<AdminItemEntity> places) {
+    public List<SchedulerDto> getOptimalRoute(String originAdd, String destiAdd, List<AdminItemEntity> places) {
         return GeneticAlgorithmTSP.getOptimalRoute(originAdd, destiAdd, places);
     }
 }
