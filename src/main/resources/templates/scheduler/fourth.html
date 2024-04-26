@@ -16,7 +16,6 @@
 
 <div layout:fragment="content">
     <form th:action="@{/schedulers/result}" th:object="${schedulerDto}" method="post" class="box">
-        <!--<input type="hidden" id="national">-->
         <input type="hidden" id="localId">
         <input type="hidden" id="spotMarks" th:value="${session.spotMarks}">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
@@ -28,14 +27,13 @@
 
         <div style="width:89%;display:flex;justify-content:space-around;align-items:center;">
 
-            <div id="map" style="width:650px;height:650px;margin:100px;"></div>
+            <div id="map" style="width:650px;height:650px;margin:100px;border-radius:10px;"></div>
             <input type="hidden" id="initialLocal" th:value="${initialLocal.local}">
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs&callback=initMap&v=weekly" defer></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs&libraries=places,geometry&callback=initMap&v=weekly" defer></script>
 
             <div style="width:800px;height:100%;display:flex;justify-content:center;flex-wrap:wrap;align-items:center;">
                 <p style="height:50px;padding:0;margin:0;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">이용하실 교통수단을 골라주세요</p>
                 <div id="button_item_box" style="display:flex; flex-direction:column;">
-
                     <div id="button_box" style="display: flex; justify-content: center; align-items:center;width:100%;margin:10px 0;">
                         <button class="Transportation" value="MassTransit" type="button" style="background:#717FFF;color: white;">대중교통</button>
                         <button class="Transportation" value="Rental" type="button" style="background:none;color: #717FFF;">렌트</button>
@@ -43,7 +41,16 @@
                     </div>
 
                     <div id="selectItem">
-
+                        <div class="initialItem" th:if="${initialItemStay != null}" th:each="A : ${initialItemStay}" style="display:none;">
+                            <div class="initialStayName" th:text="${A.touristSpotName}"></div>
+                            <div class="initialLocal" th:text="${A.address}"></div>
+                            <div class="initialId" th:text="${A.id}"></div>
+                        </div>
+                        <div class="initialItem2" th:if="${initItemEntityStay != null}" th:each="B : ${initItemEntityStay}" style="display:none;">
+                            <div class="initialStayName" th:text="${B.touristSpotName}"></div>
+                            <div class="initialLocal" th:text="${B.address}"></div>
+                            <div class="initialId" th:text="${B.id}"></div>
+                        </div>
                     </div>
                 </div>
 

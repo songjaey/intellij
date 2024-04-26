@@ -11,8 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("initialLocal:", initialLocalValue);
     console.log("spotMarks:", spotMarks);
 
-    initMap(initialLocalValue);
-
     function initMap(initialLocation) {
         map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: 37.5665, lng: 126.978 }, // 초기 지도 중심 위치 (서울 시청)
@@ -21,6 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         geocoder = new google.maps.Geocoder();
 
+        if (initialLocation) {
+                const locationText = initialLocation;
+
+                geocoder.geocode({ address: locationText }, (results, status) => {
+                    if (status === "OK" && results && results.length > 0) {
+                        const location = results[0].geometry.location;
+                        // 검색된 위치를 지도의 중심으로 설정
+                        map.setCenter(location);
+                    } else {
+                        console.error("위치를 찾을 수 없습니다.");
+                    }
+                });
+        }
         // spotMarks에 있는 각 위치를 처리하여 파랑색 핀을 생성하고 spotMarkers 배열에 추가
         if (spotMarks) {
             const locations = spotMarks.split(','); // spotMarks를 쉼표로 분리하여 각 위치 배열로 변환
@@ -39,25 +50,107 @@ document.addEventListener("DOMContentLoaded", () => {
                         });
 
                         spotMarkers.push(marker); // spotMarkers 배열에 파랑색 핀 추가
+
+                        // 주변 공항 검색
+                        findNearestAirport(locationText, (nearestAirport) => {
+                            if (nearestAirport) {
+                                const airportAddress = nearestAirport.formatted_address;
+                                const airportInput = document.getElementById("airport");
+                                airportInput.value = airportAddress; // 공항 주소를 설정
+                                console.log("가장 가까운 공항:", airportAddress);
+                            } else {
+                                console.error("근처에 공항이 없습니다.");
+                                const airportInput = document.getElementById("airport");
+                                airportInput.value = ""; // 공항이 없는 경우 빈 값으로 설정
+                            }
+                        });
                     } else {
                         console.error(`위치를 찾을 수 없습니다: ${location}`);
                     }
                 });
             });
         }
-
-        // 사용자가 선택한 장소의 핀을 관리하는 로직은 이하 동일
+        //////////////////////////////////////////////////////////////////////////////
+        const selectItem = document.getElementById("selectItem");
         const locationItems = document.querySelectorAll('.contents');
+        const initItem = selectItem.querySelectorAll('.initialItem');
+        if ( $(initItem).length > 0) {
+           initItem.forEach((item) => {
+               const stayAddress = item.querySelector('.initialLocal').textContent;
+                const stayName = item.querySelector('.initialStayName').textContent;
+                const initId = item.querySelector('.initialId').textContent.trim();
+                const locationAddress = stayAddress;
+                const locationText = stayName;
 
+                locationItems.forEach((stay) => {
+                    const checkbox = stay.querySelector('.location-checkbox');
+                    const stayId = stay.querySelector('.D').textContent;
+                    if (initId === stayId) {
+                        checkbox.checked = true;
+                    }
+                });
+                geocoder.geocode({ address: locationAddress }, (results, status) => {
+                    if (status === "OK" && results && results.length > 0) {
+                        const location = results[0].geometry.location;
+
+                        const marker = new google.maps.Marker({
+                            map: map,
+                            position: location,
+                            title: locationText,
+                        });
+
+                        markers.push(marker);
+                        addCityToSelection(locationText,initId,locationAddress, marker);
+                        map.panTo(location);
+                    } else {
+                        console.error("위치를 찾을 수 없습니다.");
+                    }
+                });
+            }); // forEach 메서드의 괄호 닫기
+        }
+
+        const initialItem2 = selectItem.querySelectorAll('.initialItem2');
+        //////////////////////////////////////////////////////////////////////////////
+        if ( $(initialItem2).length > 0) {
+           initialItem2.forEach((item) => {
+               const stayAddress = item.querySelector('.initialLocal').textContent;
+               const stayName = item.querySelector('.initialStayName').textContent;
+               const initId = item.querySelector('.initialId').textContent.trim();
+               const locationAddress = stayAddress;
+               const locationText = stayName;
+                locationItems.forEach((stay) => {
+                   const checkbox = stay.querySelector('.location-checkbox');
+                   const stayId = stay.querySelector('.D').textContent;
+                   if (initId === stayId) {
+                       checkbox.checked = true;
+                   }
+               });
+               geocoder.geocode({ address: locationAddress }, (results, status) => {
+                   if (status === "OK" && results && results.length > 0) {
+                       const location = results[0].geometry.location;
+                        const marker = new google.maps.Marker({
+                           map: map,
+                           position: location,
+                           title: locationText,
+                       });
+                        markers.push(marker);
+                       addCityToSelection(locationText,initId,locationAddress, marker);
+                       map.panTo(location);
+                   } else {
+                       console.error("위치를 찾을 수 없습니다.");
+                   }
+               });
+           }); // forEach 메서드의 괄호 닫기
+        }
+         //////////////////////////////////////////////////////////////////////////////
         locationItems.forEach((stay) => {
             const checkbox = stay.querySelector('.location-checkbox');
             const stayName = stay.querySelector('.stay-name').textContent;
             const stayId = stay.querySelector('.D').textContent.trim();
-            const Address = stay.querySelector('.stay-address').textContent.trim();
+            const stayAddress = stay.querySelector('.stay-address').textContent.trim();
 
             checkbox.addEventListener('change', (event) => {
                 const locationText = stayName;
-                const locationAddress = Address;
 
                 if (event.target.checked) {
                     if (selectedSpots.has(locationText)) {
@@ -66,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         return;
                     }
 
-                    geocoder.geocode({ address: locationAddress }, (results, status) => {
+                    geocoder.geocode({ address: stayAddress }, (results, status) => {
                         if (status === "OK" && results && results.length > 0) {
                             const location = results[0].geometry.location;
 
@@ -76,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 title: locationText,
                             });
                             markers.push(marker);
-                            addCityToSelection(locationText, stayId, marker); // 선택된 위치에 빨간색 핀 추가
+                            addCityToSelection(locationText, stayId, stayAddress, marker); // 선택된 위치에 빨간색 핀 추가
                             map.panTo(location);
                         } else {
                             console.error("위치를 찾을 수 없습니다.");
@@ -85,7 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     const marker = markers.find((m) => m.getTitle() === locationText);
                     const locationBlock = document.querySelector(`.selected-item[data-location="${locationText}"]`);
-
                     if (marker && locationBlock) {
                         removeMarkerAndBlock(locationText, marker, locationBlock);
                     }
@@ -100,35 +192,57 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
         });
+
     }
 
     // 선택된 위치에 빨간색 핀을 추가하는 함수
-    function addCityToSelection(locationText, locationId, marker) {
+    function addCityToSelection(locationText, locationId, locationAddress, marker) {
         if (selectedSpots.has(locationText)) {
-                return;
-            }
-            const selectItem = document.getElementById("selectItem");
-
-            const locationBlock = document.createElement("div");
-            locationBlock.classList.add("selected-item");
-            locationBlock.setAttribute("data-location", locationText);
-            locationBlock.textContent = locationText;
-
-            const hiddenInput = document.createElement("input");
-            hiddenInput.type = "hidden";
-            hiddenInput.name = "stayId";
-            hiddenInput.value = locationId;
-            locationBlock.appendChild(hiddenInput);
-
-            const hiddenInput2 = document.createElement("input");
-            hiddenInput2.type = "hidden";
-            hiddenInput2.name = "stayMark";
-            hiddenInput2.value = locationText;
-            locationBlock.appendChild(hiddenInput2);
-
-            selectItem.appendChild(locationBlock);
-            selectedSpots.add(locationText);
+            return;
         }
+        const selectItem = document.getElementById("selectItem");
+
+        const locationBlock = document.createElement("div");
+        locationBlock.classList.add("selected-item");
+        locationBlock.setAttribute("data-location", locationText);
+        locationBlock.textContent = locationText;
+
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "stayId";
+        hiddenInput.value = locationId;
+        locationBlock.appendChild(hiddenInput);
+
+        const hiddenInput2 = document.createElement("input");
+        hiddenInput2.type = "hidden";
+        hiddenInput2.name = "stayMark";
+        hiddenInput2.value = locationAddress;
+        locationBlock.appendChild(hiddenInput2);
+
+        const hiddenInput3 = document.createElement("input");
+        hiddenInput3.type = "hidden";
+        hiddenInput3.name = "airport";
+        locationBlock.appendChild(hiddenInput3);
+
+        selectItem.appendChild(locationBlock);
+        selectedSpots.add(locationText);
+
+        // 공항 주소를 설정하기 위해 hidden input을 찾음
+        const airportInput = document.getElementById("airport");
+
+        // 주변 공항 검색을 위해 선택된 위치의 주소를 사용
+        findNearestAirport(locationAddress, (nearestAirport) => {
+            if (nearestAirport) {
+                const airportAddress = nearestAirport.formatted_address;
+                airportInput.value = airportAddress; // 공항 주소를 설정
+                console.log("가장 가까운 공항:", airportAddress);
+            } else {
+                console.error("근처에 공항이 없습니다.");
+                airportInput.value = ""; // 공항이 없는 경우 빈 값으로 설정
+            }
+        });
+    }
+
 
     function removeMarkerAndBlock(locationText, marker, locationBlock) {
         const index = markers.findIndex((m) => m === marker); // marker의 인덱스 찾기
@@ -146,4 +260,47 @@ document.addEventListener("DOMContentLoaded", () => {
             checkbox.checked = false;
         }
     }
+
+    function findNearestAirport(address, callback) {
+        geocoder.geocode({ address: address }, (results, status) => {
+            if (status === "OK" && results && results.length > 0) {
+                const location = results[0].geometry.location;
+
+                // 주변 공항 검색
+                const request = {
+                    location: location,
+                    radius: 100000, // 10km 반경 내에서 검색
+                    type: 'airport' // 공항 타입
+                };
+
+                const placesService = new google.maps.places.PlacesService(map);
+
+                // 주변 공항 검색 요청
+                placesService.nearbySearch(request, (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        const airportResults = results.filter(place => place.types.includes('airport'));
+
+                        if (airportResults && airportResults.length > 0) {
+                            const nearestAirport = airportResults[0];
+                            const airportAddress = nearestAirport.formatted_address;
+                            const airportInput = document.getElementById("airport");
+                            airportInput.value = airportAddress; // 공항 주소를 설정
+                            callback(nearestAirport); // 가장 가까운 공항 반환
+                        } else {
+                            console.error('근처에 공항이 없습니다.');
+                            callback(null);
+                        }
+                    } else {
+                        console.error(`주변 공항 검색에 실패했습니다. 상태: ${status}`);
+                        callback(null);
+                    }
+                });
+            } else {
+                console.error(`위치를 찾을 수 없습니다: ${address}`);
+                callback(null);
+            }
+        });
+    }
+
+    initMap(initialLocalValue);
 });

@@ -17,7 +17,6 @@
 <div layout:fragment="content">
     <form th:action="@{/schedulers/fourth}" th:object="${schedulerDto}" method="post" class="box">
         <input type="hidden" id="localId">
-
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
             <input type="text" id="DurationStart" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
             <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>
@@ -27,7 +26,7 @@
 
         <div style="width:89%;display:flex;justify-content:space-around;align-items:center;">
 
-            <div id="map" style="width:650px;height:650px;margin:100px;"></div>
+            <div id="map" style="width:650px;height:650px;margin:100px;border-radius:10px;"></div>
             <input type="hidden" id="initialLocal" th:value="${initialLocal.local}">
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs&callback=initMap&v=weekly" defer></script>
 
@@ -40,12 +39,12 @@
                     </div>
 
                     <div id="selectItem">
-                        <div class="initialItem" th:if="${initialItems != null}" th:each="initialItem : ${initialItems}" style="display:none;">
+                        <div class="initialItem" th:if="${initialItemSpot != null}" th:each="initialItem : ${initialItemSpot}" style="display:none;">
                             <div class="initialSpotName" th:text="${initialItem.touristSpotName}"></div>
                             <div class="initialLocal" th:text="${initialItem.address}"></div>
                             <div class="initialId" th:text="${initialItem.id}"></div>
                         </div>
-                        <div class="initialItem2" th:if="${initItemEntity2 != null}" th:each="initialItem : ${initItemEntity2}" style="display:none;">
+                        <div class="initialItem2" th:if="${initItemEntitySpot != null}" th:each="initialItem : ${initItemEntitySpot}" style="display:none;">
                             <div class="initialSpotName" th:text="${initialItem.touristSpotName}"></div>
                             <div class="initialLocal" th:text="${initialItem.address}"></div>
                             <div class="initialId" th:text="${initialItem.id}"></div>

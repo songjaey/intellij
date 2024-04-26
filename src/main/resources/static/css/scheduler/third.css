@@ -37,13 +37,12 @@
     width: 100px; /* 선택된 항목의 고정 너비 설정 */
     height: 80px; /* 선택된 항목의 고정 높이 설정 */
     display: flex;
-    justify-content: center;
+    justify-content:space-around;
     align-items: center;
     cursor: pointer;
     margin: 20px; /* 선택된 항목 간의 간격 설정 */
     background-color: rgba(0, 117, 255, 0.5);
     color: white;
-    text-align: center;
     border-radius: 10px;
     font-size: 15px;
     list-style-type: none; /* 목록 마커 제거 */

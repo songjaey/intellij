@@ -31,9 +31,11 @@
                 <div style="width:70%;height:50px background:#A23B5D;border-radius:10px;">
                     <p style="padding:0;margin:0;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">여행지추천일정</p>
                 </div>
+
                 <div id="tourDays">
 
                 </div>
+
                 <div id="lcBox">
                     <div id="locationList">
                         <div th:each="route : ${routes}" th:if="${routes != null}" class="resultContents" th:style="'display:none;'">
@@ -42,14 +44,14 @@
                             <input class="resultRoute" th:value="${route.arrivalTime}">
                         </div>
                         <!-- 동적으로 렌더링될 adminItemEntity -->
-<!--                        <th:block th:each="index : ${#numbers.sequence(0, 9)}">-->
+                        <!--                        <th:block th:each="index : ${#numbers.sequence(0, 9)}">-->
                         <div th:id="adminItemEntity0" class="adminItemEntity" th:style="'display:block;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity0}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity0}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
-                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
+                                    <p class="result-features" th:text="${result.features}" style="color:white;font-size:15px;padding:0;margin:0;height:calc(100% - 30px);display:flex; align-items:center;"></p>
                                     <p class="D" th:text="${result.id}" style="display:none;"></p>
                                     <p class="result-address" th:text="${result.address}" style="display:none;"></p>
                                     <p class="result-contact" th:text="${result.contact}" style="display:none;"></p>
@@ -63,7 +65,7 @@
                         </div>
                         <div th:id="adminItemEntity1" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity1}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity1}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -81,7 +83,7 @@
                         </div>
                         <div th:id="adminItemEntity2" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity2}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity2}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -99,7 +101,7 @@
                         </div>
                         <div th:id="adminItemEntity3" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity3}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity3}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -117,7 +119,7 @@
                         </div>
                         <div th:id="adminItemEntity4" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity4}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity4}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -135,7 +137,7 @@
                         </div>
                         <div th:id="adminItemEntity5" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity5}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity5}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -153,7 +155,7 @@
                         </div>
                         <div th:id="adminItemEntity6" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity6}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity6}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -171,7 +173,7 @@
                         </div>
                         <div th:id="adminItemEntity7" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity7}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity7}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -189,7 +191,7 @@
                         </div>
                         <div th:id="adminItemEntity8" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity8}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity8}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -207,7 +209,7 @@
                         </div>
                         <div th:id="adminItemEntity9" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
-                            <div th:each="result : ${adminItemEntity9}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:orange; margin-bottom:10px;">
+                            <div th:each="result : ${adminItemEntity9}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
                                 <div class="result-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${result.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                                 <div class="result-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                     <p class="result-name" th:text="${result.touristSpotName}" for="'locationCheckBox' + ${index}" th:value="${result.id}"></p>
@@ -223,9 +225,6 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox9" class="location-checkbox">
                             </div>
                         </div>
-<!--                        </th:block>-->
-
-
                     </div>
                 </div>
             </div>
@@ -272,17 +271,20 @@
         <div style="width:11%;height:100%;background:#000A67;display:flex;flex-direction:column; justify-content:space-between;align-items:center;">
             <div style="margin-top:50px;">
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">일정</button>
+                    <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">일정</button>
                 </div>
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" id="localButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">관광지</button>
+                    <a href="/schedulers/second" id="localButton2" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">관광지</a>
                 </div>
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" id="spotButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">명소/식당</button>
+                    <a href="/schedulers/third" id="localButton3" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">명소/식당</a>
+                </div>
+                <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
+                    <a href="/schedulers/fourth" id="localButton4" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">숙박</a>
                 </div>
             </div>
             <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                <button type="button" onclick="saveSelectedLocations()" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">Next</button>
+                <button type="submit" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer; color:black;font-size:30px;font-family:LINE Seed Sans KR;">저장하기</button>
             </div>
         </div>
     </form>
@@ -302,6 +304,7 @@
                     contentDiv.appendChild(dayDiv);
                 }
             }
+
             // DurationStart와 DurationEnd의 값을 JavaScript 변수로 가져오기
             const durationStart = $('#DurationStart').val();
             const durationEnd = $('#DurationEnd').val();
@@ -367,6 +370,21 @@
             $("#scheduleButton").click(function() {
                 // first.html 페이지로 이동
                 window.location.href = "/schedulers/first";
+            });
+
+            // Handle click event for '관광지' button
+            $("#localButton2").click(function() {
+                window.location.href = "/schedulers/second";
+            });
+
+            // Handle click event for '명소/식당' button
+            $("#localButton3").click(function() {
+                window.location.href = "/schedulers/third";
+            });
+
+            // Handle click event for '숙박' button
+            $("#localButton4").click(function() {
+                window.location.href = "/schedulers/fourth";
             });
         });
 
