@@ -74,12 +74,6 @@ function initMap() {
                var cityInput = document.querySelector("#city");
                var nationalValue = national.value;
                var cityValue = cityInput.value;
-//               var id = item.querySelector('.initialId').textContent.trim(); // 수정
-//               var local = city; // 수정
-//               var local_Id = id; // 수정
-
-//               national.value = nationalValue + "," + country; // 수정
-//               cityInput.value = cityValue + "," + city; // 수정
 
                geocoder.geocode({ address: locationText }, (results, status) => {
                    if (status === "OK" && results && results.length > 0) {
@@ -101,6 +95,22 @@ function initMap() {
 
                        markers.push(marker);
 
+                       // 기존 선택된 국가 가져오기
+                       const selectedCountryElement = selectItem.querySelector(".selected-item");
+                       const selectedCountryText = selectedCountryElement ? selectedCountryElement.getAttribute("data-location").split(",")[1].trim() : null;
+
+                       // 관광지의 국가 가져오기
+                       const newCountryText = country;
+
+                       // 국가가 다른 경우에 알림 표시
+                       if (selectedCountryText && selectedCountryText !== newCountryText) {
+                           alert("같은 국가만 선택할 수 있습니다.");
+                           return; // 국가가 다르면 추가하지 않고 종료
+                       }
+
+                       // 국가가 같은 경우에만 선택 목록에 관광지 추가
+                       const locationText2 = item.querySelector("input[name='localId']").value;
+                       addCityToSelection(locationText, locationText2, marker);
                        map.panTo(location); // 맵을 선택된 위치로 이동
                    } else {
                        console.error("위치를 찾을 수 없습니다.");
@@ -129,6 +139,17 @@ function initMap() {
                     alert(`'${locationText}'는 이미 선택된 지역입니다.`);
                     return;
                 }
+
+                // 국가 비교 로직 추가
+                const selectedCountryElement = selectItem.querySelector(".selected-item");
+                const selectedCountryText = selectedCountryElement ? selectedCountryElement.getAttribute("data-location").split(",")[1].trim() : null;
+                const newCountryText = countryName;
+
+                if (selectedCountryText && selectedCountryText !== newCountryText) {
+                    alert("같은 국가만 선택할 수 있습니다.");
+                    return; // 국가가 다르면 추가하지 않고 종료
+                }
+
                 var national = document.querySelector("#national");
                 var city = document.querySelector("#city");
                 var nationalValue= national.value;
@@ -176,7 +197,7 @@ function addCityToSelection(locationText,locationText2, marker) {
         return;
     }
 
-    if (selectedCities.size >= MAX_SELECTED_CITIES) {
+    /*if (selectedCities.size >= MAX_SELECTED_CITIES) {
         alert("고를 수 있는 관광지는 최대 4개입니다. 먼저 등록한 관광지를 눌러 제거해주세요.");
         return;
     }
@@ -187,7 +208,7 @@ function addCityToSelection(locationText,locationText2, marker) {
     const existingBlock = selectItem.querySelector(`.selected-item[data-location="${locationText}"]`);
     if (existingBlock) {
         return;
-    }
+    }*/
 
     const locationBlock = document.createElement("div");
     locationBlock.classList.add("selected-item");

@@ -73,33 +73,54 @@
   </form>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("form");
-      const arrivalDateInput = document.getElementById("DurationStart");
-      const departureDateInput = document.getElementById("DurationEnd");
+     const form = document.querySelector("form");
+     const departureHourInput = document.querySelector("input[name='departureHour']");
+     const departureMinuteInput = document.querySelector("input[name='departureMinute']");
+     const arrivalHourInput = document.querySelector("input[name='arrivalHour']");
+     const arrivalMinuteInput = document.querySelector("input[name='arrivalMinute']");
 
-      form.addEventListener("submit", (event) => {
-          // 여행지 도착날짜와 출발날짜 입력값을 확인
-          const arrivalDate = arrivalDateInput.value.trim();
-          const departureDate = departureDateInput.value.trim();
+     form.addEventListener("submit", (event) => {
+         // 출발 시간 입력값 확인
+         if (departureHourInput.value.trim() === "") {
+             departureHourInput.value = "12"; // 기본값 "12" 설정
+         }
+         if (departureMinuteInput.value.trim() === "") {
+             departureMinuteInput.value = "00"; // 기본값 "00" 설정
+         }
 
-          // 입력값이 비어있는 경우 폼 제출을 중지하고 알림창을 띄움
-          if (arrivalDate === "" || departureDate === "") {
-              event.preventDefault(); // 폼 제출 중지
+         // 도착 시간 입력값 확인
+         if (arrivalHourInput.value.trim() === "") {
+             arrivalHourInput.value = "12"; // 기본값 "12" 설정
+         }
+         if (arrivalMinuteInput.value.trim() === "") {
+             arrivalMinuteInput.value = "00"; // 기본값 "00" 설정
+         }
 
-              // 알림창 표시
-              alert("도착날짜와 출발날짜를 달력을 클릭해 입력해주세요.");
-          }
-      });
+         // 여행지 도착날짜와 출발날짜 입력값을 확인
+         const arrivalDate = document.getElementById("DurationStart").value.trim();
+         const departureDate = document.getElementById("DurationEnd").value.trim();
 
-      // 달력 클릭 시 도착날짜 및 출발날짜 입력필드 읽기 전용 설정
-      arrivalDateInput.addEventListener("click", () => {
-          arrivalDateInput.readOnly = true;
-      });
+         // 입력값이 비어있는 경우 폼 제출을 중지하고 알림창을 띄움
+         if (arrivalDate === "" || departureDate === "") {
+             event.preventDefault(); // 폼 제출 중지
 
-      departureDateInput.addEventListener("click", () => {
-          departureDateInput.readOnly = true;
-      });
-  });
+             // 알림창 표시
+             alert("도착날짜와 출발날짜를 달력을 클릭해 입력해주세요.");
+         }
+     });
+
+     // 달력 클릭 시 도착날짜 및 출발날짜 입력필드 읽기 전용 설정
+     const arrivalDateInput = document.getElementById("DurationStart");
+     const departureDateInput = document.getElementById("DurationEnd");
+
+     arrivalDateInput.addEventListener("click", () => {
+         arrivalDateInput.readOnly = true;
+     });
+
+     departureDateInput.addEventListener("click", () => {
+         departureDateInput.readOnly = true;
+     });
+    });
   </script>
 </div>
 

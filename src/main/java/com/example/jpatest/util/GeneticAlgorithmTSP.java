@@ -81,6 +81,15 @@ public class GeneticAlgorithmTSP {
             distance += cities.get(cities.size() - 1).distanceTo(cities.get(0));
         }
     }
+    private static LocalDateTime originArrivalTime;
+    private static LocalDateTime originDepartureTime;
+    public static void setOriginStartTime(LocalDateTime arrivalTime) {
+        GeneticAlgorithmTSP.originArrivalTime = arrivalTime;
+    }
+    public static void setOriginEndTime(LocalDateTime  departureTime) {
+        GeneticAlgorithmTSP.originDepartureTime =  departureTime;
+    }
+
 
     public static List<SchedulerDto> getOptimalRoute(String originAdd, String destiAdd, List<AdminItemEntity> places) {
 
@@ -94,7 +103,7 @@ public class GeneticAlgorithmTSP {
             System.out.println("출발지 주소를 좌표로 변환할 수 없습니다.");
             return null;
         }
-        LocalDateTime originArrivalTime = LocalDateTime.of(2024, 4, 25, 10, 0); // 출발 시간을 설정
+        //LocalDateTime originArrivalTime = LocalDateTime.of(2024, 4, 25, 10, 0); // 출발 시간을 설정
         cities.add(new City(originLatLng.lat, originLatLng.lng, ContentType.ORIGIN, 0, 1, originArrivalTime, 0, 0L));
 
         // 중간 경유지 설정 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,7 +205,6 @@ public class GeneticAlgorithmTSP {
     }
 
     private static int findNearestCityIndex(double[][] travelTimes, City currentCity, Set<Integer> visited, LocalDateTime currentTime, List<AdminItemEntity> places) {
-        int[] NearIndex = new int[2];
         int minIndex = -1;
         double minTravelTime = Double.MAX_VALUE;
         for (int i = 1; i < travelTimes.length-1; i++) {

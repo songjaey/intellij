@@ -14,3 +14,10 @@
 .start:hover{
     background-color: #29FFCC !important;
 }
+:-webkit-scrollbar {
+    background-color: none; /* 스크롤 바 배경색 */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: none; /* 스크롤 바 색상 */
+}

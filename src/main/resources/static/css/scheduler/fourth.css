@@ -30,7 +30,7 @@
     white-space: nowrap; /* 자식 요소들이 한 줄로 나열되도록 설정 */
 }
 .selected-item{
-    width: 80px; /* 선택된 항목의 고정 너비 설정 */
+    width: 100px; /* 선택된 항목의 고정 너비 설정 */
     height: 80px; /* 선택된 항목의 고정 높이 설정 */
     display: flex;
     justify-content: center;
@@ -40,11 +40,11 @@
     background-color: rgba(0, 117, 255, 0.5);
     color: white;
     text-align: center;
-    padding: 20px 0;
     border-radius: 10px;
     font-size: 15px;
     list-style-type: none; /* 목록 마커 제거 */
     flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
+    overflow-x:auto;
 }
 .stay-features{
     width:100%;
@@ -58,10 +58,16 @@
     font-family:LINE Seed Sans KR;
     font-weight:bold;
 }
+.selected-item::webkit-scrollbar{
+    background-color: none; /* 스크롤 바 배경색 */
+    width: 5px; /* 스크롤 바의 너비 */
+    height:3px;
+}
 /* 수직 스크롤 바 스타일 */
 ::-webkit-scrollbar {
     background-color: none; /* 스크롤 바 배경색 */
     width: 5px; /* 스크롤 바의 너비 */
+    height:10px;
 }
 
 ::-webkit-scrollbar-thumb {

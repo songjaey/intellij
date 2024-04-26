@@ -35,8 +35,8 @@
         <div id="selectItem" style="width:600px; height:150px;display:flex;justify-content:center;align-items:center;">
           <div class="initialLocals" style="display: none;">
             <div th:each="initialLocal : ${initialLocals}">
-              <div class="initialCountry" th:text="${initialLocal.local}"></div>
               <div class="initialLocal" th:text="${initialLocal.country}"></div>
+              <div class="initialCountry" th:text="${initialLocal.local}"></div>
               <div class="initialId" th:text="${initialLocal.id}"></div>
             </div>
           </div>
@@ -46,7 +46,7 @@
         <div style="height:100px;width:600px;display:flex;justify-content:center;align-items:center;">
           <div style="width:500px;height:50px;display:flex;align-items:center;background-color:#004392;border:3px solid white;border-radius:10px;">
             <input style="width:100%;height:100%;border:none;" type="text" id="locationInput" placeholder="지역명을 입력하세요">
-            <button style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" onclick="searchLocation()"><i class="bi bi-search"></i></button>
+            <button id="searchButton" style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" onclick="searchLocation()"><i class="bi bi-search"></i></button>
           </div>
         </div>
 
@@ -61,9 +61,6 @@
             </ul>
           </div>
         </div>
-        <!--<div id="SelectLocationBox" style="display:none;position:absolute;"> &lt;!&ndash; 숨겨진 영역 &ndash;&gt;
-            <input type="hidden" id="selectedLocations" name="selectedLocations" th:value="${schedulerDto.selectedLocations}">
-        </div>-->
       </div>
     </div>
 
@@ -81,6 +78,7 @@
   <script type="module"  src="/javascript/scheduler/map.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+
      const form = document.querySelector("form");
      const locationInput = document.getElementById("locationInput");
      const locationList = document.getElementById("locationList");
@@ -113,11 +111,11 @@
        }
      });
 
-     // 검색 버튼 클릭 시 검색 이벤트 처리
-     const searchButton = document.getElementById("searchButton");
-     searchButton.addEventListener("click", () => {
-       searchLocation();
-     });
+    // 검색 버튼 클릭 시 검색 이벤트 처리
+    const searchButton = document.getElementById("searchButton");
+    searchButton.addEventListener("click", () => {
+     searchLocation();
+    });
 
      function searchLocation() {
        const searchTerm = locationInput.value.trim().toLowerCase(); // 입력된 검색어를 소문자로 변환하여 저장
