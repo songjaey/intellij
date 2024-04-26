@@ -295,7 +295,7 @@ public class SchedulerController {
         int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth(); // day 4.25일
         int i=0;
-        System.out.println("startDay : " + day);
+
         for(SchedulerDto route : routes){
             if( i == 0) {i++; continue;}
             if( i == (routes.size()-1) ) break;
@@ -303,7 +303,7 @@ public class SchedulerController {
             int yearTemp = dateTemp.getYear();
             int dayTemp = dateTemp.getDayOfMonth();
             int diff;
-            System.out.println("nextDay : " + dayTemp);
+            //System.out.println("nextDay : " + dayTemp);
             if (dayTemp >= day) { //dayTemp 5월 1일
                 diff = dayTemp - day;
              } else  {

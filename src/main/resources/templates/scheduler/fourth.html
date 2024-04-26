@@ -16,6 +16,7 @@
 
 <div layout:fragment="content">
     <form th:action="@{/schedulers/result}" th:object="${schedulerDto}" method="post" class="box">
+        <!--<input type="hidden" id="national">-->
         <input type="hidden" id="localId">
         <input type="hidden" id="spotMarks" th:value="${session.spotMarks}">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
@@ -49,15 +50,13 @@
                 <div style="height:100px;width:600px;display:flex;justify-content:center;align-items:center;">
                     <div style="width:500px;height:50px;display:flex;align-items:center;background-color:#004392;border:3px solid white;border-radius:10px;">
                         <input style="width:100%;height:100%;border:none;" type="text" id="locationInput" placeholder="원하시는 특징 또는 이름을 검색하세요">
-                        <button style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" id="searchButton"><i class="bi bi-search"></i></button>
+                        <button id="searchButton" style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" ><i class="bi bi-search"></i></button>
                     </div>
                 </div>
 
                 <div id="lcBox">
                     <div id="locationList">
-
                         <div th:each="stay : ${adminItemEntity}" th:if="${stay != null}" class="contents" th:attr="data-content-type=${stay.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color: rgba(0, 117, 255, 0.5); margin-bottom:10px;">
-
                             <div class="stay-image" th:style="'margin:10px; border-radius:8px; width:120px; height:100px; background-image: url(' + ${stay.imgUrl} + '); background-position:center; background-size:cover;'"></div>
                             <div class="stay-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                 <p class="stay-name" th:text="${stay.touristSpotName}" for="locationCheckBox1" th:value="${stay.id}"></p>
@@ -118,17 +117,17 @@
         <div style="width:11%;height:100%;background:#000A67;display:flex;flex-direction:column; justify-content:space-between;align-items:center;">
             <div style="margin-top:50px;">
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">일정</button>
+                    <button type="button" id="scheduleButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">일정</button>
                 </div>
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" id="localButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">관광지</button>
+                    <a href="/schedulers/second" id="localButton2" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">관광지</a>
                 </div>
                 <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                    <button type="button" id="spotButton" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">명소/식당</button>
+                    <a href="/schedulers/third" id="localButton3" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;text-decoration: none;">명소/식당</a>
                 </div>
             </div>
             <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                <button type="submit" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">Next</button>
+                <button type="submit" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer; color:black;font-size:30px;font-family:LINE Seed Sans KR;">결과보기</button>
             </div>
         </div>
     </form>

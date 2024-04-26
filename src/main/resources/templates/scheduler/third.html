@@ -56,7 +56,7 @@
                 <div style="height:100px;width:600px;display:flex;justify-content:center;align-items:center;">
                     <div style="width:500px;height:50px;display:flex;align-items:center;background-color:#004392;border:3px solid white;border-radius:10px;">
                         <input style="width:100%;height:100%;border:none;" type="text" id="locationInput" placeholder="원하시는 특징 또는 이름을 검색하세요">
-                        <button style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" onclick="searchLocation()"><i class="bi bi-search"></i></button>
+                        <button id="searchButton" style="width:70px;height:100%;color:white;font-size:30px;font-weight:bold;background:black;border-left:1px solid white;border-top-right-radius: 10px;border-bottom-right-radius: 10px;" type="button" onclick="searchLocation()"><i class="bi bi-search"></i></button>
                     </div>
                 </div>
 
@@ -67,7 +67,6 @@
                             <div class="spot-details" style="display:flex; justify-content:start;flex-wrap:wrap; padding-right:20px;width:450px;">
                                 <p class="spot-name" th:text="${spot.touristSpotName}" for="locationCheckBox1" th:value="${spot.id}"></p>
                                 <p class="spot-features" th:text="${spot.features}" style="color:white;font-size:15px;padding:0;margin:0;"></p>
-
                                 <p class="D" th:text="${spot.id}" style="display:none;"></p>
                                 <p class="spot-address" th:text="${spot.address}" style="display:none;"></p>
                                 <p class="spot-contact" th:text="${spot.contact}" style="display:none;"></p>
@@ -129,7 +128,7 @@
                 </div>
             </div>
             <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold; display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                <button type="submit" style="background-color: white; border: none; cursor: pointer;">Next</button>
+                <button type="submit" style="color:black;background:none;border:none;font-size:30px;font-family:LINE Seed Sans KR;font-weight:bold;">Next</button>
             </div>
         </div>
     </form>

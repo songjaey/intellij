@@ -22,7 +22,8 @@ public class GeneticAlgorithmTSP {
     private static final Random random = new Random();
 
     private enum ContentType {
-        ORIGIN, DESTINATION, 식당, 숙박, 명소
+        ORIGIN, DESTINATION, 식당, 숙박, 명소;
+
     }
     private static final String API_KEY = "AIzaSyBKfXUB5b-aS6hLNA93HhTe6UNIqXZkizs";
     private static final int POPULATION_SIZE = 50;
@@ -37,16 +38,18 @@ public class GeneticAlgorithmTSP {
         int index; // 인덱스 필드 추가
         int day;
         LocalDateTime arrivalTime; // LocalDateTime으로 변경
+        LocalDateTime departureTime;
         int stayTime; // 머무는 시간 추가
         Long spotId; // 아이템의 고유 번호
 
-        public City(double x, double y, ContentType type, int index, int day, LocalDateTime arrivalTime, int stayTime, Long spotId) {
+        public City(double x, double y, ContentType type, int index, int day, LocalDateTime arrivalTime, LocalDateTime departureTime, int stayTime, Long spotId) {
             this.x = x;
             this.y = y;
             this.type = type;
             this.index = index; // 생성자에서 인덱스 설정
             this.day = day;
             this.arrivalTime = arrivalTime; // 도착 시간 설정
+            this.departureTime = departureTime;
             this.stayTime = stayTime; // 머무는 시간 설정
             this.spotId = spotId;
         }
@@ -104,7 +107,7 @@ public class GeneticAlgorithmTSP {
             return null;
         }
         //LocalDateTime originArrivalTime = LocalDateTime.of(2024, 4, 25, 10, 0); // 출발 시간을 설정
-        cities.add(new City(originLatLng.lat, originLatLng.lng, ContentType.ORIGIN, 0, 1, originArrivalTime, 0, 0L));
+        cities.add(new City(originLatLng.lat, originLatLng.lng, ContentType.ORIGIN, 0, 1, originArrivalTime, originArrivalTime ,0, 0L));
 
         // 중간 경유지 설정 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         for (int i = 0; i < places.size(); i++) {
@@ -120,8 +123,8 @@ public class GeneticAlgorithmTSP {
             if (contentType == ContentType.명소 ) {
                 stayTime = 90; // 분 단위로 변환
             }
+            cities.add(new City(waypointLatLng.lat, waypointLatLng.lng, contentType, i+1, 1,null, null, stayTime, places.get(i).getId()));
 
-            cities.add(new City(waypointLatLng.lat, waypointLatLng.lng, contentType, i+1, 1,null, stayTime, places.get(i).getId()));
         }
         // 목적지 설정 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         LatLng destinationLatLng = getLatLngFromAddress(destiAdd);
@@ -129,11 +132,11 @@ public class GeneticAlgorithmTSP {
             System.out.println("목적지 주소를 좌표로 변환할 수 없습니다.");
             return null;
         }
-        cities.add(new City(destinationLatLng.lat, destinationLatLng.lng, ContentType.DESTINATION, places.size()+1 ,1, null, 0, 1000L));
+        cities.add(new City(destinationLatLng.lat, destinationLatLng.lng, ContentType.DESTINATION, places.size()+1 ,1, null,null , 0, 1000L));
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Route bestRoute = findOptimalRoute(cities, places);
+        Route bestRoute = findOptimalRoute(cities, places);  //최적해 계산.
         for(int i = 0; i < bestRoute.cities.size(); i++) {
             SchedulerDto schedulerDto = new SchedulerDto();
             schedulerDto.setLat(bestRoute.cities.get(i).getX());
@@ -167,31 +170,31 @@ public class GeneticAlgorithmTSP {
         // 최적 경로 계산
         List<City> optimalRoute = new ArrayList<>();
         Set<Integer> visited = new HashSet<>();
-        int nextCityIndex;  // 0번은 가장가까운 도시, 1번은 places에 저장된 고유 id
+        int nextCityIndex;
         City currentCity = cities.get(0); // 시작 도시
         optimalRoute.add(currentCity);  // 0번 인덱스에 시작 도시 넣기
         visited.add(0);
+        //도착 시간에 머무는 시간 더해서 출발시간 만들기
         LocalDateTime currentTime = currentCity.arrivalTime; // 현재 시간을 출발 시간으로 설정.
+        currentTime = currentTime.plusMinutes(currentCity.stayTime);
+        currentCity.setDepartureTime(currentTime);// 출발 시간은 현재 시간에 머무는 시간을 더한다.
 
-        for (int i = 0; i < cities.size() - 1; i++) {
+        for (int i = 1; i < cities.size()-1; i++) {
             if(i < cities.size() - 2) {
-                nextCityIndex = findNearestCityIndex(travelTimes, currentCity, visited, currentTime, places);
+                nextCityIndex = findNearestCityIndex(travelTimes, currentCity, visited,cities);
             }
             else{
-                nextCityIndex = cities.size() - 1;
+                nextCityIndex = cities.size() - 1; // places.size()+1;
             }
-
-            City nextCity = cities.get(nextCityIndex); // 다음 도시
             // 다음 도시까지 이동하는 시간 계산
             double travelTimeToNextCity = travelTimes[currentCity.getIndex()][nextCityIndex];
 
-            // 도착 시간 업데이트 (현재 시간 + 이동 시간 + 머무는 시간)
-            currentTime = currentTime.plusMinutes((long) (travelTimeToNextCity / 60)); // 이동 시간....
-            currentTime = currentTime.plusMinutes(currentCity.stayTime); // 머무는 시간 추가
-            nextCity.arrivalTime = currentTime; // 다음 도시의 도착 시간 업데이트
-//            if (currentTime.toLocalTime().isAfter(LocalTime.of(23, 59))) {
-//                currentCity.setDay(currentCity.getDay() + 1); // 다음 날로 넘어감
-//            }
+            // 도착 시간 업데이트 (현재 시간 + 이동 시간)
+            currentTime = currentTime.plusMinutes((long) (travelTimeToNextCity / 60)); // 출발(현재)시간 + 이동시간
+            City nextCity = cities.get(nextCityIndex); // 다음 도시
+            nextCity.setArrivalTime(currentTime);  // 다음 도시의 도착 시간 업데이트
+            currentTime = currentTime.plusMinutes(nextCity.stayTime);
+            nextCity.setDepartureTime(currentTime);
 
             optimalRoute.add(nextCity);
             visited.add(nextCityIndex);
@@ -204,31 +207,29 @@ public class GeneticAlgorithmTSP {
         return new Route(optimalRoute);
     }
 
-    private static int findNearestCityIndex(double[][] travelTimes, City currentCity, Set<Integer> visited, LocalDateTime currentTime, List<AdminItemEntity> places) {
+    private static int findNearestCityIndex(double[][] travelTimes, City currentCity, Set<Integer> visited, List<City> cities) {
         int minIndex = -1;
         double minTravelTime = Double.MAX_VALUE;
+        LocalDateTime currentTime = currentCity.getDepartureTime();
         for (int i = 1; i < travelTimes.length-1; i++) {
             if (!visited.contains(i)) {
                 double travelTime = travelTimes[currentCity.getIndex()][i];
                 if (travelTime < minTravelTime) {
-                    String contentType = places.get(i - 1).getContentType().trim();
-
-                    if (shouldSkipToNextRestaurant(currentTime) && contentType.equals("식당")) {
-                        System.out.println("currentTime1 : " + currentTime);
+                    ContentType contentType = cities.get(i).getType();
+                    if (shouldSkipToNextRestaurant(currentTime) && (contentType == ContentType.식당 )) {
                         minIndex = i;
                         minTravelTime = travelTime;
-                    }else if (shouldSkipToNextLodging(currentTime) && contentType.equals("숙박")) {
-                        System.out.println("currentTime2 : " + currentTime);
+                    }else if (shouldSkipToNextLodging(currentTime) && (contentType == ContentType.숙박 )) {
+                        System.out.println("currentTime2 "+ currentTime + "ContentType " +cities.get(i).getType() );
                         minIndex = i;
                         minTravelTime = travelTime;
-                    }else if (!(shouldSkipToNextRestaurant(currentTime) || shouldSkipToNextLodging(currentTime))) {
+                    }else if ( !shouldSkipToNextRestaurant(currentTime)&&!shouldSkipToNextLodging(currentTime)&&(contentType == ContentType.명소 )) {
                         minIndex = i;
                         minTravelTime = travelTime;
                     }
                 }
             }
         }
-
         // 만약 식당이나 숙박 시설이 없을 때
         if (minIndex == -1) {
             // 방문하지 않은 도시 중 가장 가까운 도시로 이동
@@ -254,7 +255,6 @@ public class GeneticAlgorithmTSP {
 
     private static boolean shouldSkipToNextLodging(LocalDateTime currentTime) {
         LocalTime timeOfDay = currentTime.toLocalTime();
-        System.out.println("timeofLodging"+timeOfDay);
         return (timeOfDay.isAfter(LocalTime.of(20, 0)) && timeOfDay.isBefore(LocalTime.MAX)) ||
                 (timeOfDay.isAfter(LocalTime.MIN) && timeOfDay.isBefore(LocalTime.of(5, 0)));
     }
@@ -319,8 +319,9 @@ public class GeneticAlgorithmTSP {
 
         GeoApiContext context = new GeoApiContext.Builder().apiKey(API_KEY).build();
 
+        // 수정가능 ///////////////////////////////////////////////////////////////////
         for (int i = 0; i < numCities; i++) {
-            for (int j = 0; j < numCities; j++) {
+            for (int j = i; j < numCities; j++) {
                 if (i != j) {
                     LatLng origin = new LatLng(cities.get(i).getX(), cities.get(i).getY());
                     LatLng destination = new LatLng(cities.get(j).getX(), cities.get(j).getY());
@@ -329,20 +330,22 @@ public class GeneticAlgorithmTSP {
                             .origin(origin)
                             .destination(destination)
                             .mode(TravelMode.TRANSIT);
-
                     try {
                         DirectionsRoute[] routes = request.await().routes;
                         if (routes != null && routes.length > 0) {
                             // 첫 번째 경로의 총 이동 시간을 이동 시간 행렬에 저장
                             travelTimes[i][j] = routes[0].legs[0].duration.inSeconds;
+                            travelTimes[j][i] = travelTimes[i][j];
                         } else {
                             // 경로를 찾을 수 없는 경우 큰 값으로 설정하여 해당 경로를 피할 수 있도록 함
                             travelTimes[i][j] = Double.MAX_VALUE;
+                            travelTimes[j][i] = travelTimes[i][j];
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         // 오류가 발생한 경우 큰 값으로 설정하여 해당 경로를 피할 수 있도록 함
                         travelTimes[i][j] = Double.MAX_VALUE;
+                        travelTimes[j][i] = travelTimes[i][j];
                     }
                 } else {
                     // 같은 도시일 경우 0으로 설정
