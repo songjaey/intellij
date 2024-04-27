@@ -135,8 +135,9 @@ public class GeneticAlgorithmTSP {
         cities.add(new City(destinationLatLng.lat, destinationLatLng.lng, ContentType.DESTINATION, places.size()+1 ,1, null,null , 0, 1000L));
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        System.out.println("cities size"+cities.size());
         Route bestRoute = findOptimalRoute(cities, places);  //최적해 계산.
+        System.out.println("bestRoute size"+bestRoute.cities.size());
         for(int i = 0; i < bestRoute.cities.size(); i++) {
             SchedulerDto schedulerDto = new SchedulerDto();
             schedulerDto.setLat(bestRoute.cities.get(i).getX());
@@ -179,8 +180,8 @@ public class GeneticAlgorithmTSP {
         currentTime = currentTime.plusMinutes(currentCity.stayTime);
         currentCity.setDepartureTime(currentTime);// 출발 시간은 현재 시간에 머무는 시간을 더한다.
 
-        for (int i = 1; i < cities.size()-1; i++) {
-            if(i < cities.size() - 2) {
+        for (int i = 1; i < cities.size(); i++) {
+            if(i < cities.size() - 1) {
                 nextCityIndex = findNearestCityIndex(travelTimes, currentCity, visited,cities);
             }
             else{
