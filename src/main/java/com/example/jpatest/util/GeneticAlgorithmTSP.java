@@ -151,7 +151,7 @@ public class GeneticAlgorithmTSP {
         double[][] travelTimes = createTravelTimeMatrix(cities);
 
         //전체 경로들 간의 평균 시간 계산///////////////////////////////
-        double timeFactor = 0.95;
+        double timeFactor = 1.1;
         int numCities = cities.size();
         double sum = 0.0;
         int num = 0;

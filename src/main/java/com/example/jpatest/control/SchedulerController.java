@@ -38,9 +38,9 @@ public class SchedulerController {
 
     private final SchedulerService schedulerService;
     private final LocalRepository localRepository;
-
-    private final AdminItemService adminItemService;
     private final GoogleMapsService googleMapsService;
+    private final AdminItemService adminItemService;
+    /*private final GeneticAlgorithmTSP geneticAlgorithmTSP;*/
     private static final Logger logger = LoggerFactory.getLogger(SchedulerController.class);
 
     @GetMapping("/first")
@@ -136,6 +136,7 @@ public class SchedulerController {
     public String Fourth(@ModelAttribute("schedulerDto") SchedulerDto schedulerDto,
                          @RequestParam("spotId") String spotIds,
                          @RequestParam("spotMark") String spotMarks,
+                         @RequestParam("contentType") String contentTypes,
                          Model model, HttpSession session) {
         /*/////////////////////////추가///////////////////////////////*/
         try {
@@ -184,9 +185,12 @@ public class SchedulerController {
             session.setAttribute("schedulerDto", schedulerDto);
             session.setAttribute("spotIds", spotIds);
             session.setAttribute("spotMarks", spotMarks);
+            session.setAttribute("contentTypes", contentTypes);
 
+            System.out.println(localIds);
+            System.out.println(spotIds);
             System.out.println("--------------------------!!");
-            System.out.println(stayIds);
+            System.out.println(contentTypes);
 
             return "scheduler/fourth";
         }catch(Exception e){
@@ -198,7 +202,8 @@ public class SchedulerController {
     public String result(@ModelAttribute("schedulerDto") SchedulerDto schedulerDto,
                          @RequestParam("stayId") String stayIds,
                          @RequestParam("stayMark") String stayMarks,
-                         @RequestParam("airport") String airport,
+                         @RequestParam("StartAirport") String StartAirport,
+                         @RequestParam("EndAirport") String EndAirport,
                          Model model, HttpSession session) {
             schedulerDto = (SchedulerDto) session.getAttribute("schedulerDto");
 
@@ -285,10 +290,12 @@ public class SchedulerController {
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-            String origin="인천광역시 중구 공항로424번길 47"; String destination="인천광역시 중구 공항로424번길 47";
+//            String origin="인천광역시 중구 공항로424번길 47"; String destination="인천광역시 중구 공항로424번길 47";
 
-            List<SchedulerDto> routes = googleMapsService.getOptimalRoute(origin, destination, filteredAdminItems);
+            List<SchedulerDto> routes = googleMapsService.getOptimalRoute(StartAirport,EndAirport, filteredAdminItems);
             System.out.println(routes);
+            System.out.println("---------a-a-------------------");
+            /*System.out.println(airport);*/
 
             String[] combinedArray = new String[stayIdArray.length + spotIdArray.length];
             System.arraycopy(stayIdArray, 0, combinedArray, 0, stayIdArray.length);
@@ -308,7 +315,7 @@ public class SchedulerController {
             int month = currentDate.getMonthValue();
             int day = currentDate.getDayOfMonth(); // day 4.25일
             int i=0;
-
+            System.out.println("startDay : " + day);
             for(SchedulerDto route : routes){
                 if( i == 0) {i++; continue;}
                 if( i == (routes.size()-1) ) break;
@@ -434,6 +441,7 @@ public class SchedulerController {
         String localIds = (String) session.getAttribute("localIds");
         String spotIds = (String) session.getAttribute("spotIds");
         String spotMarks = (String) session.getAttribute("spotMarks");
+        String contentTypes = (String) session.getAttribute("contentTypes");
         model.addAttribute("schedulerDto", schedulerDto);
         model.addAttribute("localIds", localIds);
 
@@ -479,6 +487,7 @@ public class SchedulerController {
 
             session.setAttribute("spotMarks", spotMarks); // localIds는 쉼표(,)로 구분된 문자열입니다.
 
+            session.setAttribute("contentTypes", contentTypes); // localIds는 쉼표(,)로 구분된 문자열입니다.
             return "scheduler/third";
         } catch (Exception e) {
             // 오류 발생 시 예외 처리

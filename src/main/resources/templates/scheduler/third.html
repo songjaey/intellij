@@ -43,11 +43,13 @@
                             <div class="initialSpotName" th:text="${initialItem.touristSpotName}"></div>
                             <div class="initialLocal" th:text="${initialItem.address}"></div>
                             <div class="initialId" th:text="${initialItem.id}"></div>
+                            <div class="initialContentType" th:text="${initialItem.contentType}"></div>
                         </div>
                         <div class="initialItem2" th:if="${initItemEntitySpot != null}" th:each="initialItem : ${initItemEntitySpot}" style="display:none;">
                             <div class="initialSpotName" th:text="${initialItem.touristSpotName}"></div>
                             <div class="initialLocal" th:text="${initialItem.address}"></div>
                             <div class="initialId" th:text="${initialItem.id}"></div>
+                            <div class="initialContentType" th:text="${initialItem.contentType}"></div>
                         </div>
                     </div>
                 </div>
@@ -136,17 +138,21 @@
         $(document).ready(function() {
            let currentContentType = "명소"; // 초기에는 "명소"로 설정
             const form = document.querySelector("form");
-             form.addEventListener("submit", (event) => {
-             const selectedItems = document.querySelectorAll(".selected-item");
 
-             // 선택된 항목이 없는 경우 폼 제출 중지 및 알림창 표시
-             if (selectedItems.length === 0) {
-               event.preventDefault(); // 폼 제출 중지
+            form.addEventListener("submit", (event) => {
+                const selectedItems = document.querySelectorAll(".selected-item");
+                const isValid = saveSelectedLocations();
 
-               // 알림창 표시
-               alert("한개 이상 골라주세요.");
-             }
-           });
+                // 선택된 항목이 없는 경우 폼 제출 중지 및 알림창 표시
+                if (selectedItems.length === 0) {
+                    event.preventDefault(); // 폼 제출 중지
+
+                    // 알림창 표시
+                    alert("한개 이상 골라주세요.");
+                } else if (!isValid) {
+                    event.preventDefault(); // 폼 제출 중지
+                }
+            });
 
             // 페이지가 로드되면 모든 contents 숨기기
             $('.contents').hide();
@@ -201,64 +207,34 @@
                 $('#locationInput').val(locationText); // 위치 입력란에 선택된 아이템의 위치 정보 설정
                 searchLocation(currentContentType); // 위치에 따라 해당 컨텐츠 검색 실행
             });
-
-            function showContentsByType(contentType) {
-                // 모든 contents 숨기기
-                $('.contents').hide();
-
-                // 선택된 contentType에 해당하는 contents만 보이기
-                $(`.contents[data-content-type="${contentType}"]`).show();
-            }
-
-            function searchLocation(contentType) {
-                const searchTerm = $('#locationInput').val().trim().toLowerCase();
-
-                // 모든 contents 숨기기
-                $('.contents').hide();
-
-                // contentType에 해당하는 contents 중 검색어와 일치하는 항목만 보이기
-                $(`.contents[data-content-type="${contentType}"]`).each(function() {
-                    const spotName = $(this).find('.spot-name').text().trim().toLowerCase();
-                    const spotFeatures = $(this).find('.spot-features').text().trim().toLowerCase();
-                    const spotParent = $(this);
-
-                    if (spotName.includes(searchTerm) || spotFeatures.includes(searchTerm)) {
-                        spotParent.show();
-                    }
-                });
-
-                // 검색 후 입력 초기화
-                $('#locationInput').val('');
-            }
-
              $('.spot-image').click(function() {
-                        // 모달에 표시될 정보 추출
-                        const imgUrl = $(this).css('background-image');
-                        const touristSpotName = $(this).siblings('.spot-details').find('.spot-name').text();
-                        const contact = $(this).siblings('.spot-details').find('.spot-contact').text();
-                        const address = $(this).siblings('.spot-details').find('.spot-address').text();
-                        const businessHours = $(this).siblings('.spot-details').find('.day-time-entry').map(function() {
-                            return $(this).find('label').text() + ': ' + $(this).find('div').text();
-                        }).get().join('<br>'); // 각 businessHour를 줄바꿈으로 연결하여 표시
+                // 모달에 표시될 정보 추출
+                const imgUrl = $(this).css('background-image');
+                const touristSpotName = $(this).siblings('.spot-details').find('.spot-name').text();
+                const contact = $(this).siblings('.spot-details').find('.spot-contact').text();
+                const address = $(this).siblings('.spot-details').find('.spot-address').text();
+                const businessHours = $(this).siblings('.spot-details').find('.day-time-entry').map(function() {
+                    return $(this).find('label').text() + ': ' + $(this).find('div').text();
+                }).get().join('<br>'); // 각 businessHour를 줄바꿈으로 연결하여 표시
 
 
-                        // 이미지 URL 추출
-                        const imageUrl = imgUrl.slice(5, -2); // "url('...')" 형식에서 URL만 추출
-                        // 모달에 정보 설정
-                        $('#imageInput').attr('src', imageUrl); // src 속성 설정
-                        $('#touristSpotName').text(touristSpotName);
-                        $('#modalContact').text(contact);
-                        $('#modalAddress').text(address);
-                        $('#modalBusinessHours').html(businessHours);
+                // 이미지 URL 추출
+                const imageUrl = imgUrl.slice(5, -2); // "url('...')" 형식에서 URL만 추출
+                // 모달에 정보 설정
+                $('#imageInput').attr('src', imageUrl); // src 속성 설정
+                $('#touristSpotName').text(touristSpotName);
+                $('#modalContact').text(contact);
+                $('#modalAddress').text(address);
+                $('#modalBusinessHours').html(businessHours);
 
-                        // 모달 창 보이기
-                        $('#modal').show();
-                    });
+                // 모달 창 보이기
+                $('#modal').show();
+            });
 
-                    // 모달 창 닫기 버튼 클릭 이벤트 처리
-                    $('.close-btn').click(function() {
-                        $('#modal').hide();
-                    });
+            // 모달 창 닫기 버튼 클릭 이벤트 처리
+            $('.close-btn').click(function() {
+                $('#modal').hide();
+            });
 
 
             // '일정' 버튼 클릭 시
@@ -274,6 +250,83 @@
             });
 
         });
+        function saveSelectedLocations() {
+            const dayDifference = calculateTravelDuration(); // 여행 기간을 계산하고 반환된 값 저장
+            const selectedItems = document.querySelectorAll(".selected-item");
+            let spotCount = 0;
+            let restaurantCount = 0;
+
+            // 선택된 항목의 수 세기
+            selectedItems.forEach(function(item) {
+                const contentType = item.querySelector("input[name='contentType']").value;
+                if (contentType === "명소") {
+                    spotCount++;
+                } else if (contentType === "식당") {
+                    restaurantCount++;
+                }
+            });
+
+            // 선택된 명소와 식당의 수가 조건을 만족하는지 확인
+            if (spotCount < 2 * dayDifference || restaurantCount < 1 * dayDifference) {
+                alert("하루에 명소 2개와 식당 1개를 선택해야 합니다.");
+                return false; // 폼 제출 중지
+            }
+
+            return true; // 선택된 항목이 조건을 만족하면 true 반환
+        }
+
+        function calculateTravelDuration() {
+            // DurationStart와 DurationEnd의 값을 JavaScript 변수로 가져오기
+            const durationStart = $('#DurationStart').val();
+            const durationEnd = $('#DurationEnd').val();
+
+            // 현재 년도 가져오기
+            const currentYear = new Date().getFullYear();
+
+            // Date 객체 생성
+            const startDate = new Date(`${currentYear}-${parseDate(durationStart)}`);
+            const endDate = new Date(`${currentYear}-${parseDate(durationEnd)}`);
+
+            // DurationStart와 DurationEnd 사이의 일수 계산
+            const timeDifference = endDate.getTime() - startDate.getTime();
+            const dayDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)); // 밀리초로 계산된 차이를 일수로 변환
+
+            return dayDifference;
+        }
+
+        function parseDate(dateString) {
+            const [monthStr, dayStr] = dateString.split(' ');
+            const month = monthStr.replace('월', '').padStart(2, '0');
+            const day = dayStr.replace('일', '').padStart(2, '0');
+            return `${month}-${day}`;
+        }
+        function showContentsByType(contentType) {
+            // 모든 contents 숨기기
+            $('.contents').hide();
+
+            // 선택된 contentType에 해당하는 contents만 보이기
+            $(`.contents[data-content-type="${contentType}"]`).show();
+        }
+        function searchLocation(contentType) {
+            const searchTerm = $('#locationInput').val().trim().toLowerCase();
+
+            // 모든 contents 숨기기
+            $('.contents').hide();
+
+            // contentType에 해당하는 contents 중 검색어와 일치하는 항목만 보이기
+            $(`.contents[data-content-type="${contentType}"]`).each(function() {
+                const spotName = $(this).find('.spot-name').text().trim().toLowerCase();
+                const spotFeatures = $(this).find('.spot-features').text().trim().toLowerCase();
+                const spotParent = $(this);
+
+                if (spotName.includes(searchTerm) || spotFeatures.includes(searchTerm)) {
+                    spotParent.show();
+                }
+            });
+
+            // 검색 후 입력 초기화
+            $('#locationInput').val('');
+        }
     </script>
 </div>
 </html>

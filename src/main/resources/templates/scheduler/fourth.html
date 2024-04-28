@@ -17,6 +17,8 @@
 <div layout:fragment="content">
     <form th:action="@{/schedulers/result}" th:object="${schedulerDto}" method="post" class="box">
         <input type="hidden" id="localId">
+        <input type="hidden" name="StartAirport" id="StartAirport" value="">
+        <input type="hidden" name="EndAirport" id="EndAirport" value="">
         <input type="hidden" id="spotMarks" th:value="${session.spotMarks}">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
             <input type="text" id="DurationStart" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
@@ -155,6 +157,11 @@
                // 알림창 표시
                alert("한개 이상 골라주세요.");
              }
+
+              // 선택된 항목의 수가 여행 일수와 일치하지 않을 때
+            if (!saveSelectedLocations()) {
+                event.preventDefault(); // 폼 제출 중지
+            }
            });
 
             // 페이지가 로드되면 모든 contents 숨기기
@@ -195,37 +202,7 @@
                 $('#locationInput').val(locationText); // 위치 입력란에 선택된 아이템의 위치 정보 설정
                 searchLocation(currentContentType); // 위치에 따라 해당 컨텐츠 검색 실행
             });
-
-            function showContentsByType(contentType) {
-                // 모든 contents 숨기기
-                $('.contents').hide();
-
-                // 선택된 contentType에 해당하는 contents만 보이기
-                $(`.contents[data-content-type="${contentType}"]`).show();
-            }
-
-            function searchLocation(contentType) {
-                const searchTerm = $('#locationInput').val().trim().toLowerCase();
-
-                // 모든 contents 숨기기
-                $('.contents').hide();
-
-                // contentType에 해당하는 contents 중 검색어와 일치하는 항목만 보이기
-                $(`.contents[data-content-type="${contentType}"]`).each(function() {
-                    const stayName = $(this).find('.stay-name').text().trim().toLowerCase();
-                    const stayFeatures = $(this).find('.stay-features').text().trim().toLowerCase();
-                    const stayParent = $(this);
-
-                    if (stayName.includes(searchTerm) || stayFeatures.includes(searchTerm)) {
-                        stayParent.show();
-                    }
-                });
-
-                // 검색 후 입력 초기화
-                $('#locationInput').val('');
-            }
-
-                // 버튼 클릭 시 이벤트 처리
+            // 버튼 클릭 시 이벤트 처리
             $(".Transportation").click(function() {
                 const value = $(this).val(); // 클릭된 버튼의 value 값
 
@@ -289,9 +266,35 @@
             $("#localButton").click(function() {
                 window.location.href = "/schedulers/third";
             });
-
         });
+        function searchLocation(contentType) {
+            const searchTerm = $('#locationInput').val().trim().toLowerCase();
 
+            // 모든 contents 숨기기
+            $('.contents').hide();
+
+            // contentType에 해당하는 contents 중 검색어와 일치하는 항목만 보이기
+            $(`.contents[data-content-type="${contentType}"]`).each(function() {
+                const stayName = $(this).find('.stay-name').text().trim().toLowerCase();
+                const stayFeatures = $(this).find('.stay-features').text().trim().toLowerCase();
+                const stayParent = $(this);
+
+                if (stayName.includes(searchTerm) || stayFeatures.includes(searchTerm)) {
+                    stayParent.show();
+                }
+            });
+
+            // 검색 후 입력 초기화
+            $('#locationInput').val('');
+        }
+
+        function showContentsByType(contentType) {
+            // 모든 contents 숨기기
+            $('.contents').hide();
+
+            // 선택된 contentType에 해당하는 contents만 보이기
+            $(`.contents[data-content-type="${contentType}"]`).show();
+        }
     </script>
 </div>
 </html>
