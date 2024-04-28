@@ -117,14 +117,13 @@ public class GeneticAlgorithmTSP {
         cities.add(new City(destinationLatLng.lat, destinationLatLng.lng, ContentType.DESTINATION, places.size()+1 ,1, originDepartureTime,originDepartureTime , 0, 1000L));
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        System.out.println("cities size"+cities.size());
         Route bestRoute = findOptimalRoute(cities, places);  //최적해 계산.
-        System.out.println("bestRoute size"+bestRoute.cities.size());
         for(int i = 0; i < bestRoute.cities.size(); i++) {
             SchedulerDto schedulerDto = new SchedulerDto();
             schedulerDto.setLat(bestRoute.cities.get(i).getX());
             schedulerDto.setLng(bestRoute.cities.get(i).getY());
             schedulerDto.setArrivalTime(bestRoute.cities.get(i).getArrivalTime());
+            schedulerDto.setDepartureTime(bestRoute.cities.get(i).getDepartureTime());
             schedulerDto.setResultItemId(bestRoute.cities.get(i).getSpotId());
             bestScheduler.add(schedulerDto);
         }
@@ -151,7 +150,7 @@ public class GeneticAlgorithmTSP {
         double[][] travelTimes = createTravelTimeMatrix(cities);
 
         //전체 경로들 간의 평균 시간 계산///////////////////////////////
-        double timeFactor = 1.1;
+        double timeFactor = 1.0;
         int numCities = cities.size();
         double sum = 0.0;
         int num = 0;
@@ -203,11 +202,12 @@ public class GeneticAlgorithmTSP {
             ContentType contentType = ContentType.valueOf(places.get(i).getContentType());
             if(contentType == ContentType.숙박) {
                 cities.get(i + 1).setStayTime(660);
+                //System.out.println("Lodging!!!!"+ cities.get(i+1).getType() + " setStayTime :" + cities.get(i+1).getSpotId());
             }else{
-                System.out.println(stayTime);
                 cities.get(i + 1).setStayTime(stayTime);
             }
         }
+        //System.out.println(cities);
         // 총 숙박일과
 
 
@@ -224,7 +224,7 @@ public class GeneticAlgorithmTSP {
         currentTime = currentTime.plusMinutes(currentCity.stayTime);
         currentCity.setDepartureTime(currentTime);// 출발 시간은 현재 시간에 머무는 시간을 더한다.
 
-        double realTime = 0;
+        //double realTime = 0;
         for (int i = 1; i < cities.size(); i++) {
             if(i < cities.size() - 1) {
                 nextCityIndex = findNearestCityIndex(travelTimes, currentCity, visited,cities);
@@ -234,12 +234,14 @@ public class GeneticAlgorithmTSP {
             }
             // 다음 도시까지 이동하는 시간 계산
             double travelTimeToNextCity = travelTimes[currentCity.getIndex()][nextCityIndex];
-            realTime += travelTimeToNextCity;
-
             // 도착 시간 업데이트 (현재 시간 + 이동 시간)
             currentTime = currentTime.plusMinutes((long) (travelTimeToNextCity / 60)); // 출발(현재)시간 + 이동시간
             City nextCity = cities.get(nextCityIndex); // 다음 도시
             nextCity.setArrivalTime(currentTime);  // 다음 도시의 도착 시간 업데이트
+
+            System.out.println("nextCityId"+nextCity.getSpotId());
+            System.out.println("StayTime"+nextCity.getStayTime());
+
             currentTime = currentTime.plusMinutes(nextCity.stayTime);
             nextCity.setDepartureTime(currentTime);
 
@@ -247,7 +249,7 @@ public class GeneticAlgorithmTSP {
             visited.add(nextCityIndex);
             currentCity = nextCity; // 다음 도시를 현재 도시로 업데이트
         }
-        System.out.println("!!!!!!!!!!realTime : "+ realTime/(cities.size()-1));
+        //System.out.println("!!!!!!!!!!realTime : "+ realTime/(cities.size()-1));
         // 마지막으로 시작 도시로 돌아가는 경로 추가
         //optimalRoute.add(cities.get(0));
 
@@ -290,7 +292,6 @@ public class GeneticAlgorithmTSP {
                 }
             }
         }
-
         return minIndex;
     }
     private static boolean shouldSkipToNextRestaurant(LocalDateTime currentTime) {
