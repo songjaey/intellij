@@ -300,8 +300,9 @@ public class SchedulerController {
             String[] combinedArray = new String[stayIdArray.length + spotIdArray.length];
             System.arraycopy(stayIdArray, 0, combinedArray, 0, stayIdArray.length);
             System.arraycopy(spotIdArray, 0, combinedArray, stayIdArray.length, spotIdArray.length);
-
             List<AdminItemEntity> reFilteredAdminItems = new ArrayList<>();
+            addSchedulersByStartLocations(reFilteredAdminItems, StartAirport);
+
             for(int i=1; i < routes.size(); i++){
                 for(int j=0; j < combinedArray.length; j++) {
                     if(Long.parseLong(combinedArray[j]) == routes.get(i).getResultItemId() ){
@@ -309,16 +310,19 @@ public class SchedulerController {
                     }
                 }
             }
+            addSchedulersByEndLocations(reFilteredAdminItems,EndAirport);
+
+
 
             LocalDate currentDate = routes.get(0).getArrivalTime().toLocalDate();
             int year = currentDate.getYear();
             int month = currentDate.getMonthValue();
             int day = currentDate.getDayOfMonth(); // day 4.25일
-            int i=0;
+            int i=0; int day0=0, day1=0, day2=0, day3=0, day4=0, day5=0, day6=0, day7=0, day8=0, day9=0;
             System.out.println("startDay : " + day);
             for(SchedulerDto route : routes){
-                if( i == 0) {i++; continue;}
-                if( i == (routes.size()-1) ) break;
+                //( i == 0) {i++; continue;}
+                //if( i == (routes.size()-1) ) break;
                 LocalDate dateTemp = route.getArrivalTime().toLocalDate();
                 int yearTemp = dateTemp.getYear();
                 int dayTemp = dateTemp.getDayOfMonth();
@@ -334,47 +338,84 @@ public class SchedulerController {
 
                 switch(diff) {
                     case 0:
-                        day1Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day1Routes.add(reFilteredAdminItems.get(i));
+                        i++; day0++;
                         break;
                     case 1:
-                        day2Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day2Routes.add(reFilteredAdminItems.get(i));
+                        i++; day1++;
                         break;
                     case 2:
-                        day3Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day3Routes.add(reFilteredAdminItems.get(i));
+                        i++; day2++;
                         break;
                     case 3:
-                        day4Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day4Routes.add(reFilteredAdminItems.get(i));
+                        i++; day3++;
                         break;
                     case 4:
-                        day5Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day5Routes.add(reFilteredAdminItems.get(i));
+                        i++; day4++;
                         break;
                     case 5:
-                        day6Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day6Routes.add(reFilteredAdminItems.get(i));
+                        i++; day5++;
                         break;
                     case 6:
-                        day7Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day7Routes.add(reFilteredAdminItems.get(i));
+                        i++; day6++;
                         break;
                     case 7:
-                        day8Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day8Routes.add(reFilteredAdminItems.get(i));
+                        i++; day7++;
                         break;
                     case 8:
-                        day9Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day9Routes.add(reFilteredAdminItems.get(i));
+                        i++; day8++;
                         break;
                     case 9:
-                        day10Routes.add(reFilteredAdminItems.get(i-1));
-                        i++;
+                        day10Routes.add(reFilteredAdminItems.get(i));
+                        i++; day9++;
                         break;
                 }
             }
+            List<SchedulerDto> route1 = new ArrayList<>(); List<SchedulerDto> route2 = new ArrayList<>(); List<SchedulerDto> route3 = new ArrayList<>();
+            List<SchedulerDto> route4 = new ArrayList<>(); List<SchedulerDto> route5 = new ArrayList<>(); List<SchedulerDto> route6 = new ArrayList<>();
+            List<SchedulerDto> route7 = new ArrayList<>(); List<SchedulerDto> route8 = new ArrayList<>(); List<SchedulerDto> route9 = new ArrayList<>();
+            List<SchedulerDto> route10 = new ArrayList<>();
+            int k = 0;
+            for (;k < day0; k++) {
+                route1.add(routes.get(k));
+            }
+            for (; k < day1+day0; k++) {
+                route2.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2; k++) {
+                route3.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2+day3; k++) {
+                route4.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2+day3+day4; k++) {
+                route5.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2+day3+day4+day5; k++) {
+                route6.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2+day3+day4+day5+day6; k++) {
+                route7.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2+day3+day4+day5+day6+day7; k++) {
+                route8.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2+day3+day4+day5+day6+day7+day8; k++) {
+                route9.add(routes.get(k));
+            }
+            for (; k < day0+day1+day2+day3+day4+day5+day6+day7+day8+day9; k++) {
+                route10.add(routes.get(k));
+            }
+
+
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             session.setAttribute("stayMarks", stayMarks);
@@ -391,7 +432,11 @@ public class SchedulerController {
 
             //model.addAttribute("adminItemEntity", filteredAdminItems);
             model.addAttribute("schedulerDto", schedulerDto);
-            model.addAttribute("routes", routes);
+            System.out.println(route1); System.out.println(route2);
+            model.addAttribute("route1", route1); model.addAttribute("route2", route2); model.addAttribute("route3", route3);
+            model.addAttribute("route4", route4); model.addAttribute("route5", route5); model.addAttribute("route6", route6);
+            model.addAttribute("route7", route7); model.addAttribute("route18", route8); model.addAttribute("route9", route9);
+            model.addAttribute("route10", route10);
 
 
             return "scheduler/result";
@@ -556,5 +601,19 @@ public class SchedulerController {
         }
     }
 
+    public void addSchedulersByStartLocations(List<AdminItemEntity> reFilteredAdminItems, String StartAirport){
+        if(StartAirport.contains("인천광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(191L));
+        if(StartAirport.contains("충청북도")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
+        if(StartAirport.contains("공항로")) reFilteredAdminItems.add(googleMapsService.getScheduler(193L));
+        if(StartAirport.contains("부산광역시") )reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
+        if(StartAirport.contains("강서구") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
+    }
+    public void addSchedulersByEndLocations(List<AdminItemEntity> reFilteredAdminItems, String EndAirport){
+        if(EndAirport.contains("인천광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(191L));
+        if(EndAirport.contains("충청북도")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
+        if(EndAirport.contains("공항로")) reFilteredAdminItems.add(googleMapsService.getScheduler(193L));
+        if(EndAirport.contains("부산광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
+        if(EndAirport.contains("강서구") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
+    }
 
 }

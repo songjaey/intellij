@@ -201,7 +201,7 @@ public class GeneticAlgorithmTSP {
         for (int i = 0; i < places.size(); i++) {
             ContentType contentType = ContentType.valueOf(places.get(i).getContentType());
             if(contentType == ContentType.숙박) {
-                cities.get(i + 1).setStayTime(660);
+                cities.get(i + 1).setStayTime(630);
                 //System.out.println("Lodging!!!!"+ cities.get(i+1).getType() + " setStayTime :" + cities.get(i+1).getSpotId());
             }else{
                 cities.get(i + 1).setStayTime(stayTime);
