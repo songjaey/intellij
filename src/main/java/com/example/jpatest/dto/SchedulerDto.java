@@ -17,9 +17,11 @@ public class SchedulerDto {
     private String arrivalMinute;
     private String trip_duration_start;
     private String trip_duration_end;
-    private String[] localId;
-    private String[] spotId;
-    private String[] stayId;
+    private String localIds;
+    private String spotIds;
+    private String stayIds;
+    private String spotMarks;
+    private String stayMarks;
     private double lat;
     private double lng;
     private LocalDateTime arrivalTime;

@@ -37,7 +37,6 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
     }
 
-
     public void modifyMember(Member member) {
         memberRepository.save(member);
     }
@@ -112,7 +111,6 @@ public class MemberService implements UserDetailsService {
         return member.getTel().equals(tel);
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 
@@ -126,4 +124,5 @@ public class MemberService implements UserDetailsService {
                 .roles(member.getRole().toString())
                 .build();
     }
+
 }

@@ -3,32 +3,37 @@ package com.example.jpatest.control;
 import com.example.jpatest.dto.SchedulerDto;
 import com.example.jpatest.entity.AdminItemEntity;
 import com.example.jpatest.entity.LocalEntity;
+import com.example.jpatest.entity.Member;
 import com.example.jpatest.entity.Scheduler;
 import com.example.jpatest.repository.LocalRepository;
+import com.example.jpatest.repository.SchedulerRepository;
 import com.example.jpatest.service.AdminItemService;
 import com.example.jpatest.service.GoogleMapsService;
+import com.example.jpatest.service.MemberService;
 import com.example.jpatest.service.SchedulerService;
 import com.example.jpatest.util.GeneticAlgorithmTSP;
-import com.google.maps.model.DirectionsRoute;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.time.LocalDate;
 
 
 @Controller
@@ -40,6 +45,8 @@ public class SchedulerController {
     private final LocalRepository localRepository;
     private final GoogleMapsService googleMapsService;
     private final AdminItemService adminItemService;
+    private final SchedulerRepository schedulerRepository;
+    private final MemberService memberService;
     /*private final GeneticAlgorithmTSP geneticAlgorithmTSP;*/
     private static final Logger logger = LoggerFactory.getLogger(SchedulerController.class);
 
@@ -418,7 +425,10 @@ public class SchedulerController {
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            session.setAttribute("stayIds", stayIds);
             session.setAttribute("stayMarks", stayMarks);
+            session.setAttribute("StartAirport", StartAirport);
+            session.setAttribute("EndAirport", EndAirport);
             model.addAttribute("adminItemEntity0", day1Routes);
             model.addAttribute("adminItemEntity1", day2Routes);
             model.addAttribute("adminItemEntity2", day3Routes);
@@ -432,7 +442,7 @@ public class SchedulerController {
 
             //model.addAttribute("adminItemEntity", filteredAdminItems);
             model.addAttribute("schedulerDto", schedulerDto);
-            System.out.println(route1); System.out.println(route2);
+            System.out.println(route2);
             model.addAttribute("route1", route1); model.addAttribute("route2", route2); model.addAttribute("route3", route3);
             model.addAttribute("route4", route4); model.addAttribute("route5", route5); model.addAttribute("route6", route6);
             model.addAttribute("route7", route7); model.addAttribute("route18", route8); model.addAttribute("route9", route9);
@@ -440,6 +450,56 @@ public class SchedulerController {
 
 
             return "scheduler/result";
+    }
+
+    @PostMapping("/save")
+    public String save(Model model, HttpSession session, Principal principal) {
+        // 현재 로그인한 사용자의 정보를 가져옵니다.
+        String loggedInUsername = principal.getName();
+
+        Member loggedInMember = memberService.findByEmail(loggedInUsername);
+        if (loggedInMember == null) {
+            // 현재 로그인한 사용자 정보가 없는 경우 에러 처리
+            return "redirect:/members/mymenu"; // 적절한 에러 페이지로 리다이렉트 또는 에러 메시지 표시
+        }
+
+        String localIds = (String) session.getAttribute("localIds");
+        String spotIds = (String) session.getAttribute("spotIds");
+        String spotMarks = (String) session.getAttribute("spotMarks");
+        String stayIds = (String) session.getAttribute("stayIds");
+        String stayMarks = (String) session.getAttribute("stayMarks");
+        SchedulerDto schedule = (SchedulerDto) session.getAttribute("schedulerDto");
+
+        // SchedulerDto에서 필요한 데이터를 가져와서 엔티티에 저장
+        String departureHour = schedule.getDepartureHour();
+        String departureMinute = schedule.getDepartureMinute();
+        String arrivalHour = schedule.getArrivalHour();
+        String arrivalMinute = schedule.getArrivalMinute();
+        String tripDurationStart = schedule.getTrip_duration_start();
+        String tripDurationEnd = schedule.getTrip_duration_end();
+
+        // Scheduler 객체 생성 및 현재 로그인한 사용자의 Member 객체 설정
+        Scheduler scheduler = new Scheduler();
+        scheduler.setLocalIds(localIds);
+        scheduler.setSpotIds(spotIds);
+        scheduler.setSpotMarks(spotMarks);
+        scheduler.setStayIds(stayIds);
+        scheduler.setStayMarks(stayMarks);
+        scheduler.setDepartureHour(departureHour);
+        scheduler.setDepartureMinute(departureMinute);
+        scheduler.setArrivalHour(arrivalHour);
+        scheduler.setArrivalMinute(arrivalMinute);
+        scheduler.setTrip_duration_start(tripDurationStart);
+        scheduler.setTrip_duration_end(tripDurationEnd);
+        scheduler.setSchedulerMemberId(loggedInMember); // 현재 로그인한 사용자의 Member 객체 설정
+
+        // SchedulerRepository를 사용하여 엔티티를 저장
+        schedulerRepository.save(scheduler);
+
+        // 세션 비우기
+        session.invalidate();
+
+        return "redirect:/";
     }
 
     @GetMapping("/second")

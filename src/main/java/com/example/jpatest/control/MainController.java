@@ -185,7 +185,6 @@ public class MainController {
     public String sendTemporaryPassword(@NotBlank String email, @NotBlank String tel) {
         // 네이버 메일 계정 설정
         String naverEmail = "songjaey8237@naver.com";
-//        String naverPassword = "Thdrk2838!";
 
         // 이메일 주소와 휴대폰 번호가 일치하는지 확인하는 메서드 호출
         boolean isMatch = memberService.checkEmailAndPhoneNumberMatch(email, tel);

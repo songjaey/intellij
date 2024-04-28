@@ -8,6 +8,12 @@
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/scheduler/scheduler.css}">
     <link rel="stylesheet" th:href="@{/css/scheduler/result.css}">
+    <style>
+        .arrival-time, .departure-time {
+        margin-top: 20px; /* 각 요소의 위쪽 여백을 조정합니다. */
+    }
+
+    </style>
 </th:block>
 
 <th:block layout:fragment="script">
@@ -15,7 +21,7 @@
 </th:block>
 
 <div layout:fragment="content">
-    <form th:action="@{/schedulers/result}" th:object="${schedulerDto}" method="post" class="box">
+    <form th:action="@{/schedulers/save}" th:object="${schedulerDto}" method="post" class="box">
         <input type="hidden" id="localId">
         <input type="hidden" id="stayMarks" th:value="${session.stayMarks}">
         <input type="hidden" id="spotMarks" th:value="${session.spotMarks}">
@@ -35,18 +41,54 @@
                 <div id="tourDays">
 
                 </div>
-
+                <div class="route_wrap1" th:style="'display:block; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
+                    <div class="route1" th:each="route, routeIndex : ${route1}" th:style="'display:block; color:white;'">
+                        <span th:text="${routeIndex.index + 1}"></span>
+                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                        <span>-></span>
+                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    </div>
+                </div>
+                <div class="route_wrap2" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
+                    <div class="route2" th:each="route, routeIndex : ${route2}" th:style="'display:block; color:white;'">
+                        <span th:text="${routeIndex.index + 1}"></span>
+                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                        <span>-></span>
+                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    </div>
+                </div>
+                <div class="route_wrap3" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
+                    <div class="route3" th:each="route, routeIndex : ${route3}" th:style="'display:block; color:white;'">
+                        <span th:text="${routeIndex.index + 1}"></span>
+                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                        <span>-></span>
+                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    </div>
+                </div>
+                <div class="route_wrap4" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
+                    <div class="route4" th:each="route, routeIndex : ${route4}" th:style="'display:block; color:white;'">
+                        <span th:text="${routeIndex.index + 1}"></span>
+                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                        <span>-></span>
+                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    </div>
+                </div>
+                <div class="route_wrap5" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
+                    <div class="route5" th:each="route, routeIndex : ${route5}" th:style="'display:block; color:white;'">
+                        <span th:text="${routeIndex.index + 1}"></span>
+                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                        <span>-></span>
+                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    </div>
+                </div>
                 <div id="lcBox">
-                    <div id="locationList">
-<!--                        <div th:each="route : ${routes}" th:if="${routes != null}" class="resultContents" th:style="'display:none;'">-->
-<!--                            <input class="resultRoute" th:value="${route.lat}">-->
-<!--                            <input class="resultRoute" th:value="${route.lng}">-->
-<!--                            <input class="resultRoute" th:value="${route.arrivalTime}">-->
-<!--                        </div>-->
-                        <!-- 동적으로 렌더링될 adminItemEntity -->
-                        <!--                        <th:block th:each="index : ${#numbers.sequence(0, 9)}">-->
 
-<!--                        <div th:each="route : ${routes}" th:style="'display:block;'">-->
+                    <div id="locationList">
                         <div th:id="adminItemEntity0" class="adminItemEntity" th:style="'display:block;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity0}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -65,11 +107,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox0" class="location-checkbox">
                             </div>
                         </div>
-                        <div th:each="route : ${routes1}">
-                            <h2 th:text="${route.arrivalTime}"></h2>
-                            <h2 th:text="${route.departureTime}"></h2>
-                            <!-- 필요한 속성에 따라 추가적으로 출력 -->
-                        </div>
+
                         <div th:id="adminItemEntity1" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity1}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -88,11 +126,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox1" class="location-checkbox">
                             </div>
                         </div>
-                        <div th:each="route : ${routes2}">
-                            <div th:text="${route.arrivalTime}"></div>
-                            <div th:text="${route.departureTime}"></div>
-                            <!-- 필요한 속성에 따라 추가적으로 출력 -->
-                        </div>
+
                         <div th:id="adminItemEntity2" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity2}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -111,6 +145,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox2" class="location-checkbox">
                             </div>
                         </div>
+
                         <div th:id="adminItemEntity3" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity3}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -129,6 +164,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox3" class="location-checkbox">
                             </div>
                         </div>
+
                         <div th:id="adminItemEntity4" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity4}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -147,6 +183,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox4" class="location-checkbox">
                             </div>
                         </div>
+
                         <div th:id="adminItemEntity5" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity5}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -165,6 +202,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox5" class="location-checkbox">
                             </div>
                         </div>
+
                         <div th:id="adminItemEntity6" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity6}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -183,6 +221,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox6" class="location-checkbox">
                             </div>
                         </div>
+
                         <div th:id="adminItemEntity7" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity7}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -201,6 +240,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox7" class="location-checkbox">
                             </div>
                         </div>
+
                         <div th:id="adminItemEntity8" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity8}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -219,6 +259,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox8" class="location-checkbox">
                             </div>
                         </div>
+
                         <div th:id="adminItemEntity9" class="adminItemEntity" th:style="'display:none;'">
                             <!-- 이전 요소의 ID가 없는 경우를 처리하는 조건문 추가 -->
                             <div th:each="result : ${adminItemEntity9}" th:if="${result != null}"  class="contents" th:attr="data-content-type=${result.contentType}" style="height:115px;width:500px; display:flex; justify-content:left; align-items:center; border-radius:10px;background-color:#BD726F; margin-bottom:10px;">
@@ -237,6 +278,7 @@
                                 <input style="width:50px;margin: auto 0;" type="checkbox" th:id="locationCheckBox9" class="location-checkbox">
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -296,7 +338,7 @@
                 </div>
             </div>
             <div style="cursor:pointer;width:150px;height:80px;background-color:white;border-radius:10px;display:flex;justify-content:center;align-items:center;margin-bottom:30px;">
-                <button type="submit" onclick="saveSelectedLocations()" style="background-color: white; border: none; cursor: pointer; color:black;font-size:30px;font-family:LINE Seed Sans KR;">저장하기</button>
+                <button type="submit" style="background-color: white; border: none; cursor: pointer; color:black;font-size:30px;font-family:LINE Seed Sans KR;">저장하기</button>
             </div>
         </div>
     </form>
@@ -343,6 +385,17 @@
 
                 // 해당하는 adminItemEntity 보이기
                 $(`#adminItemEntity${index - 1}`).show(); // index는 1부터 시작하므로 -1 해줘야 함
+
+
+                $(`.route_wrap${index}`).show();
+
+                // 해당하는 route_wrap 클래스를 제외한 다른 route_wrap 클래스 숨기기
+                for (let i = 1; i <= 10; i++) {
+                    if (i !== index) {
+                        $(`.route_wrap${i}`).hide();
+                    }
+                }
+
             });
 
 
