@@ -206,31 +206,32 @@ public class SchedulerController {
             // 폼에서 시간과 분을 추출합니다.
             int Shour = Integer.parseInt(schedulerDto.getDepartureHour());
             int Sminute = Integer.parseInt(schedulerDto.getDepartureMinute());
-        /*    int Ehour = Integer.parseInt(schedulerDto.getArrivalHour());
-            int Eminute = Integer.parseInt(schedulerDto.getArrivalMinute());*/
+            int Ehour = Integer.parseInt(schedulerDto.getArrivalHour());
+            int Eminute = Integer.parseInt(schedulerDto.getArrivalMinute());
 
             String durationStart = schedulerDto.getTrip_duration_start();
-            /*String durationEnd = schedulerDto.getTrip_duration_end();*/
+            String durationEnd = schedulerDto.getTrip_duration_end();
 
+            System.out.println("durationStart : "+durationStart);
+            System.out.println("durationEnd : "+durationEnd);
             // 정규 표현식을 사용하여 월과 일을 추출
             Pattern pattern = Pattern.compile("(\\d+)월 (\\d+)일");
             Matcher startMatcher = pattern.matcher(durationStart);
-            /*Matcher endMatcher = pattern.matcher(durationEnd);*/
+            Matcher endMatcher = pattern.matcher(durationEnd);
 
-            if (startMatcher.find()) {
+            if (startMatcher.find() && endMatcher.find() ) {
                 // 추출된 월과 일을 정수형으로 변환
                 int Smonth = Integer.parseInt(startMatcher.group(1));
                 int Sday = Integer.parseInt(startMatcher.group(2));
-          /*      int Emonth = Integer.parseInt(endMatcher.group(1));
-                int Eday = Integer.parseInt(endMatcher.group(2));*/
-                /*int Year = LocalDateTime.now().getYear();*/
+                int Emonth = Integer.parseInt(endMatcher.group(1));
+                int Eday = Integer.parseInt(endMatcher.group(2));
 
                 // 입력된 시간과 분으로 LocalDateTime 객체를 생성합니다.
                 LocalDateTime startDateTime = LocalDateTime.of(2024, Smonth, Sday, Shour, Sminute);
                 GeneticAlgorithmTSP.setOriginStartTime(startDateTime);
 
-                /*LocalDateTime endDateTime = LocalDateTime.of(2024, Emonth, Eday, Ehour, Eminute);
-                GeneticAlgorithmTSP.setOriginEndTime(endDateTime);*/
+                LocalDateTime endDateTime = LocalDateTime.of(2024, Emonth, Eday, Ehour, Eminute);
+                GeneticAlgorithmTSP.setOriginEndTime(endDateTime);
             }
             /*----------------------------------------------------------------------------------*/
 
