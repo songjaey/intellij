@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         geocoder = new google.maps.Geocoder();
 
         const adminItemEntities = Array.from(locationList.querySelectorAll('.adminItemEntity'));
-        const colors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF', '#87CEEB', '#000080', '#800080', '#FF0000', '#FFA500', '#FFFF00'];
+        const colors = ['#FF0000', '#FFA500', '#AEB404', '#008000', '#0000FF', '#87CEEB', '#000080', '#800080', '#FF0000', '#FFA500', '#FFFF00'];
 
         // 각 .adminItemEntity 요소를 처리
         for (let i = 0; i < adminItemEntities.length; i++) {

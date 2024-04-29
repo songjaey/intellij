@@ -61,6 +61,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    margin-bottom:200px;
     /* 추가된 스타일 */
     flex-wrap: nowrap; /* 내용이 넘칠 때 줄바꿈을 하지 않도록 설정 */
     overflow-x: auto; /* 가로 스크롤바 설정 */

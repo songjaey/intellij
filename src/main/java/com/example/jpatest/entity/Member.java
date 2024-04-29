@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @ToString
 @Table(name="login_member")
-public class Member extends BaseEntity{
+public class Member {
 
     @Id
     @Column(name="member_id")

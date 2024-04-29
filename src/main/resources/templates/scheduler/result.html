@@ -12,7 +12,6 @@
         .arrival-time, .departure-time {
         margin-top: 20px; /* 각 요소의 위쪽 여백을 조정합니다. */
     }
-
     </style>
 </th:block>
 
@@ -33,57 +32,59 @@
         </div>
 
         <div style="width:89%;display:flex;justify-content:top;align-items:center;">
-            <div style="width:800px;height:100%;display:flex;justify-content:center;flex-wrap:wrap;align-items:center;">
-                <div style="width:70%;height:50px background:#A23B5D;border-radius:10px;">
+            <div style="width:800px;height:100%;display:flex;flex-direction:center;justify-content:center;flex-wrap:wrap;align-items:center;">
+                <div style="width:70%;height:50px background:#A23B5D;border-radius:10px;margin:30px 0;">
                     <p style="padding:0;margin:0;width:100%;font-size:20px;font-family:LINE Seed Sans KR;font-weight:bold;display:flex;justify-content:center; align-items:center;color:white;">여행지추천일정</p>
                 </div>
 
                 <div id="tourDays">
 
                 </div>
-                <div class="route_wrap1" th:style="'display:block; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
-                    <div class="route1" th:each="route, routeIndex : ${route1}" th:style="'display:block; color:white;'">
-                        <span th:text="${routeIndex.index + 1}"></span>
-                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
-                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
-                        <span>-></span>
-                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                <div style="position:absolute;top:350px; left:120px;  display:flex; width:600px; flex-wrap:wrap;">
+                    <div class="route_wrap1" th:style="'display:none; color:white; display:flex; flex-direction:row; flex-wrap:wrap;'">
+                        <div class="route1" th:each="route, routeIndex : ${route1}" th:style="'display:none;color:white;'">
+                            <span th:text="${routeIndex.index + 1}"></span>
+                            도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                            출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                            <span>-></span>
+                            <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                        </div>
                     </div>
-                </div>
-                <div class="route_wrap2" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
-                    <div class="route2" th:each="route, routeIndex : ${route2}" th:style="'display:block; color:white;'">
-                        <span th:text="${routeIndex.index + 1}"></span>
-                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
-                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
-                        <span>-></span>
-                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    <div class="route_wrap2" th:style="'display:none; color:white; display:flex; flex-direction:row; flex-wrap:wrap;'">
+                        <div class="route2" th:each="route, routeIndex : ${route2}" th:style="'display:none;color:white;'">
+                            <span th:text="${routeIndex.index + 1}"></span>
+                            도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                            출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                            <span>-></span>
+                            <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                        </div>
                     </div>
-                </div>
-                <div class="route_wrap3" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
-                    <div class="route3" th:each="route, routeIndex : ${route3}" th:style="'display:block; color:white;'">
-                        <span th:text="${routeIndex.index + 1}"></span>
-                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
-                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
-                        <span>-></span>
-                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    <div class="route_wrap3" th:style="'display:none; color:white; display:flex; flex-direction:row;flex-wrap:wrap;'">
+                        <div class="route3" th:each="route, routeIndex : ${route3}" th:style="'display:none;color:white;'">
+                            <span th:text="${routeIndex.index + 1}"></span>
+                            도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                            출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                            <span>-></span>
+                            <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                        </div>
                     </div>
-                </div>
-                <div class="route_wrap4" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
-                    <div class="route4" th:each="route, routeIndex : ${route4}" th:style="'display:block; color:white;'">
-                        <span th:text="${routeIndex.index + 1}"></span>
-                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
-                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
-                        <span>-></span>
-                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    <div class="route_wrap4" th:style="'display:none; color:white; display:flex; flex-direction:row; flex-wrap:wrap;'">
+                        <div class="route4" th:each="route, routeIndex : ${route4}" th:style="'display:none;color:white;'">
+                            <span th:text="${routeIndex.index + 1}"></span>
+                            도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                            출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                            <span>-></span>
+                            <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                        </div>
                     </div>
-                </div>
-                <div class="route_wrap5" th:style="'display:none; color:white; position:absolute;top:460px; left:120px; display:flex; flex-direction:row; width:600px; flex-wrap:wrap;'">
-                    <div class="route5" th:each="route, routeIndex : ${route5}" th:style="'display:block; color:white;'">
-                        <span th:text="${routeIndex.index + 1}"></span>
-                        도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
-                        출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
-                        <span>-></span>
-                        <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                    <div class="route_wrap5" th:style="'display:none; color:white; display:flex; flex-direction:row;flex-wrap:wrap;'">
+                        <div class="route5" th:each="route, routeIndex : ${route5}" th:style="'display:none;color:white;'">
+                            <span th:text="${routeIndex.index + 1}"></span>
+                            도착:<span th:text="${#temporals.format(route.arrivalTime, 'HH:mm')}" class="arrival-time"></span>
+                            출발:<span th:text="${#temporals.format(route.departureTime, 'HH:mm')}" class="departure-time" ></span>
+                            <span>-></span>
+                            <!-- 필요한 속성에 따라 추가적으로 출력 -->
+                        </div>
                     </div>
                 </div>
                 <div id="lcBox">
@@ -357,6 +358,10 @@
                     dayDiv.classList.add('dayButton'); // 각 버튼에 클래스 추가
                     contentDiv.appendChild(dayDiv);
                 }
+                dayButton1.style.color = '#FF0000';
+                dayButton2.style.color = '#FFA500';
+                dayButton3.style.color = '#AEB404';
+                dayButton3.style.color = '#008000';
             }
 
             // DurationStart와 DurationEnd의 값을 JavaScript 변수로 가져오기
@@ -387,18 +392,15 @@
                 $(`#adminItemEntity${index - 1}`).show(); // index는 1부터 시작하므로 -1 해줘야 함
 
 
-                $(`.route_wrap${index}`).show();
+                $(`.route${index}`).show();
 
-                // 해당하는 route_wrap 클래스를 제외한 다른 route_wrap 클래스 숨기기
                 for (let i = 1; i <= 10; i++) {
                     if (i !== index) {
-                        $(`.route_wrap${i}`).hide();
+                        $(`.route${i}`).hide();
                     }
                 }
 
             });
-
-
 
             // 일정 버튼 클릭 시 페이지 이동
             $("#scheduleButton").click(function() {
@@ -450,6 +452,11 @@
             // Handle click event for '숙박' button
             $("#localButton4").click(function() {
                 window.location.href = "/schedulers/fourth";
+            });
+
+               // 모달 창 닫기 버튼 클릭 이벤트 처리
+            $('.close-btn').click(function() {
+                $('#modal').hide();
             });
         });
 
