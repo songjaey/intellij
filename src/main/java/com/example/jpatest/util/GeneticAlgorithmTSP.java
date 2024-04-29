@@ -263,13 +263,13 @@ public class GeneticAlgorithmTSP {
         for (int i = 1; i < travelTimes.length-1; i++) {
             if (!visited.contains(i)) {
                 double travelTime = travelTimes[currentCity.getIndex()][i];
+                System.out.println("TravelTime : "+ travelTime);
                 if (travelTime < minTravelTime) {
                     ContentType contentType = cities.get(i).getType();
                     if (shouldSkipToNextRestaurant(currentTime) && (contentType == ContentType.식당 )) {
                         minIndex = i;
                         minTravelTime = travelTime;
                     }else if (shouldSkipToNextLodging(currentTime) && (contentType == ContentType.숙박 )) {
-                        System.out.println("currentTime2 "+ currentTime + "ContentType " +cities.get(i).getType() );
                         minIndex = i;
                         minTravelTime = travelTime;
                     }else if ( !shouldSkipToNextRestaurant(currentTime)&&!shouldSkipToNextLodging(currentTime)&&(contentType == ContentType.명소 )) {
@@ -297,7 +297,7 @@ public class GeneticAlgorithmTSP {
     private static boolean shouldSkipToNextRestaurant(LocalDateTime currentTime) {
         // arrivalTime이 12:00가 지나거나 18:00이 지났으면서 place가 식당이면 true 반환
         LocalTime timeOfDay = currentTime.toLocalTime(); // 현재 시간의 시분을 가져옴
-        return (timeOfDay.isAfter(LocalTime.of(11, 30)) && timeOfDay.isBefore(LocalTime.of(13, 40))) ||
+        return (timeOfDay.isAfter(LocalTime.of(11, 40)) && timeOfDay.isBefore(LocalTime.of(13, 40))) ||
                 (timeOfDay.isAfter(LocalTime.of(17, 40)) && timeOfDay.isBefore(LocalTime.of(19, 0)));
     }
 
@@ -405,14 +405,6 @@ public class GeneticAlgorithmTSP {
         return travelTimes;
     }
 
-    private static double calculateTravelTime(City city1, City city2) {
-        // 여기에서 도시 유형에 따른 이동 시간 계산
-        // 예를 들어, 식당에서 식당으로 이동하는 경우는 빠르게 이동할 수 있도록 설정
-        // 숙박지에서 숙박지로 이동하는 경우도 마찬가지
-        // 식당에서 숙박지로 이동하는 경우는 조금 더 시간이 걸릴 수 있음
-        // 등등...
-        return 0.0; // 임시로 0으로 설정
-    }
 
 }
 

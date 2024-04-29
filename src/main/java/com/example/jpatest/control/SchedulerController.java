@@ -301,7 +301,7 @@ public class SchedulerController {
 
             List<SchedulerDto> routes = googleMapsService.getOptimalRoute(StartAirport,EndAirport, filteredAdminItems);
             System.out.println(routes);
-            System.out.println("---------a-a-------------------");
+            System.out.println("---------a-a-------------------:"+ StartAirport);
             /*System.out.println(airport);*/
 
             String[] combinedArray = new String[stayIdArray.length + spotIdArray.length];
@@ -665,15 +665,15 @@ public class SchedulerController {
         if(StartAirport.contains("인천광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(191L));
         if(StartAirport.contains("충청북도")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
         if(StartAirport.contains("공항로")) reFilteredAdminItems.add(googleMapsService.getScheduler(193L));
-        if(StartAirport.contains("부산광역시") )reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
-        if(StartAirport.contains("강서구") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
+        if(StartAirport.contains("강서구 공항진입로") )reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
+        if(StartAirport.contains("하늘길") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
     }
     public void addSchedulersByEndLocations(List<AdminItemEntity> reFilteredAdminItems, String EndAirport){
         if(EndAirport.contains("인천광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(191L));
         if(EndAirport.contains("충청북도")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
         if(EndAirport.contains("공항로")) reFilteredAdminItems.add(googleMapsService.getScheduler(193L));
-        if(EndAirport.contains("부산광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
-        if(EndAirport.contains("강서구") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
+        if(EndAirport.contains("강서구 공항진입로")) reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
+        if(EndAirport.contains("하늘길") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
     }
 
 }

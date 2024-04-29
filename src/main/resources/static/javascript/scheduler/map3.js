@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // 주변 공항 검색을 위한 요청 설정
                 const request = {
                     location: location,
-                    radius: 100000, // 100km 반경 내에서 검색
+                    radius: 1000000, // 100km 반경 내에서 검색
                     type: 'airport' // 공항 타입
                 };
 
