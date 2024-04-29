@@ -301,7 +301,6 @@ public class SchedulerController {
 
             List<SchedulerDto> routes = googleMapsService.getOptimalRoute(StartAirport,EndAirport, filteredAdminItems);
             System.out.println(routes);
-            System.out.println("---------a-a-------------------:"+ StartAirport);
             /*System.out.println(airport);*/
 
             String[] combinedArray = new String[stayIdArray.length + spotIdArray.length];
@@ -320,7 +319,8 @@ public class SchedulerController {
             addSchedulersByEndLocations(reFilteredAdminItems,EndAirport);
 
 
-
+            System.out.println("reAdmins Size : "+ reFilteredAdminItems.size());
+            System.out.println("routes Size : "+ routes.size());
             LocalDate currentDate = routes.get(0).getArrivalTime().toLocalDate();
             int year = currentDate.getYear();
             int month = currentDate.getMonthValue();
@@ -493,6 +493,8 @@ public class SchedulerController {
         scheduler.setTrip_duration_end(tripDurationEnd);
         scheduler.setSchedulerMemberId(loggedInMember); // 현재 로그인한 사용자의 Member 객체 설정
 
+
+        System.out.println(spotMarks);
         // SchedulerRepository를 사용하여 엔티티를 저장
         schedulerRepository.save(scheduler);
 
@@ -663,17 +665,19 @@ public class SchedulerController {
 
     public void addSchedulersByStartLocations(List<AdminItemEntity> reFilteredAdminItems, String StartAirport){
         if(StartAirport.contains("인천광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(191L));
-        if(StartAirport.contains("충청북도")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
+        if(StartAirport.contains("청원구 내수읍")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
         if(StartAirport.contains("공항로")) reFilteredAdminItems.add(googleMapsService.getScheduler(193L));
         if(StartAirport.contains("강서구 공항진입로") )reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
         if(StartAirport.contains("하늘길") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
+        if(StartAirport.contains("오타구 하네다쿠코") )reFilteredAdminItems.add(googleMapsService.getScheduler(208L));
     }
     public void addSchedulersByEndLocations(List<AdminItemEntity> reFilteredAdminItems, String EndAirport){
         if(EndAirport.contains("인천광역시")) reFilteredAdminItems.add(googleMapsService.getScheduler(191L));
-        if(EndAirport.contains("충청북도")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
+        if(EndAirport.contains("청원구 내수읍")) reFilteredAdminItems.add(googleMapsService.getScheduler(192L));
         if(EndAirport.contains("공항로")) reFilteredAdminItems.add(googleMapsService.getScheduler(193L));
         if(EndAirport.contains("강서구 공항진입로")) reFilteredAdminItems.add(googleMapsService.getScheduler(194L));
         if(EndAirport.contains("하늘길") )reFilteredAdminItems.add(googleMapsService.getScheduler(195L));
+        if(EndAirport.contains("오타구 하네다쿠코") )reFilteredAdminItems.add(googleMapsService.getScheduler(208L));
     }
 
 }

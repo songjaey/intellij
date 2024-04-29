@@ -147,7 +147,8 @@ public class GeneticAlgorithmTSP {
 
     private static Route findOptimalRoute(List<City> cities, List<AdminItemEntity> places) {
         // 도시 유형에 따른 이동 시간 행렬 생성
-        double[][] travelTimes = createTravelTimeMatrix(cities);
+        String nation = places.get(0).getLocal().getCountry();
+        double[][] travelTimes = createTravelTimeMatrix(cities, nation);
 
         //전체 경로들 간의 평균 시간 계산///////////////////////////////
         double timeFactor = 1.15;
@@ -263,8 +264,7 @@ public class GeneticAlgorithmTSP {
         for (int i = 1; i < travelTimes.length-1; i++) {
             if (!visited.contains(i)) {
                 double travelTime = travelTimes[currentCity.getIndex()][i];
-                System.out.println("TravelTime : "+ travelTime);
-                if (travelTime < minTravelTime) {
+                                if (travelTime < minTravelTime) {
                     ContentType contentType = cities.get(i).getType();
                     if (shouldSkipToNextRestaurant(currentTime) && (contentType == ContentType.식당 )) {
                         minIndex = i;
@@ -297,7 +297,7 @@ public class GeneticAlgorithmTSP {
     private static boolean shouldSkipToNextRestaurant(LocalDateTime currentTime) {
         // arrivalTime이 12:00가 지나거나 18:00이 지났으면서 place가 식당이면 true 반환
         LocalTime timeOfDay = currentTime.toLocalTime(); // 현재 시간의 시분을 가져옴
-        return (timeOfDay.isAfter(LocalTime.of(11, 40)) && timeOfDay.isBefore(LocalTime.of(13, 40))) ||
+        return (timeOfDay.isAfter(LocalTime.of(11, 30)) && timeOfDay.isBefore(LocalTime.of(13, 40))) ||
                 (timeOfDay.isAfter(LocalTime.of(17, 40)) && timeOfDay.isBefore(LocalTime.of(19, 0)));
     }
 
@@ -361,23 +361,27 @@ public class GeneticAlgorithmTSP {
         }
     }
 
-    private static double[][] createTravelTimeMatrix(List<City> cities) {
+    private static double[][] createTravelTimeMatrix(List<City> cities, String nation) {
         int numCities = cities.size();
         double[][] travelTimes = new double[numCities][numCities];
 
         GeoApiContext context = new GeoApiContext.Builder().apiKey(API_KEY).build();
-
+        System.out.println("nation :!!:" + nation);
         // 수정가능 ///////////////////////////////////////////////////////////////////
         for (int i = 0; i < numCities; i++) {
             for (int j = i; j < numCities; j++) {
                 if (i != j) {
                     LatLng origin = new LatLng(cities.get(i).getX(), cities.get(i).getY());
                     LatLng destination = new LatLng(cities.get(j).getX(), cities.get(j).getY());
+                    TravelMode travelMode = null;
+
+                    if(nation.equals("한국"))travelMode = TravelMode.TRANSIT;
+                    else if(nation.equals("일본")) travelMode = TravelMode.DRIVING;
 
                     DirectionsApiRequest request = new DirectionsApiRequest(context)
                             .origin(origin)
                             .destination(destination)
-                            .mode(TravelMode.TRANSIT);
+                            .mode(travelMode);
                     try {
                         DirectionsRoute[] routes = request.await().routes;
                         if (routes != null && routes.length > 0) {
