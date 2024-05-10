@@ -9,8 +9,8 @@ html, body, .box {
 }
 
 .box{
-    border-top: 5px solid #0041A4;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1));
+    border-top: 1px solid #ffffff;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0));
     width: 1920px;
     display: flex;
     /*flex-direction: column; *//* 내부 요소들을 수직 방향으로 배치 */
