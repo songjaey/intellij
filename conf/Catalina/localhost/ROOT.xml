@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context docBase="C:\Users\dw-016\Desktop\intellij-master\intellij-master">
+  <Resources cacheMaxSize="10240">
+    <PreResources base="C:/Users/dw-016/Desktop/intellij-master/intellij-master/build/classes/java/main" className="org.apache.catalina.webresources.DirResourceSet" webAppMount="/WEB-INF/classes"/>
+    <PreResources base="C:/Users/dw-016/Desktop/intellij-master/intellij-master/build/resources/main" className="org.apache.catalina.webresources.DirResourceSet" webAppMount="/WEB-INF/classes"/>
+  </Resources>
+</Context>
