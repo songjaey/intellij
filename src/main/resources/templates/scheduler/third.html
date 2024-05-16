@@ -18,9 +18,9 @@
     <form th:action="@{/schedulers/fourth}" th:object="${schedulerDto}" method="post" class="box">
         <input type="hidden" id="localId">
         <div id="calendar" style="height:45px; width:100%;display:flex;position:absolute;top:105px;">
-            <input type="text" id="DurationStart" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
+            <input type="text" id="DurationStart" readonly th:value="${schedulerDto.trip_duration_start}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:85px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;margin-left:1200px;">
             <p style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"> - </p>
-            <input type="text" id="DurationEnd" readonly th:value="${schedulerDto.trip_duration_end}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:80px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;">
+            <input type="text" id="DurationEnd" readonly th:value="${schedulerDto.trip_duration_end}" style="padding-top:8px;font-family:LINE Seed Sans KR; font-weight:bold;width:85px;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;">
             <p id="weekday_display" style="font-family:LINE Seed Sans KR; font-weight:bold;width:auto;text-align:center;font-size:20px;background-color:transparent;border:none;color:white;"></p>
         </div>
 

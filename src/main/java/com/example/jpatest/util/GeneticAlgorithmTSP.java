@@ -45,6 +45,20 @@ public class GeneticAlgorithmTSP {
         int stayTime; // 머무는 시간 추가
         Long spotId; // 아이템의 고유 번호
 
+        // 추가 생성자
+//        public City(double x, double y, ContentType type, int index, int day, LocalDateTime arrivalTime, LocalDateTime departureTime, int stayTime, Long spotId) {
+//            this.x = x;
+//            this.y = y;
+//            this.type = type;
+//            this.index = index;
+//            this.day = day;
+//            this.arrivalTime = arrivalTime;
+//            this.departureTime = departureTime;
+//            this.stayTime = stayTime;
+//            this.spotId = spotId;
+//        }
+
+
         public double distanceTo(City other) {
             double dx = x - other.x;
             double dy = y - other.y;
