@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.security.Principal;
@@ -49,7 +50,8 @@ public class MainController {
     private final JavaMailSender javaMailSender;
 
     @GetMapping("/")
-    public String main() {
+    public String main(HttpSession session) {
+        session.invalidate();
         return "main";
     }
 
