@@ -59,7 +59,7 @@ public class SchedulerController {
     }
 
     @PostMapping("/second")
-    public String second(@ModelAttribute("schedulerDto") SchedulerDto schedulerDto, Model model,HttpSession session) {
+    public String second(@ModelAttribute("schedulerDto") SchedulerDto schedulerDto, Model model, HttpSession session) {
         try {
             List<LocalEntity> localEntities = localRepository.findAll();
 
@@ -68,9 +68,6 @@ public class SchedulerController {
             model.addAttribute("schedulerDto", schedulerDto);
             session.setAttribute("schedulerDto", schedulerDto);
             logger.info("Received schedulerDto: {}", schedulerDto.getTrip_duration_end());
-
-//            System.out.println("--------------------------------------------------------");
-//            System.out.println(schedulerDto.getTrip_duration_end());
 
             // 두 번째 페이지로 리다이렉트
             return "scheduler/second";
@@ -545,57 +542,58 @@ public class SchedulerController {
     }
     @GetMapping("/third")
     public String getThirdPage(Model model, HttpSession session) {
-        SchedulerDto schedulerDto = (SchedulerDto) session.getAttribute("schedulerDto");
-        String localIds = (String) session.getAttribute("localIds");
-        String spotIds = (String) session.getAttribute("spotIds");
-        String spotMarks = (String) session.getAttribute("spotMarks");
-        String contentTypes = (String) session.getAttribute("contentTypes");
-        model.addAttribute("schedulerDto", schedulerDto);
-        model.addAttribute("localIds", localIds);
+//        SchedulerDto schedulerDto = (SchedulerDto) session.getAttribute("schedulerDto");
+//        String localIds = (String) session.getAttribute("localIds");
+//        String spotIds = (String) session.getAttribute("spotIds");
+//        String spotMarks = (String) session.getAttribute("spotMarks");
+//        String contentTypes = (String) session.getAttribute("contentTypes");
+//        model.addAttribute("schedulerDto", schedulerDto);
+//        model.addAttribute("localIds", localIds);
 
         try {
             //---------------------------추가-------------------------------------
-            String[] localIdArray = localIds.split(",");
-            String[] itemIdArray = spotIds.split(",");
-            List<Long> itemIdList = Arrays.stream(itemIdArray)
-                    .map(Long::parseLong)
-                    .collect(Collectors.toList());
-
-            List<AdminItemEntity> initialItems = adminItemService.findByIds(itemIdList); // 에러발생
-
-            if (initialItems != null && !initialItems.isEmpty()) {
-                model.addAttribute("initialItemSpot", initialItems); // LocalEntity 객체 목록을 추가합니다.
-            }
-            //---------------------------추가-------------------------------------
-
-            // localIdArray의 첫 번째 localId로 초기 지도 좌표 설정
-            if (localIdArray.length > 0) {
-                Long firstLocalId = Long.parseLong(localIdArray[0]);
-                LocalEntity initialLocal = localRepository.findById(firstLocalId).orElse(null);
-
-                if (initialLocal != null) {
-                    // initialLocal 정보를 기반으로 지도의 초기 좌표 설정
-                    model.addAttribute("initialLocal", initialLocal); // 전체 LocalEntity 객체를 추가합니다.
-                }
-            }
-
-            // 각 localId에 해당하는 관련 데이터를 가져와서 모델에 추가합니다.
-            List<AdminItemEntity> adminItemEntityList = new ArrayList<>();
-            for (String localId : localIdArray) {
-                List<AdminItemEntity> itemsForLocalId = adminItemService.findBylistId(Long.parseLong(localId));
-                adminItemEntityList.addAll(itemsForLocalId);
-            }
-            System.out.println("------------------------------------------------------");
-            System.out.println(spotMarks);
-            // 모델에 데이터를 추가합니다.
-            model.addAttribute("adminItemEntity", adminItemEntityList);
-
-            // 세션에 localIds를 저장합니다.
-            session.setAttribute("localIds", localIds); // localIds는 쉼표(,)로 구분된 문자열입니다.
-
-            session.setAttribute("spotMarks", spotMarks); // localIds는 쉼표(,)로 구분된 문자열입니다.
-
-            session.setAttribute("contentTypes", contentTypes); // localIds는 쉼표(,)로 구분된 문자열입니다.
+//            String[] localIdArray = localIds.split(",");
+//            String[] itemIdArray = spotIds.split(",");
+//            List<Long> itemIdList = Arrays.stream(itemIdArray)
+//                    .map(Long::parseLong)
+//                    .collect(Collectors.toList());
+//
+//            List<AdminItemEntity> initialItems = adminItemService.findByIds(itemIdList); // 에러발생
+//
+//            if (initialItems != null && !initialItems.isEmpty()) {
+//                model.addAttribute("initialItemSpot", initialItems); // LocalEntity 객체 목록을 추가합니다.
+//            }
+//            //---------------------------추가-------------------------------------
+//
+//            // localIdArray의 첫 번째 localId로 초기 지도 좌표 설정
+//            if (localIdArray.length > 0) {
+//                Long firstLocalId = Long.parseLong(localIdArray[0]);
+//                LocalEntity initialLocal = localRepository.findById(firstLocalId).orElse(null);
+//
+//                if (initialLocal != null) {
+//                    // initialLocal 정보를 기반으로 지도의 초기 좌표 설정
+//                    model.addAttribute("initialLocal", initialLocal); // 전체 LocalEntity 객체를 추가합니다.
+//                }
+//            }
+//
+//            // 각 localId에 해당하는 관련 데이터를 가져와서 모델에 추가합니다.
+//            List<AdminItemEntity> adminItemEntityList = new ArrayList<>();
+//            for (String localId : localIdArray) {
+//                List<AdminItemEntity> itemsForLocalId = adminItemService.findBylistId(Long.parseLong(localId));
+//                adminItemEntityList.addAll(itemsForLocalId);
+//            }
+//            System.out.println("------------------------------------------------------");
+//            System.out.println(spotMarks);
+//            // 모델에 데이터를 추가합니다.
+//            model.addAttribute("adminItemEntity", adminItemEntityList);
+//
+//            // 세션에 localIds를 저장합니다.
+//            session.setAttribute("localIds", localIds); // localIds는 쉼표(,)로 구분된 문자열입니다.
+//
+//            session.setAttribute("spotMarks", spotMarks); // localIds는 쉼표(,)로 구분된 문자열입니다.
+//
+//            session.setAttribute("contentTypes", contentTypes); // localIds는 쉼표(,)로 구분된 문자열입니다.
+            session.invalidate();
             return "scheduler/third";
         } catch (Exception e) {
             // 오류 발생 시 예외 처리
