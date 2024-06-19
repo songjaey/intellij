@@ -86,8 +86,6 @@ public class AdminController {
         return "adminhub/first"; // 상품 작성 페이지 제공
     }
 
-
-
     @PostMapping("/saveLocal")
     public ResponseEntity<String> saveLocal(@ModelAttribute LocalDto localDto) {
         try {

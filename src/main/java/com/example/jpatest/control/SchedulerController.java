@@ -66,7 +66,7 @@ public class SchedulerController {
             // 조회된 데이터를 모델에 추가
             model.addAttribute("localEntities", localEntities);
             model.addAttribute("schedulerDto", schedulerDto);
-            //session.setAttribute("schedulerDto", schedulerDto);
+            session.setAttribute("schedulerDto", schedulerDto);
             logger.info("Received schedulerDto: {}", schedulerDto.getTrip_duration_end());
 
             // 두 번째 페이지로 리다이렉트

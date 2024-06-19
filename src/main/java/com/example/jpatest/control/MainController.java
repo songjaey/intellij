@@ -115,13 +115,6 @@ public class MainController {
         try {
             memberService.saveMember(memberFormDto, passwordEncoder);
 
-            // 회원가입 후 자동 로그인 처리
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(
-//                            memberFormDto.getEmail(),
-//                            memberFormDto.getPassword()
-//                    )
-//            );
         } catch (IllegalStateException e) {
             // 회원가입 중 예외 발생 시
             model.addAttribute("emailError", "이미 사용 중인 이메일입니다.");
@@ -329,7 +322,6 @@ public class MainController {
 
         return "notice/helpRead";
     }
-
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
@@ -378,8 +370,6 @@ public class MainController {
         boardService.addComment(commentDto.getBoardId(), comment);
         return "redirect:/board/help/read/" + commentDto.getBoardId();
     }
-
-
 
     @PostMapping("/board/help/comment/{id}")
     public String deleteComment(@PathVariable Long id, @RequestParam("boardId") Long boardId) {
