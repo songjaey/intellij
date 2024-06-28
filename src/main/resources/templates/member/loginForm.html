@@ -24,7 +24,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: 400px;
-        height: 440px;
+        height: 540px;
         background: rgba(200, 200, 200, 0.5); /* 회색 느낌과 적절한 투명도 */
 <!--        border: 2px solid #162938;-->
         border:none;
@@ -154,7 +154,7 @@
         text-align: center;
     }
 
-    .login-button a,
+    .login-button button,
     .signup-button a {
         display: block;
         width: 100%;
@@ -164,9 +164,11 @@
         text-decoration: none;
         color: #162938;
         transition: background 0.3s ease;
+        border: none;
+        font-size: 15px;
     }
 
-    .login-button a:hover,
+    .login-button button:hover,
     .signup-button a:hover {
         background: rgba(84, 124, 228, 0.8); /* 호버 시 파란색 */
         color: #fff; /* 글자 색상을 흰색으로 변경 */
@@ -267,7 +269,7 @@
                 </span>
                 <span>
                     <a th:href="@{/members/findId}">아이디찾기|</a>
-                    <a th:href="@{/members/findPw}">비밀번호 변경</a>
+                    <a th:href="@{/members/changePw}">비밀번호 변경</a>
                 </span>
             </div>
 

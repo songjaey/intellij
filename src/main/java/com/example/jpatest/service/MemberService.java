@@ -31,6 +31,33 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
     }
 
+    public void modifPw(String email, String temporaryPassword, PasswordEncoder passwordEncoder){
+        Member member = memberRepository.findByEmail(email);
+        member.setPassword(passwordEncoder.encode(temporaryPassword) );
+        memberRepository.save(member);
+    }
+
+    public void modifyMember(Member member) {
+        memberRepository.save(member);
+    }
+
+    public void changePw(String email, String password) {
+        Member member = memberRepository.findByEmail(email);
+        if (member != null) {
+            // 비밀번호 해싱
+            String encodedPassword = passwordEncoder.encode(password);
+            member.setPassword(encodedPassword);
+            memberRepository.save(member);
+        } else {
+            throw new MemberNotFoundException("User not found");
+        }
+    }
+    public class MemberNotFoundException extends RuntimeException {
+        public MemberNotFoundException(String message) {
+            super(message);
+        }
+    }
+
     private void validEmail(Member member){
         Member find = memberRepository.findByEmail(member.getEmail());
         if(find != null){
@@ -62,7 +89,27 @@ public class MemberService implements UserDetailsService {
         }
         return passwordEncoder.matches(password, member.getPassword());
     }
+    public Member loadUserByUserId(Long id) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return member;
+        } else {
+            return null;
+        }
+    }
 
+    public boolean checkEmailAndPhoneNumberMatch(String email, String tel) {
+
+        Member member = memberRepository.findByEmail(email);
+
+        // 조회된 회원이 없으면 false를 반환합니다.
+        if (member.getEmail() == null) {
+            return false;
+        }
+
+        return member.getTel().equals(tel);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
@@ -77,4 +124,5 @@ public class MemberService implements UserDetailsService {
                 .roles(member.getRole().toString())
                 .build();
     }
+
 }

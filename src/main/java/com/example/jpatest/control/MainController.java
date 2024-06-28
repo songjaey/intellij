@@ -3,15 +3,22 @@ package com.example.jpatest.control;
 import com.example.jpatest.dto.BoardDto;
 import com.example.jpatest.dto.CommentDto;
 import com.example.jpatest.dto.MemberFormDto;
+import com.example.jpatest.entity.AdminEventEntity;
 import com.example.jpatest.entity.Board;
 import com.example.jpatest.entity.Comment;
 import com.example.jpatest.entity.Member;
+import com.example.jpatest.service.AdminEventService;
 import com.example.jpatest.service.BoardService;
 import com.example.jpatest.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,23 +27,32 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
+    //private final AuthenticationManager authenticationManager;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final BoardService boardService;
+    private final AdminEventService adminEventService;
     private static final int PAGE_SIZE = 10;
+    private final JavaMailSender javaMailSender;
 
     @GetMapping("/")
-    public String main() {
-        return "main";
+    public String main(HttpSession session) {
+        session.invalidate();
+        return "index";
     }
 
     @GetMapping("/members/login")
@@ -66,7 +82,7 @@ public class MainController {
         }
 
         // 로그인 성공
-        return "main";
+        return "index";
     }
 
     @GetMapping("/members/login/error")
@@ -98,6 +114,14 @@ public class MainController {
 
         try {
             memberService.saveMember(memberFormDto, passwordEncoder);
+
+            // 회원가입 후 자동 로그인 처리
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(
+//                            memberFormDto.getEmail(),
+//                            memberFormDto.getPassword()
+//                    )
+//            );
         } catch (IllegalStateException e) {
             // 회원가입 중 예외 발생 시
             model.addAttribute("emailError", "이미 사용 중인 이메일입니다.");
@@ -105,7 +129,8 @@ public class MainController {
             return "member/memberForm"; // 회원가입 폼을 다시 표시
         }
 
-        return "redirect:/"; // 회원가입 성공 시 메인 페이지로 리다이렉트
+        //return "redirect:/"; // 회원가입 성공 시 메인 페이지로 리다이렉트
+        return "index";
     }
 
     @GetMapping("/members/findId")
@@ -127,6 +152,132 @@ public class MainController {
         }
     }
 
+    @GetMapping("/members/changePw")
+    public String getChangePw(Model model){
+
+        model.addAttribute("memberFormDto", new MemberFormDto());
+        return "member/changePw";
+    }
+
+    @PostMapping("members/subChangePw")
+    public String postChangePw(@RequestParam("memberPassword") String memberPassword, MemberFormDto memberFormDto, Model model){
+        String email = memberFormDto.getEmail(); String tel = memberFormDto.getTel(); String password = memberFormDto.getPassword();
+        if (email == null || tel == null || password == null || memberPassword == null) {
+            return "redirect:/member/changePw"; // 회원가입 폼을 다시 표시
+        }
+        Member member = memberService.findByEmail(email);
+        if (member.getTel().equals(tel) && passwordEncoder.matches(memberPassword, member.getPassword()) ){
+            memberService.changePw(email, password);
+            return "member/loginForm";
+        }
+        else{
+            System.out.println("changePw Error");
+            return "member/loginForm";
+        }
+    }
+
+    @GetMapping("/members/findPw")
+    public String getFindPw(Model model){
+
+        return "member/findPw";
+    }
+
+    @PostMapping("/members/sendTemporaryPassword")
+    @ResponseBody
+    public String sendTemporaryPassword(@NotBlank String email, @NotBlank String tel) {
+        // 네이버 메일 계정 설정
+        String naverEmail = "songjaey8237@naver.com";
+
+        // 이메일 주소와 휴대폰 번호가 일치하는지 확인하는 메서드 호출
+        boolean isMatch = memberService.checkEmailAndPhoneNumberMatch(email, tel);
+
+        if (isMatch) {
+            // 임시 비밀번호 생성
+            String temporaryPassword = generateTemporaryPassword();
+
+            // 이메일 발송
+            try {
+                MimeMessage message = javaMailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                helper.setFrom(naverEmail);
+                helper.setTo(email);
+                System.out.println(email);
+                helper.setSubject("TravelGenius 임시 비밀번호 안내");
+                helper.setText("임시 비밀번호는 " + temporaryPassword + " 입니다.");
+
+                javaMailSender.send(message);
+                memberService.modifPw(email, temporaryPassword, passwordEncoder);
+                return "임시비밀번호를 성공적으로 보냈습니다.";
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                return "/member";
+            }
+        } else {
+            return "이메일 주소 또는 휴대폰 번호가 일치하지 않습니다.";
+        }
+    }
+    // 임시 비밀번호 생성 메서드
+    private String generateTemporaryPassword() {
+        // 임시 비밀번호 생성 로직 구현
+        // 예를 들어 랜덤한 문자열 생성 또는 임시 비밀번호 생성 규칙에 따라 생성
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int length = 8;
+        for (int i = 0; i < length; i++) {
+            sb.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return sb.toString();
+    }
+
+
+    // 회원정보 수정 mymenu
+    @GetMapping("/members/mymenu")
+    public String myMenu(Model model) {
+        Member member = memberService.loadUserByUserId(getCurrentUserId());
+        if (member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("memberFormDto", new MemberFormDto());
+            return "member/myInfo";
+        } else {
+            // 회원 정보를 찾지 못한 경우의 처리
+            return "member/memberForm"; // 에러 페이지로 리다이렉트 또는 에러 메시지 표시 등을 할 수 있습니다.
+        }
+    }
+
+    @PostMapping("/members/mymenu")
+    public String modifyMyMenu(@Valid MemberFormDto memberFormDto,
+                               BindingResult bindingResult, Model model,
+                               Principal principal) {
+        // 현재 로그인한 사용자의 정보를 가져옵니다.
+        String loggedInUsername = principal.getName();
+
+        System.out.println(loggedInUsername);
+        // 현재 로그인한 사용자의 정보를 조회합니다.
+        Member loggedInMember = memberService.findByEmail(loggedInUsername);
+        if (loggedInMember == null) {
+            // 현재 로그인한 사용자 정보가 없는 경우 에러 처리
+            return "redirect:/members/mymenu"; // 적절한 에러 페이지로 리다이렉트 또는 에러 메시지 표시
+        }
+
+        // 비밀번호를 확인하여 일치하는 경우에만 회원 정보를 수정하고 저장합니다.
+        if (passwordEncoder.matches(memberFormDto.getPassword(), loggedInMember.getPassword())) {
+            // 비밀번호가 일치하는 경우에만 수정된 정보로 회원 정보를 업데이트합니다.
+            loggedInMember.setTel(memberFormDto.getTel());
+            loggedInMember.setZipCode(memberFormDto.getZipCode());
+            loggedInMember.setAddr1(memberFormDto.getAddr1());
+            loggedInMember.setAddr2(memberFormDto.getAddr2());
+
+            // 수정된 회원 정보를 저장합니다.
+            memberService.modifyMember(loggedInMember);
+
+            return "index"; // 회원 정보 수정 후 메인 페이지로 이동
+        } else {
+            // 비밀번호가 일치하지 않는 경우 에러 처리
+            bindingResult.rejectValue("password", "incorrect", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/members/mymenu"; // 비밀번호가 일치하지 않으므로 회원 정보 수정 폼을 다시 표시
+        }
+    }
 
     @GetMapping("/board/help")
     public String board(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
@@ -165,7 +316,7 @@ public class MainController {
     @GetMapping("/board/help/read/{id}")
     public String getAddBoardById(@PathVariable("id") Long id, Model model){
 
-        //boardService.viewCntUpdate(id);
+        boardService.viewCntUpdate(id);
         Optional<Board> result = boardService.findBoardById(id);
         Board board = result.get();
         System.out.println(board.getViewcnt());
@@ -178,7 +329,6 @@ public class MainController {
 
         return "notice/helpRead";
     }
-
 
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -204,7 +354,7 @@ public class MainController {
     @PostMapping("/board/help")
     public String modifyBoard(@ModelAttribute("board") Board board, @RequestParam("id") Long id) {
 
-         boardService.updateBoard(id, board); // 수정된 board 엔티티를 저장
+        boardService.updateBoard(id, board); // 수정된 board 엔티티를 저장
         return "redirect:/board/help"; // 수정 후 목록 페이지로 리다이렉트
     }
 
@@ -244,6 +394,12 @@ public class MainController {
         }
     }
 
+    @GetMapping("/event")
+    public String event(Model model){
 
+        List<AdminEventEntity> events = adminEventService.getAllEvents();
+        model.addAttribute("events", events);
+        return "notice/event";
+    }
 
 }

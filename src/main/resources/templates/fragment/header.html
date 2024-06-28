@@ -21,7 +21,7 @@
                     <li style="width:150px;">
                         <div style="width:150px; height:75px;display:flex;align-items:center;justify-content:center;"><a href="#">Notice</a></div>
                         <ul class="submenu">
-                            <li><a href="#">Event</a></li>
+                            <li><a href="/event">Event</a></li>
                             <li><a href="#">Guide</a></li>
                             <li><a href="/board/help">Help</a></li>
                             <li><a href="#">Board</a></li>
@@ -39,7 +39,7 @@
                     </div>
 
                     <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="margin-right:50px;">
-                        <a href="/members/manage" style="font-size:30px; text-decoration:none; font-family: Brawler, serif;font-weight:700; ;background:none;border:none;padding:0;margin:0;color:white">Manage</a>
+                        <a href="/admin/first" style="font-size:30px; text-decoration:none; font-family: Brawler, serif;font-weight:700; ;background:none;border:none;padding:0;margin:0;color:white">Manage</a>
                     </div>
 
                     <div sec:authorize="isAuthenticated()">

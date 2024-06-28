@@ -4,8 +4,15 @@
       layout:decorate="~{fragment/basic}">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/.css}">
-
+<!--    <link rel="stylesheet" th:href="@{/css/.css}">-->
+    <style>
+        .custom-btn {
+            background-color: #555 !important; /* 원하는 색상으로 변경 */
+        }
+        .custom-btn:hover {
+            background-color: #000 !important; /* 검정색으로 변경 */
+        }
+    </style>
 </th:block>
 
 <th:block layout:fragment="script">
@@ -13,39 +20,43 @@
 </th:block>
 
 <div layout:fragment="content" id="box">
-    <div class="container">
-        <div class="py-5 text-center">
-            <h2>글쓰기</h2>
-        </div>
+    <div class="container" style="display:flex;flex-direction:row; justify-content:center; align-item:center;">
 
-        <!-- 추가 -->
-        <h2>글쓰기</h2>
-
+        <div style="background-color:gray; opacity:0.7; border-radius:15px; padding:20px; ">
         <form th:object="${boardDto}" th:action="@{/board/helpAdd}" method="POST">
-            <div>
-                <label for="boardSubject">제목</label>
-                <input type="text" id="boardSubject" name="subject" class="form-control" th:field="*{subject}">
-            </div>
-            <div>
-                <label for="name">작성자</label>
-                <input type="text" id="name" name="name" class="form-control" th:field="*{name}">
-            </div>
-            <div>
-                <label for="contents">글 내용</label>
-                <input type="text" id="contents" name="contents" class="form-control" th:field="*{contents}">
-            </div>
-
-            <hr class="my-4">
-
-            <div class="row">
-                <div class="col">
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">글쓰기</button>
+            <div style="width:100%;">
+                <div class="py-5 text-center">
+                    <h2 style="font-family: 'LINE Seed Sans KR'; font-weight: bold; color:white;">글쓰기</h2>
                 </div>
-                <div class="col">
-                    <button class="w-100 btn btn-secondary btn-lg" th:onclick="|location.href='@{/board/help}'|" type="button">목록</button>
+                <div style="display:flex; flex-direction:row; width:100%; ">
+                    <div style="display:flex; flex-direction:row; margin-top:10px; width:60%;">
+                        <label style="font-family: 'LINE Seed Sans KR'; font-weight: bold; width:20%; display:flex; flex-direction:row; align-items:center;" for="boardSubject">제목</label>
+                        <input style="font-family: 'LINE Seed Sans KR'; height:90%;" type="text" id="boardSubject" name="subject" class="form-control" th:field="*{subject}">
+                    </div>
+                    <div style="display:flex; flex-direction:row; width:40%; margin-top:10px; ">
+                        <label style="font-family: 'LINE Seed Sans KR'; font-weight: bold; width: 30%; display: flex; flex-direction: row; align-items: center; justify-content: center;" for="name">작성자</label>
+                        <input style="font-family: 'LINE Seed Sans KR'; width: 70%; height:90%;" type="text" id="name" name="name" class="form-control" th:field="*{name}">
+                    </div>
                 </div>
-                            </div>
+
+                <div style="height:400px;">
+                    <label style="font-family: 'LINE Seed Sans KR'; font-weight: bold;" for="contents">글 내용</label>
+                    <input style="height:95%; width:100%;" type="text" id="contents" name="contents" class="form-control" th:field="*{contents}">
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row">
+                    <div class="col">
+                        <button style="font-family: 'LINE Seed Sans KR'; font-weight: bold; z-index:100;" class="w-100 btn btn-primary btn-lg" type="submit">글쓰기</button>
+                    </div>
+                    <div class="col">
+                        <button style="font-family: 'LINE Seed Sans KR'; font-weight: bold; z-index:100;"  class="w-100 btn btn-secondary btn-lg custom-btn" th:onclick="|location.href='@{/board/help}'|" type="button">목록</button>
+                    </div>
+                </div>
+            </div>
         </form>
+        </div>
     </div> <!-- /container -->
 </div>
 

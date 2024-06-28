@@ -4,16 +4,20 @@
       layout:decorate="~{fragment/basic}">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/.css}">
+<!--    <link rel="stylesheet" th:href="@{/css/.css}">-->
     <style>
         .container {
+            font-family: 'LINE Seed Sans KR';
             max-width: 800px;
             margin: auto;
             margin-top: 50px;
-            background-color: #f6f6f6;
+            background-color:gray;
+            opacity:0.9;
+<!--            background-color: #f6f6f6;-->
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            border:none;
         }
 
         .py-5 {
@@ -32,7 +36,7 @@
 
         label {
             font-weight: bold;
-            color: #666;
+            color: black;
         }
 
         input[type="text"] {
@@ -51,17 +55,17 @@
 
         .row {
             display: flex;
-            justify-content: space-between;
+            flex-direction: row;
+            justify-content: end;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
-
-        .col {
-            flex-basis: 30%;
+        .col1{
+            width:15%;
+            margin:2px;
         }
-
         .btn {
-            padding: 10px 20px;
+            padding: 10px 10px;
             font-size: 16px;
             border: none;
             border-radius: 5px;
@@ -70,7 +74,7 @@
         }
 
         .btn-primary {
-            background-color: #4CAF50;
+            background-color: #0d6efd;
         }
 
         .btn-secondary {
@@ -80,37 +84,49 @@
         .btn-primary:hover, .btn-secondary:hover {
             opacity: 0.8;
         }
+
+        .custom-btn {
+            background-color: white; !important; /* 원하는 색상으로 변경 */
+            color:black;
+        }
+        .custom-btn:hover {
+            background-color: #000 !important; /* 검정색으로 변경 */
+            color:white;
+        }
+        body{
+            overflow:auto;
+        }
+
     </style>
 
 </th:block>
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-<!--        <script th:inline="javascript">-->
-<!--            function deleteComment(commentId) {-->
-<!--                if (confirm("정말로 삭제하시겠습니까?")) {-->
-<!--                    fetch('/board/help/comment/' + commentId, {-->
-<!--                        method: 'DELETE',-->
-<!--                        headers: {-->
-<!--                            'Content-Type': 'application/json',-->
-<!--                            'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/-->
-<!--                        }-->
-<!--                    }).then(response => {-->
-<!--                        if (response.ok) {-->
-<!--                            // 성공적으로 삭제되었을 때의 처리-->
-<!--                            var commentElement = document.getElementById('comment-' + commentId);-->
-<!--                            commentElement.remove(); // 해당 댓글 요소를 DOM에서 삭제-->
-<!--                        } else {-->
-<!--                            // 삭제 실패 시의 처리-->
-<!--                            alert('댓글 삭제에 실패하였습니다.');-->
-<!--                        }-->
-<!--                    }).catch(error => {-->
-<!--                        // 요청 실패 시의 처리-->
-<!--                        console.error('댓글 삭제 중 오류 발생:', error);-->
-<!--                    });-->
-<!--                }-->
-<!--            }-->
-    </script>
+        <!--        <script th:inline="javascript">-->
+        <!--            function deleteComment(commentId) {-->
+        <!--                if (confirm("정말로 삭제하시겠습니까?")) {-->
+        <!--                    fetch('/board/help/comment/' + commentId, {-->
+        <!--                        method: 'DELETE',-->
+        <!--                        headers: {-->
+        <!--                            'Content-Type': 'application/json',-->
+        <!--                            'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/-->
+        <!--                        }-->
+        <!--                    }).then(response => {-->
+        <!--                        if (response.ok) {-->
+        <!--                            // 성공적으로 삭제되었을 때의 처리-->
+        <!--                            var commentElement = document.getElementById('comment-' + commentId);-->
+        <!--                            commentElement.remove(); // 해당 댓글 요소를 DOM에서 삭제-->
+        <!--                        } else {-->
+        <!--                            // 삭제 실패 시의 처리-->
+        <!--                            alert('댓글 삭제에 실패하였습니다.');-->
+        <!--                        }-->
+        <!--                    }).catch(error => {-->
+        <!--                        // 요청 실패 시의 처리-->
+        <!--                        console.error('댓글 삭제 중 오류 발생:', error);-->
+        <!--                    });-->
+        <!--                }-->
+        <!--            }-->
     </script>
 </th:block>
 
@@ -118,61 +134,60 @@
     <div class="container">
 
         <div class="py-5 text-center">
-            <h2>글 상세</h2>
+            <h2 style="font-family: 'LINE Seed Sans KR'; font-weight: bold; color:white;">글 상세</h2>
         </div>
 
 
         <!-- 추가 -->
         <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
 
-        <div>
-            <label>ID</label>
-            <input type="text" id="boardId" name="boardId" class="form-control" th:value="${board.id}" readonly>
-        </div>
-        <div>
-            <label>제목</label>
+<!--        <div>-->
+<!--            <label>ID</label>-->
+<!--            <input type="text" id="boardId" name="boardId" class="form-control" th:value="${board.id}" readonly>-->
+<!--        </div>-->
+        <div style="display:flex; flex-direction:row; ">
+            <label style="display:flex; flex-direction:row; align-items:center;width:10%;">제목</label>
             <input type="text" id="boardSubject" name="boardSubject" class="form-control" value="상품A" th:value="${board.subject}" readonly>
         </div>
-        <div>
-            <label>작성자</label>
-            <input type="text" id="name" name="name" class="form-control" value="작성자" th:value="${board.name}" readonly>
+        <div style="display:flex; flex-direction:row; ">
+            <div style="display:flex; flex-direction:row; margin-top:10px;">
+                <label style="width:40%; display:flex; flex-direction:row; align-items:center;">작성자</label>
+                <input type="text" id="name" name="name" class="form-control" value="작성자" th:value="${board.name}" readonly>
+            </div>
+            <div style="display:flex; flex-direction:row; width:68%; margin-top:10px; ">
+                <label style="width: 30%; display: flex; flex-direction: row; align-items: center; justify-content: center;">등록일</label>
+                <input type="text" id="regdate" name="regdate" class="form-control" value="10" style="width:70%;" th:value="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+            </div>
         </div>
-        <div>
-            <label>조회수</label>
+        <div style="display:flex; flex-direction:row; margin-top:10px; ">
+            <label style="width:10%; display:flex; flex-direction:row; align-items:center;">조회수</label>
             <input type="text" id="viewcnt" name="viewcnt" class="form-control" value="10" th:value="${board.viewcnt}" readonly>
         </div>
-
-        <div>
-            <label>등록일</label>
-            <input type="text" id="regdate" name="regdate" class="form-control" value="10" th:value="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-        </div>
-
-        <div>
-            <label>글 내용</label>
-            <input type="text" id="contents" name="contents" class="form-control" value="10" th:value="${board.contents}" readonly>
+        <div style="height:400px; margin-top:10px;">
+            <input type="text" id="contents" name="contents" class="form-control" value="10" style="height:95%; width:100%;" th:value="${board.contents}" readonly>
         </div>
 
         <hr class="my-4">
 
         <div class="row">
-            <div class="col">
+            <div class="col1">
                 <button class="w-100 btn btn-primary btn-lg" th:if="${currentUserId == board.member.id}"
                         th:onclick="|location.href='@{'/board/help/modif/' + ${board.id}}'|"
                         type="button" >수정</button>
-
             </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
+
+            <div class="col1">
+                <button class="w-100 btn btn-secondary btn-lg custom-btn"
                         onclick="location.href='items.html'"
                         th:onclick="|location.href='@{/board/help}'|"
                         type="button" >목록으로</button>
             </div>
-            <form th:action="@{'/board/help/delete/' + ${board.id}}" method="POST">
+            <div class="col1">
+            <form th:action="@{'/board/help/delete/' + ${board.id} }" method="POST">
                 <input type="hidden" id="id" name="id" th:value="${board.id}">
-                <div class="col">
-                    <button class="w-100 btn btn-secondary btn-lg" th:if="${currentUserId == board.member.id}" type="submit">삭제</button>
-                </div>
+                <button class="w-100 btn btn-secondary btn-lg custom-btn" th:if="${currentUserId == board.member.id}" type="submit">삭제</button>
             </form>
+            </div>
         </div>
 
         <!-- 댓글 목록 -->
@@ -191,16 +206,17 @@
             </ul>
         </div>
 
+
         <!-- 댓글 입력 폼 -->
         <form th:object="${commentDto}" th:action="@{/board/help/comment}" method="POST">
             <input type="hidden" name="boardId" th:value="${board.id}">
-            <div>
-                <label for="commentAuthor">작성자</label>
+            <div style="display:flex; flex-direction:row; ">
+                <label style="display:flex; flex-direction:row; align-items:center;width:10%;" for="commentAuthor">작성자</label>
                 <input type="text" id="commentAuthor" th:field="*{author}" class="form-control">
             </div>
-            <div>
+            <div style="height: 200px;">
                 <label for="commentContent">내용</label>
-                <input type="text" id="commentContent" th:field="*{content}" class="form-control">
+                <input style="height:90%; flex-direction:row;" type="text" id="commentContent" th:field="*{content}" class="form-control">
             </div>
             <button class="btn btn-primary" type="submit">댓글 등록</button>
         </form>

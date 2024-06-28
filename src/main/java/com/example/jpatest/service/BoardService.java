@@ -88,19 +88,23 @@ public class BoardService {
     public Page<Board> getBoardsPage(int page, int pageSize) {
         // 페이지 번호는 0부터 시작하므로 -1 처리
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        return boardRepository.findAll(pageable);
+        return boardRepository.findAllDesc(pageable);
     }
 
     public Optional<Board> findBoardById(Long id) {
         return boardRepository.findById(id);
     }
 
-//    public void viewCntUpdate(Long id) {
-//        Optional<Board> boardOptional = boardRepository.findById(id);
-//        if (boardOptional.isPresent()) {
-//            Board board = boardOptional.get();
-//            board.setViewcnt(board.getViewcnt() + 1);
-//            boardRepository.save(board);
-//        }
-//     }
+    public void viewCntUpdate(Long id) {
+        Optional<Board> boardOptional = boardRepository.findById(id);
+        if (boardOptional.isPresent()) {
+            Board board = boardOptional.get();
+            if (board.getViewcnt() != null) { // null 체크 추가
+                board.setViewcnt(board.getViewcnt() + 1);
+            } else {
+                board.setViewcnt(1L); // 초기값으로 1 설정
+            }
+            boardRepository.save(board);
+        }
+    }
 }

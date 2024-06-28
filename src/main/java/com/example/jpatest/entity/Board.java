@@ -27,7 +27,7 @@ public class Board {
     private String subject;
     private String contents;
     private String name;
-    private String viewcnt;
+    private Long viewcnt = 0L; // 초기값으로 0 설정
     private LocalDateTime regdate;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)

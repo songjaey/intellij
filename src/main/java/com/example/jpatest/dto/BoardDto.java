@@ -12,7 +12,7 @@ public class BoardDto {
     private String subject;
     private String contents;
     private String name;
-    private String viewcnt;
+    private Long viewcnt;
 
     public BoardDto(MemberFormDto memberFormDto) {
         this.email = memberFormDto.getEmail();
